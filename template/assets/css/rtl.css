@@ -1,0 +1,383 @@
+body.rtl .navbar-header {
+    float: right;
+}
+body.rtl div#bs-example-navbar-collapse-1 {
+    float: left;
+}
+body.rtl .header-cart-ticket-option {
+    float: left !important;
+}
+body.rtl .header-cart-ticket-option li {
+    float: right;
+}
+body.rtl .navbar-nav>li {
+    float: right;
+}
+body.rtl header .main-menu ul li ul li {
+    text-align: right;
+    width: 100%;
+}
+body.rtl header .main-menu ul li ul li > a:hover, header .main-menu ul li ul li > a:focus, header .main-menu ul li ul li.active > a, header .main-menu ul li ul li.active > a:hover {
+    padding-left: 0;
+    padding-right: 20px;
+}
+body.rtl .caret {
+    margin-left: 0px;
+    margin-right: 2px;
+}
+body.rtl header .main-menu .menu_cart .featured_image {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0px;
+}
+body.rtl header .main-menu .menu_cart .featured_content > .remove {
+    right: auto;
+    left: 0;
+}
+body.rtl .col-md-2, body.rtl .col-md-3, body.rtl .col-md-4, body.rtl .col-md-5, body.rtl .col-md-6, body.rtl .col-md-7, body.rtl .col-md-8, body.rtl .col-md-9, body.rtl .col-md-10, body.rtl .col-md-12 {
+    float: right !important;
+}
+body.rtl .banner-seven .seven-content-right .clock-item {
+    margin-right: 0px;
+    margin-left: 20px;
+}
+body.rtl .banner-seven-content {
+    text-align: center;
+}
+.banner-seven .seven-content-right .clock-item:last-child {
+    margin: 0px !important;
+}
+body.rtl header .main-menu .menu_cart .shop_feature {
+    right: auto;
+    left: 0 !important;
+}
+body.rtl .nav-tabs>li {
+    float: right;
+}
+body.rtl .schedules .tab-content table th {
+    text-align: right;
+}
+body.rtl .schedules .tab-content table td {
+    text-align: right;
+}
+body.rtl .schedules .tab-content table td span {
+    margin-right: 0px;
+    margin-left: 8px;
+}
+body.rtl .travel .info-item .icon {
+    float: right;
+    margin-right: 0px;
+    margin-left: 30px;
+}
+body.rtl .pricing .pricing-item .pricing-header .amount {
+    float: left;
+}
+body.rtl .pricing .pricing-item .pricing-options p span {
+    margin-right: 0px;
+    margin-left: 20px;
+}
+body.rtl .post-meta li .icon {
+    margin-right: 0px;
+    margin-left: 5px;
+    float: right;
+}
+body.rtl .newsletter p {
+    float: right;
+}
+body.rtl header .main-menu .menu_cart .cart_total {
+    width: 100%;
+}
+body.rtl header .main-menu .menu_cart .cart_total span {
+    float: left;
+}
+body.rtl .newsletter form input:first-child {
+    float: right;
+}
+body.rtl .newsletter form input:last-child {
+    float: right;
+    margin-left: 0px;
+    margin-right: 10px;
+}
+/*  index page  */
+body.rtl .about-button li {
+    float: none;
+}
+body.rtl .col-md-8 .about-button li {
+    float: right;
+    margin-right: 0px;
+    margin-left: 15px;
+}
+body.rtl .home-blog-two .post-meta li:first-child {
+    float: right;
+}
+/*  index-2 page  */
+body.rtl .banner .content-left {
+    left: auto;
+    right: 0;
+}
+body.rtl .banner .content-right {
+    right: auto;
+    left: 0;
+}
+body.rtl .banner .content-right .clock-item {
+    float: right;
+    margin-right: 0px;
+    margin-left: 20px;
+}
+body.rtl .speakers .speaker-item .speaker-content .icon {
+    float: right;
+}
+/*  index-3 page  */
+body.rtl .pricing-three .pricing-item .pricing-header {
+    float: right;
+}
+body.rtl .pricing-three .pricing-item .pricing-options {
+    border-left: 10px solid #fafafa;
+    border-right: none;
+}
+body.rtl .pricing-three .pricing-item .pricing-options:before {
+    left: auto;
+    right: 0;
+}
+body.rtl .pricing-three .pricing-item .pricing-options:after {
+    left: auto;
+    right: 0;
+}
+/*  index-4 page  */
+body.rtl .banner-two .banner-content .clock-item {
+    margin-left: 0px;
+    margin-right: 40px;
+}
+body.rtl .banner-two .banner-content .clock-item:first-child {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+body.rtl .schedules-two .nav-tabs {
+    float: right;
+}
+body.rtl .schedules-two .tab-content {
+    float: left !important;
+}
+body.rtl .schedules-two .nav-tabs li a:hover:before, body.rtl .schedules-two .nav-tabs li a:before {
+    right: auto;
+    left: -7px;
+}
+/*  index-5 page  */
+body.rtl .banner-three .content {
+    left: auto;
+    right: 0;
+}
+body.rtl .banner-three form {
+    right: auto;
+    left: 0;
+}
+/*  index-7 page  */
+body.rtl .about-seven .countdown li {
+    float: right;
+}
+/*  one page  */
+body.rtl .page-header h4 {
+    float: right;
+}
+body.rtl .page-header ul {
+    float: left;
+}
+/*  about  */
+body.rtl .speaker-details .speaker-social li {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0px;
+}
+body.rtl .speaker-details .speaker-address li span {
+    margin-right: 0px;
+    margin-left: 10px;
+}
+body.rtl .speaker-details .speaker-award li {
+    margin-right: 0px;
+    margin-left: 60px;
+}
+body.rtl .speaker-details .speaker-award li:last-child {
+    margin: 0px !important;
+}
+body.rtl .speaker-details .speaker-skills .skill-item {
+    margin-right: 0;
+    margin-left: 44px;
+}
+body.rtl .speaker-details .speaker-skills .skill-item:last-child {
+    margin: 0px !important;
+}
+/*  speaker  */
+body.rtl .sidebar form button {
+    right: auto;
+    left: 20px;
+}
+body.rtl .sidebar .sidebar-title:before {
+    left: auto;
+    right: 0;
+}
+body.rtl .sidebar .categores li span {
+    float: left;
+}
+body.rtl i.fa.fa-angle-double-right {
+    transform: rotate(180deg);
+}
+body.rtl .sidebar .categores li:hover a {
+    margin-left: 0px;
+    margin-right: 15px;
+}
+body.rtl .blog-page .post-meta li:first-child {
+    float: right;
+}
+body.rtl .sidebar .latest-posts ul li {
+    float: right;
+    margin-right: 0px;
+    margin-left: 30px;
+}
+body.rtl .sidebar .populer-posts .image {
+    float: right;
+    margin-right: 0px;
+    margin-left: 20px;
+}
+body.rtl .sidebar .tags li {
+    float: right;
+}
+body.rtl .blog-item.single blockquote {
+    padding: 0px 50px 0px 0px;
+}
+body.rtl .comments .comment-item .image {
+    float: right;
+    margin-right: 0px;
+    margin-left: 10px;
+}
+body.rtl .comments .comment-item h4 a {
+    float: right;
+    margin-right: 0px;
+    margin-left: 10px;
+}
+body.rtl .comments > h4:before, .comment-form > h4:before {
+    left: auto;
+    right: 0;
+}
+/*  blog  */
+body.rtl .contact-info .info li .icon {
+    float: right;
+    margin-right: 0px;
+    margin-left: 15px;
+}
+body.rtl .contact-info .event-social li {
+    margin-right: 0px;
+    margin-left: 5px;
+}
+/*  contact  */
+body.rtl .product .product-header p {
+    float: right !important;
+}
+body.rtl .product .product-header .icon {
+    float: left;
+}
+body.rtl .product-sidebar form button {
+    right: auto;
+    left: 0px;
+}
+body.rtl .product-sidebar .pro-categories .panel-title span {
+    left: 0;
+    right: auto;
+}
+body.rtl i.fa.fa-caret-right {
+    transform: rotate(180deg);
+}
+body.rtl .product-sidebar .rel-product .image {
+    float: right;
+    margin-right: 0px;
+    margin-left: 10px;
+}
+body.rtl .product .product-item-list .pro-rating {
+    left: 30px;
+    right: auto;
+}
+body.rtl .pro-details .details select {
+    margin-right: 0px;
+    margin-left: 30px;
+}
+body.rtl .pro-details .details .qnt {
+    float: right;
+}
+body.rtl .pro-description .review-item .image {
+    float: right;
+    margin-right: 0px;
+    margin-left: 20px;
+}
+body.rtl .pro-description .review-item .content h5 {
+    float: right;
+    margin-right: 0px;
+    margin-left: 20px;
+}
+body.rtl .pro-description .review-item .content span {
+    float: right;
+}
+body.rtl .pro-description .review-item .content .pro-rating {
+    float: left;
+}
+body.rtl .shop-cart table tr .title {
+    text-align: right;
+}
+body.rtl .shop-cart table tr .product-thumbnail .image {
+    float: right;
+    margin-right: 0px;
+    margin-left: 20px;
+}
+body.rtl .shop-cart table tr .remove-cart {
+    text-align: center;
+}
+body.rtl .shop-cart table tr .coupon {
+    float: right;
+}
+body.rtl .shop-cart table tr .coupon input:first-child {
+    float: right;
+}
+body.rtl .shop-cart table tr .update {
+    float: left;
+}
+body.rtl .shop-cart table tr .update input {
+    float: right;
+    margin-left: 0px;
+    margin-right: 20px;
+}
+body.rtl .shop-cart .cart-total p span {
+    float: left;
+}
+/*  product  */
+
+
+@media only screen and (max-width: 767px){
+    body.rtl header .main-menu .navbar-header {
+        width: 100%;
+    }
+    body.rtl .navbar-brand {
+        float: right;
+    }
+    body.rtl .navbar-toggle {
+        float: left;
+        margin-right: 0px;
+    }
+    body.rtl .navbar-nav>li {
+        float: none;
+    }
+    body.rtl .header-cart-ticket-option {
+        float: right !important;
+    }
+    body.rtl div#bs-example-navbar-collapse-1 {
+        width: 100%;
+    }
+    body.rtl .header-cart-ticket-option {
+        float: left !important;
+    }
+}
+@media only screen and (max-width: 991px){
+    body.rtl .col-md-6 {
+        width: 100%;
+    }
+    body.rtl .product-sidebar .pro-categories .panel-group .panel {
+        text-align: right;
+    }
+}
