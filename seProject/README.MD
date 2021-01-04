@@ -11,3 +11,5 @@
 #### after pull
 ` pip install -r requirments.txt `
 
+#### at the end 
+` pkill -f runserver `
