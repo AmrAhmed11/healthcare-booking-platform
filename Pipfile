@@ -32,6 +32,7 @@ CacheControl = "==0.12.6"
 Django = "==3.1.4"
 jsonfield = "*"
 django-markdown-deux = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.8"
