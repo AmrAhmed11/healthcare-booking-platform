@@ -90,9 +90,9 @@
               <div class="card-body">
                 <h5 class="text-center mb-5">Fees</h5>
                 <form action="">
-                <input type="text" value="{{services_list['fees']}}"class="form-control">
+                <input type="text" value="{{services_list.fees}}"class="form-control">
                 <div class="text-center">
-                <button class="btn btn-outline-primary btn-md">Change Fees</button>
+                <button class="btn btn-outline-primary btn-md m-3">Change Fees</button>
                 </form>
                 </div>
               </div>
@@ -130,7 +130,7 @@
                         </tr>
                         <tbody>
 
-                            {% for time in services_list['timeslots'] %}
+                            {% for time in services_list.timeslots %}
                             <tr>
                                 
                                 <th scope="row">{{time.id}}</th>

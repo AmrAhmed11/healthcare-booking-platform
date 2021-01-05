@@ -20,6 +20,6 @@ app_name = 'seApp'
 urlpatterns = [
     path('doctor/appointment', views.appointmentManager, name='appointmentManager'),
     path('doctor/appointment/<int:app_id>', views.appointment, name='appointment'),
-    path('doctor/staff/<int:user_id>', views.staffManager, name='staffManager'),
-    path('doctor/services/<int:user_id>', views.servicesManager, name='servicesManager'),
+    path('doctor/staff', views.staffManager, name='staffManager'),
+    path('doctor/services', views.servicesManager, name='servicesManager'),
 ]
