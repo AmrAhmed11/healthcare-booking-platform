@@ -89,10 +89,11 @@
             <div class="card p-5 shadow-md">
               <div class="card-body">
                 <h5 class="text-center mb-5">Fees</h5>
-                <form action="">
-                <input type="text" value="{{services_list.fees}}"class="form-control">
-                <div class="text-center">
-                <button class="btn btn-outline-primary btn-md m-3">Change Fees</button>
+                <form action="{% url 'seApp:changeFeeDoctor' %}" method="post">
+                  {% csrf_token %}
+                  <input type="text" value="{{services_list.fees}}" name="fees" class="form-control">
+                  <div class="text-center">
+                  <button class="btn btn-outline-primary btn-md m-3">Change Fees</button>
                 </form>
                 </div>
               </div>
@@ -110,14 +111,19 @@
             <div class="card p-5 shadow-md">
               <div class="card-body">
                 <h5 class="text-center mb-5">Timeslots</h5>
-                <form action="">
-                    <div class="form-group">
-                        <label for="newTimeSlot">Add timeslots</label>
-                        <input type="datetime-local" class="form-control" name="" id="">
-                    </div>
-                    <div class="text-center mt-5">
-                        <button class="btn btn-outline-primary btn-md">Add timeslot</button>
-                        </div>
+                <form action="{% url 'seApp:addTimeslotDoctor' %}" method="post">
+                  {% csrf_token %}
+                      <div class="form-group">
+                          <label for="newTimeSlot">Add timeslots</label>
+                          <input type="datetime-local" class="form-control" name="timeslot" id="newTimeSlot">
+                      </div>
+                      <div class="text-center mt-2 ">
+                      
+                                    
+                                    <button class="btn btn-outline-primary btn-md">Add timeslot</button>
+
+                          </div>
+                      </form>
                 </form>
                
                 <table class="table table-hoverable">
@@ -130,12 +136,17 @@
                         </tr>
                         <tbody>
 
+                          
                             {% for time in services_list.timeslots %}
                             <tr>
                                 
-                                <th scope="row">{{time.id}}</th>
-                                <td colspan="2">{{time.slot}}</td>
-                                <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                                <th scope="row">{{forloop.counter}}</th>
+                                <td colspan="2">{{time}}</td>
+                                <td><form action="{% url 'seApp:deleteTimeslotDoctor' %}" method="post">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="timeslot" value="{{ time|date:"c"}}">
+                                  <button class="btn btn-danger btn-sm">Delete</button>
+                                </form></td>
                             </tr>
                             {% endfor %}
                         </tbody>
