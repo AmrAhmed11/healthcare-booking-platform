@@ -1,15 +1,25 @@
-from django.shortcuts import render
-# from .models import Doctor
+from django.shortcuts import render, redirect
+from .models import Doctor, Appointment
+from .forms import PrescriptionForm
 
 # Create your views here.
 def appointmentManager(request):
-    app_list = [{'id':0, 'date':'1/1/2022', 'state': 'Pending'}, {'id':1, 'date':'1/2/2022', 'state': 'Pending'}, {'id':2, 'date':'1/1/2022', 'state': 'Pending'}, {'id':3, 'date':'1/2/2022', 'state': 'Pending'}]
+    doctor = Doctor.objects.get(id=1)
+    app_list = doctor.appointment_set.all()
     context = {'app_list': app_list}
     return render(request, 'seApp/appointmentManager.html', context)
 
 def appointment(request, app_id):
-    app = {'id':4, 'date':'1/1/2022', 'state': 'Pending'}
-    context = {'app': app}
+    form = PrescriptionForm()
+    app = Appointment.objects.get(id=app_id)
+    form = PrescriptionForm(instance=app)
+
+    if request.method == 'POST':
+        form = PrescriptionForm(request.POST, instance=app)        
+        if form.is_valid():
+            form.save()
+
+    context = {'app': app, 'doctor': app.doctor, 'patient': app.patient, 'form': form}
     return render(request, 'seApp/appointment.html', context)
 
 
