@@ -26,10 +26,10 @@ class Patient(models.Model):
 class Clinic(models.Model):
     name = models.CharField(max_length = 200, null = True)
     rating = models.FloatField(null= True)
-    address = models.CharField(max_length = 200,null = True)
+    address = models.CharField(max_length = 200, null = True)
     def __str__(self):
         return self.name
-
+ 
 
 class Doctor(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
@@ -43,6 +43,13 @@ class Doctor(models.Model):
     def __str__(self):
         return self.user.name
 
+
+class Staff(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return self.user.name
 
 class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete = models.CASCADE)
