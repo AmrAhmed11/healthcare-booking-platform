@@ -22,4 +22,5 @@ urlpatterns = [
     path('doctor/appointment/<int:app_id>', views.appointment, name='appointment'),
     path('doctor/staff', views.staffManager, name='staffManager'),
     path('doctor/services', views.servicesManager, name='servicesManager'),
+    path('user/browse',views.browse,name='browse'),
 ]

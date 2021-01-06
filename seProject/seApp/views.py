@@ -23,3 +23,7 @@ def staffManager(request):
     staff_list = [{'id':0, 'name':'John', 'details': 'nurse'}, {'id':1, 'name':'John', 'details': 'nurse'},{'id':2, 'name':'John', 'details': 'nurse'},{'id':3, 'name':'John', 'details': 'nurse'}]
     context = {'staff_list': staff_list}
     return render(request, 'seApp/staffManager.html', context)
+
+
+def browse(request):
+    return render(request,'seApp/browse.html')
