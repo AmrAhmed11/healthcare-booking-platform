@@ -100,10 +100,10 @@
             <div class="card p-5 shadow-md">
               <div class="card-body">
                 <h5 class="text-center mb-5">Appointment {{app.id}}</h5>
-                <p class="card-text">Appointment date: {{app.date}}</p>
-                <p class="card-text">Appointment state: {{app.state}}</p>
+                <p class="card-text">Appointment date: {{app.time_slot}}</p>
+                <p class="card-text">Appointment review: {{app.review}}</p>
                 <div class="text-center">
-                <button class="btn btn-outline-primary btn-md">See details</button>
+                <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
                 </div>
               </div>
             </div>
