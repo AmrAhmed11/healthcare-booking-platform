@@ -1,5 +1,8 @@
-from django.shortcuts import render
-# from .models import Doctor
+from django.shortcuts import render,redirect
+from .models import Doctor
+from django.utils.dateparse import parse_datetime
+from pytz import timezone
+import pytz
 
 # Create your views here.
 def appointmentManager(request):
@@ -14,9 +17,36 @@ def appointment(request, app_id):
 
 
 def servicesManager(request):
-    services_list = {'fees':'100$', 'timeslots':[{'id':0,'slot':'2020/12/12'},{'id':1,'slot':'2020/12/12'},{'id':2,'slot':'2020/12/12'}] }
+    doctor = Doctor.objects.get(id=1)
+    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
+
+def changeFeeDoctor(request):
+    fee = request.POST['fees']
+    doctor = Doctor.objects.get(id=1)
+    doctor.fees = fee
+    doctor.save()
+    return redirect('seApp:servicesManager')
+
+def deleteTimeslotDoctor(request):
+    timeslot = request.POST['timeslot']
+    print(timeslot)
+    doctor = Doctor.objects.get(id=1)
+    timeslotParsed = parse_datetime(timeslot) 
+    
+
+    doctor.time_slots.remove(timeslotParsed)
+    doctor.save()
+    return redirect('seApp:servicesManager')
+
+def addTimeslotDoctor(request):
+    timeslot = request.POST['timeslot']
+    print(timeslot)
+    doctor = Doctor.objects.get(id=1)
+    doctor.time_slots.append(timeslot)
+    doctor.save()
+    return redirect('seApp:servicesManager')
 
 
 def staffManager(request):
