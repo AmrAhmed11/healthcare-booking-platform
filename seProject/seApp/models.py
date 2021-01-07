@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
-
 class User(models.Model):
     GENDER = (
         ('Male','Male'),
@@ -45,9 +44,13 @@ class Doctor(models.Model):
 
 
 class Staff(models.Model):
+    specialization_choices = (
+        ('nurse','Nurse'),
+        ('lab_specialist','Lab Specialist')
+        )
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
-
+    specialization = models.CharField(max_length = 20, null= True, choices = specialization_choices)
     def __str__(self):
         return self.user.name
 
