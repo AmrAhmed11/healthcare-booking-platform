@@ -1,13 +1,57 @@
 from django.shortcuts import render, redirect
-from .models import Doctor, Appointment
 from .forms import PrescriptionForm
 from django.utils.dateparse import parse_datetime
 from pytz import timezone
 import pytz
+from django.http import HttpResponse
+from .models import *
+from .forms import CreateUserForm
+from django.forms import inlineformset_factory
+from django.contrib.auth.forms import  UserCreationForm
+from django.contrib import messages
+from django.contrib.auth import  authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+
+def loginpage (request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        if request.method=='POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username = username, password = password)
+            if user is not None:
+                login(request,user)
+                return redirect('home')
+            else:
+                messages.info(request,'Username or password is not correct')
+                return render(request, 'seApp/login.html')
+    return render(request, 'seApp/login.html')
+
+
+def logoutuser (request):
+    logout(request)
+    return redirect ('loginpage')
+
+
+def register (request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        form =CreateUserForm()
+        if request.method == 'POST':
+            form =CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request,'Account is created successfully')
+                return redirect('loginpage')
+    context ={ 'form' : form }
+    return render(request, 'seApp/register.html',context)
+
+
+
 def index(request):
-    
     return render(request, 'seApp/index.html')
 
 

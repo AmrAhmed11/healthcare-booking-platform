@@ -18,7 +18,7 @@ from . import views
 
 app_name = 'seApp'
 urlpatterns = [
-    path('',views.index),
+    path('',views.index,name='home'),
     path('doctor/appointment', views.appointmentManager, name='appointmentManager'),
     path('doctor/appointment/<int:app_id>', views.appointment, name='appointment'),
     path('doctor/staff', views.staffManager, name='staffManager'),
@@ -27,4 +27,7 @@ urlpatterns = [
     path('doctor/addTimeslot', views.addTimeslotDoctor, name='addTimeslotDoctor'),
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
     path('user/browse',views.browse,name='browse'),
+    path('logout/',views.logoutuser,name="logout"),
+    path('login/',views.loginpage,name="loginpage"),
+    path('register/',views.register,name="register"),
 ]
