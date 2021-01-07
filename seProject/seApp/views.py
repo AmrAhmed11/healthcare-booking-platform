@@ -115,4 +115,6 @@ def staffManager(request):
 
 
 def browse(request):
-    return render(request,'seApp/browse.html')
+    doctors = Doctor.objects.all()
+    context = {'doctors':doctors}
+    return render(request,'seApp/browse.html',context)
