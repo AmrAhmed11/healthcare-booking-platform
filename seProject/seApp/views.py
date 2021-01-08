@@ -53,7 +53,8 @@ def register (request):
 
 def index(request):
     return render(request, 'seApp/index.html')
-
+def test(request):
+    return render(request, 'seApp/test.html')
 
 def appointmentManager(request):
     doctor = Doctor.objects.get(id=1)
