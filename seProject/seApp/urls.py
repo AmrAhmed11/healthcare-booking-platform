@@ -33,4 +33,5 @@ urlpatterns = [
     path('logout/',views.logoutuser,name="logout"),
     path('login/',views.loginpage,name="loginpage"),
     path('register/',views.register,name="register"),
+    path('user/view-doctor/<int:doctor_id>', views.viewDoctor, name='viewDoctor'),
 ]

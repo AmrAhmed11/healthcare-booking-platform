@@ -144,7 +144,7 @@ def removeStaff(request):
 def browse(request):
     doctors = Doctor.objects.all()
     context = {'doctors':doctors}
-    return render(request,'seApp/browse.html',context)
+    return render(request,'seApp/browse.html', context)
 
 def appointmentUser(request, app_id):
     patient = Patient.objects.get(id=app_id)
@@ -156,4 +156,10 @@ def appointmentUser(request, app_id):
 
     return render(request, 'seApp/appointmentUser.html', context)    
     
+
+
+def viewDoctor(request, doctor_id):
+    doctors = Doctor.objects.get(id=doctor_id)
+    context = {'doctors':doctors}
+    return render(request, 'seApp/viewDoctor.html', context)
     
