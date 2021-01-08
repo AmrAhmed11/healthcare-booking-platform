@@ -1,41 +1,371 @@
-{%  extends 'seApp/main.html' %}
+{%load static%}
 
-   {% block content%}
-   <div class="bg-light p-5 rounded-lg m-3">
-      <h1 class="display-4">Hello, world!</h1>
-      <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-      <hr class="my-4">
-      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-      <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>seApp</title>
+
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i%7CPoppins:300,400,500,600,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/bootstrap.min.css' %}">
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/font-awesome.min.css' %}">
+    <!-- Flat icon -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/flaticon/flaticon.css' %}">
+    <!-- Swiper -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/swiper.min.css' %}">
+
+    <!-- Lightcase -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/lightcase.css' %}">
+    <!-- quick-view -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/quick-view.css' %}">
+    <!-- nstSlider -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/jquery.nstSlider.css' %}">
+    <!-- flexslider -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/flexslider.css' %}">
+    <!-- banner-bg -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/banner-bg.css' %}">
+    <!-- Style -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/style.css' %}">
+
+    <!-- Responsive -->
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/responsive.css' %}">
+
+
+  </head>
+  <body>
+    <div class="box-layout">
+        <div class="mobile-menu-area">
+          <div class="close">
+            <i class="fa fa-close"></i>
+          </div>
+          <div class="mobile-menu">
+            <ul class="m-menu">
+              
+              <li><a href="#">Log in</a></li>
+              <li>
+                <a href="#">Register</a>
+                <ul class="mobile-submenu">
+                  <li><a href="#">I am a Doctor</a></li>
+                  <li><a href="#">I am a Patient</a></li>
+                  <li><a href="#">I am a Nurse</a></li>
+                  <li><a href="#">I am a Lab Specialist</a></li>
+                </ul>
+
+              </li>
+             
+            </ul>
+          </div>
+        </div>
+      <header class="header-six header-seven">
+        <nav class="main-menu menu-eight menu-fixed">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="index.html"><img src="{% static '/images/logo.png' %}" alt="logo" class="img-responsive"></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="header-cart-ticket-option pull-right">
+  
+                <li><a href="ticket.html" class="menu-button">Log in</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                
+                
+               
+                
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Register<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="product.html">I am a Doctor</a></li>
+                    <li><a href="product-details.html">I am a Patient</a></li>
+                    <li><a href="product-details.html">I am a Patient</a></li>
+                    <li><a href="product-details.html">I am a Lab Specialist</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container -->
+        </nav>
+      </header>
+
+
+       <!-- banner start here-->
+      <section class="banner banner-newyork">
+        <div class="banner-overlay">
+          <div class="banner-content-area">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                  <div class="seven-content-left">
+                    <div class="content">
+                      <h2>Best Healthcare Platform</h2>
+                      <p>seApp</p>
+                    </div>
+                  </div><!-- content-left -->
+                </div>
+                <!-- <div class="col-md-6 col-sm-12 col-xs-12">
+                  <div class="seven-content-right-bg">
+                    <div class="seven-content-right">
+                      <div class="hexagon-box">
+                        <div class="countdown-box">
+                            <ul id="countdown" class="countdown">
+                              <li class="clock-item"><span class="count-number days">00</span><p class="days_text count-text">Days</p></li>
+                              
+                              <li class="clock-item"><span class="count-number hours">00</span><p class="hours_text count-text">Hours</p></li>
+                              
+                              <li class="clock-item"><span class="count-number minutes">00</span><p class="minutes_text count-text">Min</p></li>
+                              
+                              <li class="clock-item"><span class="count-number seconds">00</span><p class="seconds_text count-text">Sec</p></li>
+                            </ul>
+                          </div>
+                      </div>
+                    </div><!-content-right -->
+                  <!-- </div> content-right bg -->
+                <!-- </div>  --> -->
+              </div><!-- row -->
+
+              
+              
+            </div><!-- banner-content -->
+          </div><!-- container-->
+        </div><!-- overlay -->
+      </section>
+      <!-- banner end here -->
+
+
+
+      <!-- About start here -->
+      <section class="about about-eight padding-120">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="image">
+                         
+                          <img src="{% static '/images/newyear/about.png' %}" alt="about iamge">
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="content">
+                          <div class="section-header">
+                              <h2 class="text-center">Join us right now</h2>
+                              <p class="text-center"><i >your best healthcare option</i></p>
+                          </div>
+                          <p class="text-center">Register as a ...</p>
+                          <ul class="about-button">
+                            
+                            
+                            <li><a href="#" class="default-button">Doctor</a></li>
+                          </ul>
+                          <ul class="about-button">
+                            <li><a href="#" class="about-button default-button">Patient</a></li>
+                          </ul>
+                          <ul class="about-button">
+                            <li><a href="#" class="default-button">Nurse</a></li>
+                          </ul>
+                          <ul class="about-button">
+                            <li><a href="#" class="default-button">Lab Specialist</a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- container -->
+      </section>
+      <!-- About end here -->
+
+
+      <!-- gallery start here -->
+      <section class="gallery gallery-two gallery-uhv padding-120">
+        <div class="container">
+          <div class="section-header text-center">
+            <h3>Some Photos</h3>
+            <p><em>Any deep words that make us sound cool.</em></p>
+          </div>
+
+          <div class="section-wrapper">
+            
+
+              <div class="gallery-item grid-item">
+                  <div class="gallery-thumb">
+                    <img src="{% static '/images/gallery-uhv/01.jpg' %}" alt="gallery image" class="img-responsive">
+                    <div class="overlay"></div>
+                    <a href="{% static '/images/gallery-uhv/01.jpg' %}" data-rel="lightcase:myCollection">
+                        <img src="{% static '/images/gallery/gallery-icon.png' %}" alt="gallery icon" class="img-responsive">
+                    </a>
+                  </div>
+              </div>
+              <!-- gallery-item -->
+
+              <div class="gallery-item grid-item">
+                  <div class="gallery-thumb">
+                    <img src="{% static '/images/gallery-uhv/02.jpg' %}" alt="gallery image" class="img-responsive">
+                    <div class="overlay"></div>
+                    <a href="{% static '/images/gallery-uhv/02.jpg' %}" data-rel="lightcase:myCollection">
+                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
+                    </a>
+                  </div>
+              </div>
+              <!-- gallery-item -->
+
+              <div class="gallery-item grid-item">
+                  <div class="gallery-thumb">
+                    <img src="{% static '/images/gallery-uhv/03.jpg' %}" alt="gallery image" class="img-responsive">
+                    <div class="overlay"></div>
+                    <a href="{% static '/images/gallery-uhv/03.jpg' %}" data-rel="lightcase:myCollection">
+                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
+                    </a>
+                  </div>
+              </div>
+              <!-- gallery-item -->
+
+              <div class="gallery-item grid-item">
+                  <div class="gallery-thumb">
+                    <img src="{% static '/images/gallery-uhv/04.jpg' %}" alt="gallery image" class="img-responsive">
+                    <div class="overlay"></div>
+                    <a href="{% static '/images/gallery-uhv/04.jpg' %}" data-rel="lightcase:myCollection">
+                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
+                    </a>
+                  </div>
+              </div>
+              <!-- gallery-item -->
+
+              <div class="gallery-item grid-item">
+                  <div class="gallery-thumb">
+                    <img src="{% static '/images/gallery-uhv/05.jpg' %}" alt="gallery image" class="img-responsive">
+                    <div class="overlay"></div>
+                    <a href="{% static '/images/gallery-uhv/05.jpg' %}" data-rel="lightcase:myCollection">
+                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
+                    </a>
+                  </div>
+              </div>
+              <!-- gallery-item -->
+
+              <div class="gallery-item grid-item">
+                  <div class="gallery-thumb">
+                    <img src="{% static '/images/gallery-uhv/06.jpg' %}" alt="gallery image" class="img-responsive">
+                    <div class="overlay"></div>
+                    <a href="{% static '/images/gallery-uhv/06.jpg' %}" data-rel="lightcase:myCollection">
+                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
+                    </a>
+                  </div>
+              </div>
+
+              <div class="gallery-item grid-item">
+                  <div class="gallery-thumb">
+                    <img src="{% static '/images/gallery-uhv/07.jpg' %}" alt="gallery image" class="img-responsive">
+                    <div class="overlay"></div>
+                    <a href="{% static '/images/gallery-uhv/07.jpg' %}" data-rel="lightcase:myCollection">
+                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
+                    </a>
+                  </div>
+              </div>
+
+              <div class="gallery-item grid-item">
+                  <div class="gallery-thumb">
+                    <img src="{% static '/images/gallery-uhv/08.jpg' %}" alt="gallery image" class="img-responsive">
+                    <div class="overlay"></div>
+                    <a href="{% static '/images/gallery-uhv/08.jpg' %}" data-rel="lightcase:myCollection">
+                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
+                    </a>
+                  </div>
+              </div>
+
+              <div class="gallery-item grid-item">
+                  <div class="gallery-thumb">
+                    <img src="{% static '/images/gallery-uhv/09.jpg' %}" alt="gallery image" class="img-responsive">
+                    <div class="overlay"></div>
+                    <a href="{% static '/images/gallery-uhv/09.jpg' %}" data-rel="lightcase:myCollection">
+                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
+                    </a>
+                  </div>
+              </div>
+              <!-- gallery-item -->
+          <!-- gallery items -->
+          <a href="#" class="gallery-button default-button">lord more photos</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Start here -->
+      <footer class="footer-six">
+        <div class="overlay">
+          <div class="container">
+            <h2>seApp</h2>
+            <ul class="event-social">
+              <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+              <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+              <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+              <li><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+              <li><a href="#"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a></li>
+              <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+            </ul>
+            <p>Copyright &copy; 2021. Design and Development by Amr Ehab</a></p>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer End here -->
     </div>
-    <h1>This is a home page</h1>
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
-
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
 
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
+    <!-- jQuery -->
+    <script src="{% static '/assets/js/jquery-3.1.1.min.js' %}"></script>
+    <script src="{% static '/assets/js/jquery-migrate-1.4.1.min.js' %}"></script>
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
+    <!-- Bootstrap -->
+    <script src="{% static '/assets/js/bootstrap.min.js' %}"></script>
+    
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
+    <!--Swiper-->
+    <script src="{% static '/assets/js/swiper.jquery.min.js' %}"></script>
+    <!--Masonry-->
+    <script src="{% static '/assets/js/masonry.pkgd.min.js' %}"></script>
+    <!--Lightcase-->
+    <script src="{% static '/assets/js/lightcase.js' %}"></script>
+    <!--modernizr-->
+    <script src="{% static '/assets/js/modernizr.js' %}"></script>
 
+    <!--velocity-->
+    <script src="{% static '/assets/js/velocity.min.js' %}"></script>
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
+    <!--quick-view-->
+    <script src="{% static '/assets/js/quick-view.js' %}"></script>
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
+    <!--nstSlider-->
+    <script src="{% static '/assets/js/jquery.nstSlider.js' %}"></script>
+    <script src="{% static '/assets/js/nstfunctions.js' %}"></script>
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
+    <!--flexslider-->
+    <script src="{% static '/assets/js/flexslider-min.js' %}"></script>
+    <script src="{% static '/assets/js/flexfunctions.js' %}"></script>
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
+    <!--directional-->
+    <script src="{% static '/assets/js/directional-hover.js' %}"></script>
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
+    <!--easing-->
+    <script src="{% static '/assets/js/jquery.easing.min.js' %}"></script>
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
+    <!-- parallax.js -->
+    <script src="{% static '/assets/js/parallax.js' %}"></script>
+    <script src="{% static '/assets/js/theia-sticky-sidebar.js' %}"></script>
 
-    <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis veniam dolorem tempora officiis commodi nostrum dolores ab ipsa eveniet quo ducimus enim dolor totam architecto non sapiente, vitae id nemo.</p>
-    <div style="height:1000px">
+    <!-- Custom -->
+    <script src="{% static '/assets/js/custom.js' %}"></script>
 
-    </div>
-   {%endblock%}
+  </body>
+</html>
