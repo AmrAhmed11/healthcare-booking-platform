@@ -55,7 +55,8 @@ def register (request):
 
 def index(request):
     return render(request, 'seApp/index.html')
-
+def test(request):
+    return render(request, 'seApp/test.html')
 
 def appointmentManager(request):
     doctor = Doctor.objects.get(id=1)
@@ -79,7 +80,7 @@ def appointment(request, app_id):
 
 def servicesManager(request):
     doctor = Doctor.objects.get(id=1)
-    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots }
+    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
 
@@ -89,6 +90,14 @@ def changeFeeDoctor(request):
     doctor.fees = fee
     doctor.save()
     return redirect('seApp:servicesManager')
+
+def changeDescriptionDoctor(request):
+    description = request.POST['description']
+    doctor = Doctor.objects.get(id=1)
+    doctor.description = description
+    doctor.save()
+    return redirect('seApp:servicesManager')
+
 
 def deleteTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
@@ -144,7 +153,7 @@ def removeStaff(request):
 def browse(request):
     doctors = Doctor.objects.all()
     context = {'doctors':doctors}
-    return render(request,'seApp/browse.html',context)
+    return render(request,'seApp/browse.html', context)
 
 def appointmentUser(request, user_id):
     patient = Patient.objects.get(id=user_id)
@@ -173,4 +182,10 @@ def appointmentView(request, app_id):
     
         
     
+
+
+def viewDoctor(request, doctor_id):
+    doctors = Doctor.objects.get(id=doctor_id)
+    context = {'doctors':doctors}
+    return render(request, 'seApp/viewDoctor.html', context)
     

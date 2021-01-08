@@ -1,25 +1,68 @@
 {%load static%}
 
 <!-- if user is not logged in -->
-
-<nav class="navbar navbar-expand-lg sticky-top navbar-light" style="background-color: #1b1363; opacity: 0.95">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">seApp</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Log in</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Register</a>
-          </li>         
-        </ul>
-      </div>
+<div class="box-layout">
+  <div class="mobile-menu-area">
+    <div class="close">
+      <i class="fa fa-close"></i>
     </div>
+    <div class="mobile-menu">
+      <ul class="m-menu">
+        
+        <li><a href="#">Log in</a></li>
+        <li>
+          <a href="#">Register</a>
+          <ul class="mobile-submenu red">
+            <li><a href="#">I am a Doctor</a></li>
+            <li><a href="#">I am a Patient</a></li>
+            <li><a href="#">I am a Nurse</a></li>
+            <li><a href="#">I am a Lab Specialist</a></li>
+          </ul>
+
+        </li>
+       
+      </ul>
+    </div>
+  </div>
+<header class="header-six header-seven">
+  <nav class="main-menu menu-eight menu-fixed">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><img src="{% static '/images/logo.png' %}" alt="logo" class="img-responsive"></a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="header-cart-ticket-option pull-right">
+
+          <li><a href="ticket.html" class="menu-button">Log in</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          
+          
+         
+          
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Register<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="product.html">I am a Doctor</a></li>
+              <li><a href="product-details.html">I am a Patient</a></li>
+              <li><a href="product-details.html">I am a Nurse</a></li>
+              <li><a href="product-details.html">I am a Lab Specialist</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container -->
   </nav>
+</header>
 
 
 <!-- end if -->
