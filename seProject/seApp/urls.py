@@ -29,7 +29,7 @@ urlpatterns = [
     path('doctor/addNewStaff', views.addNewStaff, name='addNewStaff'),
     path('doctor/removeStaff', views.removeStaff, name='removeStaff'),
     path('doctor/addTimeslot', views.addTimeslotDoctor, name='addTimeslotDoctor'),
-    path('doctor/changeDescription', views.changeDescriptionDoctor, name='changeDescriptionDoctor'),
+    path('doctor/changeMedicalDetails', views.changeMedicalDetailsDoctor, name='changeMedicalDetailsDoctor'),
 
     
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
