@@ -97,13 +97,17 @@ def appointment(request, app_id):
     context = {'app': app, 'doctor': app.doctor, 'patient': app.patient, 'form': form}
     return render(request, 'seApp/appointment.html', context)
 
+# ///////////////////////////////////////////////////////////////////////////////////////////
+# FUNCTIONS WRITTEN BY LOAY 
 
+#  MANAGING DOCTOR SERVICES 
 def servicesManager(request):
     doctor = Doctor.objects.get(id=1)
     services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
 
+#  CHANGING DOCTOR FEES ACTION
 def changeFeeDoctor(request):
     fee = request.POST['fees']
     doctor = Doctor.objects.get(id=1)
@@ -111,6 +115,8 @@ def changeFeeDoctor(request):
     doctor.save()
     return redirect('seApp:servicesManager')
 
+
+# CHANGING DOCTOR MEDICAL DETAILS
 def changeMedicalDetailsDoctor(request):
     description = request.POST['description']
     specialization = request.POST['specialization']
@@ -122,18 +128,18 @@ def changeMedicalDetailsDoctor(request):
     doctor.save()
     return redirect('seApp:servicesManager')
 
-
+# DELETE TIMESLOTS FOR DOCTOR ACTION
 def deleteTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
     print(timeslot)
     doctor = Doctor.objects.get(id=1)
     timeslotParsed = parse_datetime(timeslot) 
-    
-
     doctor.time_slots.remove(timeslotParsed)
     doctor.save()
     return redirect('seApp:servicesManager')
 
+
+# ADD TIMESLOTS FOR DOCTOR ACTION
 def addTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
     #checking if time is in the past
@@ -145,6 +151,7 @@ def addTimeslotDoctor(request):
     return redirect('seApp:servicesManager')
 
 
+# RENDERDING DOCTOR STAFF MANAGER
 def staffManager(request):
     staff_list = Staff.objects.filter(doctor=1)
     user_list = User.objects.all()
@@ -155,6 +162,8 @@ def staffManager(request):
     context = {'staff_list': staff_list,'staffToBeAdded_list': staffToBeAdded_list}
     return render(request, 'seApp/staffManager.html', context)
 
+
+# ADDING NEW STAFF FOR DOCTOR ACTION 
 def addNewStaff(request):
     staff = request.POST['staff']
     # staffObject = Staff.objects.get(user=staff)
@@ -165,12 +174,16 @@ def addNewStaff(request):
     staffObject.save()
     return redirect('seApp:staffManager')
 
+
+#REMOVING NEW STAFF FOR DOCTOR ACTION
 def removeStaff(request):
     staff = request.POST['staff']
     staffObject = Staff.objects.get(user=staff)
     staffObject.delete()
     return redirect('seApp:staffManager')
 
+
+# ///////////////////////////////////////////////////////////////////////////////////////////
 
 
 
