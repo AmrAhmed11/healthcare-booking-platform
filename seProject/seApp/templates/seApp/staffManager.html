@@ -97,11 +97,22 @@
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card p-5 shadow-md">
               <div class="card-body">
-                <h5 class="text-center mb-5">Staff {{staff.id}}</h5>
-                <p class="card-text">Staff name: {{staff.name}}</p>
-                <p class="card-text">Staff details: {{staff.details}}</p>
+                <h5 class="text-center mb-5">{{staff.user.name}}</h5>
+                <p class="card-text">Staff id: {{staff.id}}</p>
+                <p class="card-text">Staff specialization: {{staff.specialization|title}}</p>
+                <p class="card-text">Staff phone: {{staff.user.phone}}</p>
+                <p class="card-text">Staff email: {{staff.user.email}}</p>
+                <p class="card-text">Staff gender: {{staff.user.gender}}</p>
+                <p class="card-text">Staff birth date: {{staff.user.birth_date}}</p>
                 <div class="text-center">
-                <button class="btn btn-outline-primary btn-md">See details</button>
+                  <form action="{% url 'seApp:removeStaff' %}" method="post">
+                    {% csrf_token %}
+                        
+                      <input type="hidden" name="staff" value="{{staff.user.id}}">                
+                      <button class="btn btn-outline-primary btn-md">Remove</button>
+  
+                      
+                        </form>
                 </div>
               </div>
             </div>
@@ -111,6 +122,39 @@
         <p>No Staff available</p>
       {% endif %}
       </div>
+    </div>
+  </div>
+
+  <div class=" py-5 ">
+    <div class="container">
+      
+        <div class="col-12">
+            <div class="card p-5 shadow-md">
+              <div class="card-body">
+                <h5 class="text-center mb-5">Add Staff</h5>
+                <form action="{% url 'seApp:addNewStaff' %}" method="post">
+                  {% csrf_token %}
+                      <div class="form-group">
+                          <label for="staff">Choose staff</label>
+                         <select class="form-control" name="staff" id="staff">
+                           <option disabled selected>Choose...</option>
+                           {% for staffNew in staffToBeAdded_list %}
+                           <option value="{{staffNew.id}}">{{staffNew.email}}</option>
+                           {% endfor %}
+                         </select>
+                      </div>
+                      <div class="text-center mt-2 ">
+                      
+                                    
+                                    <button class="btn btn-outline-primary btn-md">Add Staff</button>
+
+                          </div>
+                      </form>
+              </div>
+            </div>
+          </div>
+       
+    
     </div>
   </div>
 
