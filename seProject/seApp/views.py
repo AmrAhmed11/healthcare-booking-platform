@@ -46,10 +46,28 @@ def register (request):
             form =CreateUserForm(request.POST)
             if form.is_valid():
                 form.save()
+                group=Group.objects.get(name='patient')
+                user.groups.add(group)
                 messages.success(request,'Account is created successfully')
                 return redirect('loginpage')
     context ={ 'form' : form }
     return render(request, 'seApp/register.html',context)
+
+def registerdoctor (request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        form =CreateUserForm()
+        if request.method == 'POST':
+            form =CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                group=Group.objects.get(name='doctor')
+                user.groups.add(group)
+                messages.success(request,'Account is created successfully')
+                return redirect('loginpage')
+    context ={ 'form' : form }
+    return render(request, 'seApp/registerdoctor.html',context)
 
 
 
