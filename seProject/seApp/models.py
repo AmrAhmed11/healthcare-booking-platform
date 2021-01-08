@@ -37,7 +37,8 @@ class Doctor(models.Model):
     rating = models.FloatField(null = True)
     fees =  models.IntegerField(null = True)
     time_slots = ArrayField(models.DateTimeField(null = True), size = 24, null= True)
-    description = models.CharField(max_length = 1024)
+    description = models.CharField(max_length = 1024, null = True)
+    medical_id = models.CharField(max_length = 20, null = True)
     
     def __str__(self):
         return self.user.name
@@ -55,11 +56,20 @@ class Staff(models.Model):
         return self.user.name
 
 class Appointment(models.Model):
+    STATUS = (
+			('Pending', 'Pending'),
+			('Done', 'Done'),
+			('Cancelled', 'Cancelled'),
+			)
     patient = models.ForeignKey(Patient, on_delete = models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
+    status = models.CharField(max_length=200, null=True, choices=STATUS)
     time_slot = models.DateTimeField(null = True)
     review = models.CharField(max_length = 1024)
     prescription = ArrayField(models.CharField(max_length = 70, null= True) , size=10,null= True)
+	
+
+
 
 
 class Payment(models.Model):

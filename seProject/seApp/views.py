@@ -55,7 +55,8 @@ def register (request):
 
 def index(request):
     return render(request, 'seApp/index.html')
-
+def test(request):
+    return render(request, 'seApp/test.html')
 
 def appointmentManager(request):
     doctor = Doctor.objects.get(id=1)
@@ -152,4 +153,22 @@ def removeStaff(request):
 def browse(request):
     doctors = Doctor.objects.all()
     context = {'doctors':doctors}
-    return render(request,'seApp/browse.html',context)
+    return render(request,'seApp/browse.html', context)
+
+def appointmentUser(request, app_id):
+    patient = Patient.objects.get(id=app_id)
+    app_pending =patient.appointment_set.filter(status="Pending")
+    app_done = patient.appointment_set.filter(status="Done")
+    app_cancelled = patient.appointment_set.filter(status="Cancelled")
+
+    context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled}
+
+    return render(request, 'seApp/appointmentUser.html', context)    
+    
+
+
+def viewDoctor(request, doctor_id):
+    doctors = Doctor.objects.get(id=doctor_id)
+    context = {'doctors':doctors}
+    return render(request, 'seApp/viewDoctor.html', context)
+    
