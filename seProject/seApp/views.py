@@ -73,7 +73,8 @@ def registerdoctor (request):
 
 def index(request):
     return render(request, 'seApp/index.html')
-
+def test(request):
+    return render(request, 'seApp/test.html')
 
 def appointmentManager(request):
     doctor = Doctor.objects.get(id=1)
@@ -97,7 +98,7 @@ def appointment(request, app_id):
 
 def servicesManager(request):
     doctor = Doctor.objects.get(id=1)
-    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots }
+    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
 
@@ -107,6 +108,18 @@ def changeFeeDoctor(request):
     doctor.fees = fee
     doctor.save()
     return redirect('seApp:servicesManager')
+
+def changeMedicalDetailsDoctor(request):
+    description = request.POST['description']
+    specialization = request.POST['specialization']
+    medicalId = request.POST['medicalId']
+    doctor = Doctor.objects.get(id=1)
+    doctor.description = description
+    doctor.specialization = specialization
+    doctor.medical_id = medicalId
+    doctor.save()
+    return redirect('seApp:servicesManager')
+
 
 def deleteTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
@@ -162,10 +175,10 @@ def removeStaff(request):
 def browse(request):
     doctors = Doctor.objects.all()
     context = {'doctors':doctors}
-    return render(request,'seApp/browse.html',context)
+    return render(request,'seApp/browse.html', context)
 
-def appointmentUser(request, app_id):
-    patient = Patient.objects.get(id=app_id)
+def appointmentUser(request, user_id):
+    patient = Patient.objects.get(id=user_id)
     app_pending =patient.appointment_set.filter(status="Pending")
     app_done = patient.appointment_set.filter(status="Done")
     app_cancelled = patient.appointment_set.filter(status="Cancelled")
@@ -173,5 +186,28 @@ def appointmentUser(request, app_id):
     context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled}
 
     return render(request, 'seApp/appointmentUser.html', context)    
+
+def appointmentView(request, app_id):
+    appointment = Appointment.objects.get(id=app_id)
+   
+
+    context = {'appointment': appointment}
+    if appointment.status == 'Pending':
+       return render(request, 'seApp/appointmentpending.html', context)  
+
+    if appointment.status == 'Done':
+       return render(request, 'seApp/appointmentdone.html', context)  
+
+    else:
+       return render(request, 'seApp/appointmentcancelled.html', context)  
+
     
+        
+    
+
+
+def viewDoctor(request, doctor_id):
+    doctors = Doctor.objects.get(id=doctor_id)
+    context = {'doctors':doctors}
+    return render(request, 'seApp/viewDoctor.html', context)
     
