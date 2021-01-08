@@ -13,13 +13,13 @@
 			margin: 0;
 			padding: 0;
 			height: 100%;
-			background:white !important;
+			background: #7abecc !important;
 		}
 		.user_card {
 			width: 350px;
 			margin-top: auto;
 			margin-bottom: auto;
-			background: #101c56;
+			background: #74cfbf;
 			position: relative;
 			display: flex;
 			justify-content: center;
@@ -62,9 +62,6 @@
 			box-shadow: none !important;
 			outline: 0px !important;
 		}
-		p{
-			color: white;
-		}
 
 	</style>
 
@@ -86,7 +83,6 @@
 							</div>
 							{{form.username}}
 						</div>
-						
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
@@ -114,7 +110,7 @@
 				{{form.errors}}
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links">
-						<p>Already have an account?</p> <a href="/login" class="ml-2">Login</a>
+						Already have an account? <a href="/login" class="ml-2">Login</a>
 					</div>
 				</div>
 			</div>
@@ -139,29 +135,3 @@
 	</script>
 </body>
 </html>
-<!-- <h3>sign Up</h3>
-<form method="POST">
-    
-    {{form.username.label}}
-    {{form.username}}
-    <hr>
-
-    {{form.email.label}}
- 
-    
-    <hr>
-
-    {{form.password1.label}}
-    {{form.password1}}
-    <hr>
-
-
-    {{form.password2.label}}
-    {{form.password2}}
-    <br>
-
-
-    
-
-    <input type="submit" name="create user">
-</form> -->
