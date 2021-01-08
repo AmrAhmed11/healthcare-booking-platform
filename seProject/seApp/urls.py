@@ -27,6 +27,9 @@ urlpatterns = [
     path('doctor/addNewStaff', views.addNewStaff, name='addNewStaff'),
     path('doctor/removeStaff', views.removeStaff, name='removeStaff'),
     path('doctor/addTimeslot', views.addTimeslotDoctor, name='addTimeslotDoctor'),
+    path('doctor/changeDescription', views.changeDescriptionDoctor, name='changeDescriptionDoctor'),
+
+    
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
     path('user/browse',views.browse,name='browse'),
     path('logout/',views.logoutuser,name="logout"),

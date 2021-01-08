@@ -81,7 +81,7 @@
 
 <main>
 
-  <div class="bg-light py-2 mt-5 ">
+  <div class="bg-light py-2 mt-5 mb-5 ">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
    
@@ -94,6 +94,28 @@
                   <input type="text" value="{{services_list.fees}}" name="fees" class="form-control">
                   <div class="text-center">
                   <button class="btn btn-outline-primary btn-md m-3">Change Fees</button>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+      </div>
+    </div>
+  </div>
+  <div class=" py-2 m-5 ">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+   
+        <div class="col-12 col-md-12">
+            <div class="card p-5 shadow-md">
+              <div class="card-body">
+                <h5 class="text-center mb-5">Description</h5>
+                <form action="{% url 'seApp:changeDescriptionDoctor' %}" method="post">
+                  {% csrf_token %}
+                  <input type="text" value="{{services_list.description}}" name="description" class="form-control">
+                  <div class="text-center">
+                  <button class="btn btn-outline-primary btn-md m-3">Change Description</button>
                 </form>
                 </div>
               </div>

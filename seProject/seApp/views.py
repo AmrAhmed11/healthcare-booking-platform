@@ -79,7 +79,7 @@ def appointment(request, app_id):
 
 def servicesManager(request):
     doctor = Doctor.objects.get(id=1)
-    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots }
+    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
 
@@ -89,6 +89,14 @@ def changeFeeDoctor(request):
     doctor.fees = fee
     doctor.save()
     return redirect('seApp:servicesManager')
+
+def changeDescriptionDoctor(request):
+    description = request.POST['description']
+    doctor = Doctor.objects.get(id=1)
+    doctor.description = description
+    doctor.save()
+    return redirect('seApp:servicesManager')
+
 
 def deleteTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
