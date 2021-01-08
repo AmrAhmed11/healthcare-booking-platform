@@ -146,8 +146,8 @@ def browse(request):
     context = {'doctors':doctors}
     return render(request,'seApp/browse.html',context)
 
-def appointmentUser(request, app_id):
-    patient = Patient.objects.get(id=app_id)
+def appointmentUser(request, user_id):
+    patient = Patient.objects.get(id=user_id)
     app_pending =patient.appointment_set.filter(status="Pending")
     app_done = patient.appointment_set.filter(status="Done")
     app_cancelled = patient.appointment_set.filter(status="Cancelled")
@@ -155,5 +155,22 @@ def appointmentUser(request, app_id):
     context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled}
 
     return render(request, 'seApp/appointmentUser.html', context)    
+
+def appointmentView(request, app_id):
+    appointment = Appointment.objects.get(id=app_id)
+   
+
+    context = {'appointment': appointment}
+    if appointment.status == 'Pending':
+       return render(request, 'seApp/appointmentpending.html', context)  
+
+    if appointment.status == 'Done':
+       return render(request, 'seApp/appointmentdone.html', context)  
+
+    else:
+       return render(request, 'seApp/appointmentcancelled.html', context)  
+
+    
+        
     
     
