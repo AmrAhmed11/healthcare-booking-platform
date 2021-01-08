@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -83,8 +82,10 @@
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Staff Manager</h1>
-        
+        <h1 class="fw-light">Appointment Manager</h1>
+        <p>
+          <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+        </p>
       </div>
     </div>
   </section>
@@ -92,69 +93,56 @@
   <div class="bg-light py-5 ">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if staff_list %}
-        {% for staff in staff_list %}
+        {% if app_pending %}
+        {% for app in app_pending %} 
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card p-5 shadow-md">
               <div class="card-body">
-                <h5 class="text-center mb-5">{{staff.user.name}}</h5>
-                <p class="card-text">Staff id: {{staff.id}}</p>
-                <p class="card-text">Staff specialization: {{staff.specialization|title}}</p>
-                <p class="card-text">Staff phone: {{staff.user.phone}}</p>
-                <p class="card-text">Staff email: {{staff.user.email}}</p>
-                <p class="card-text">Staff gender: {{staff.user.gender}}</p>
-                <p class="card-text">Staff birth date: {{staff.user.birth_date}}</p>
+                <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
+                <p class="card-text">Doctor: {{app.doctor}}</p>
+                <p class="card-text">Date: {{app.time_slot}}</p>
+                <p class="card-text" style="color :orange;"> {{app.status}}</p>
                 <div class="text-center">
-                  <form action="{% url 'seApp:removeStaff' %}" method="post">
-                    {% csrf_token %}
-                        
-                      <input type="hidden" name="staff" value="{{staff.user.id}}">                
-                      <button class="btn btn-outline-primary btn-md">Remove</button>
-  
-                      
-                        </form>
+                <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        {% for app in app_done %} 
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card p-5 shadow-md">
+              <div class="card-body">
+                <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
+                <p class="card-text">Doctor: {{app.doctor}}</p>
+                <p class="card-text">Date: {{app.time_slot}}</p>
+                <p class="card-text" style="color: green;"> {{app.status}}</p>
+                <div class="text-center">
+                <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        {% for app in app_cancelled %} 
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card p-5 shadow-md">
+              <div class="card-body">
+                <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
+                <p class="card-text">Doctor: {{app.doctor}}</p>
+                <p class="card-text">Date: {{app.time_slot}}</p>
+                <p class="card-text" style="color :rgb(255, 1, 1)  ;"> {{app.status}}</p>
+                <div class="text-center">
+                <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
                 </div>
               </div>
             </div>
           </div>
         {% endfor %}
       {% else %}
-        <p>No Staff available</p>
+        <p>No appoinments available</p>
       {% endif %}
       </div>
-    </div>
-  </div>
-
-  <div class=" py-5 ">
-    <div class="container">
-      
-        <div class="col-12">
-            <div class="card p-5 shadow-md">
-              <div class="card-body">
-                <h5 class="text-center mb-5">Add Staff</h5>
-                <form action="{% url 'seApp:addNewStaff' %}" method="post">
-                  {% csrf_token %}
-                      <div class="form-group">
-                          <label for="staff">Choose staff</label>
-                         <select class="form-control" name="staff" id="staff">
-                           <option disabled selected>Choose...</option>
-                           {% for staffNew in staffToBeAdded_list %}
-                           <option value="{{staffNew.id}}">{{staffNew.email}}</option>
-                           {% endfor %}
-                         </select>
-                      </div>
-                      <div class="text-center mt-2 ">
-                      
-                                    
-                                    <button class="btn btn-outline-primary btn-md">Add Staff</button>
-
-                          </div>
-                      </form>
-              </div>
-            </div>
-          </div>
-       
-    
     </div>
   </div>
 

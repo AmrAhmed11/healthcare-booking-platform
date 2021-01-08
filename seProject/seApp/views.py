@@ -3,6 +3,7 @@ from .forms import PrescriptionForm
 from django.utils.dateparse import parse_datetime
 from pytz import timezone
 import pytz
+from datetime import datetime
 from django.http import HttpResponse
 from .models import *
 from .forms import CreateUserForm
@@ -11,6 +12,7 @@ from django.contrib.auth.forms import  UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import  authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+import string
 
 
 def loginpage (request):
@@ -102,7 +104,9 @@ def deleteTimeslotDoctor(request):
 
 def addTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
-    print(timeslot)
+    #checking if time is in the past
+    if((parse_datetime(timeslot) - datetime.now()).total_seconds() < 0):
+        return redirect('seApp:servicesManager')
     doctor = Doctor.objects.get(id=1)
     doctor.time_slots.append(timeslot)
     doctor.save()
@@ -110,12 +114,53 @@ def addTimeslotDoctor(request):
 
 
 def staffManager(request):
-    staff_list = [{'id':0, 'name':'John', 'details': 'nurse'}, {'id':1, 'name':'John', 'details': 'nurse'},{'id':2, 'name':'John', 'details': 'nurse'},{'id':3, 'name':'John', 'details': 'nurse'}]
-    context = {'staff_list': staff_list}
+    staff_list = Staff.objects.filter(doctor=1)
+    user_list = User.objects.all()
+    staffToBeAdded_list = []
+    for user in user_list:
+        if not Patient.objects.filter(user=user.id) and not Doctor.objects.filter(user=user.id) and not Staff.objects.filter(user=user.id):
+            staffToBeAdded_list.append(user)
+    context = {'staff_list': staff_list,'staffToBeAdded_list': staffToBeAdded_list}
     return render(request, 'seApp/staffManager.html', context)
+
+def addNewStaff(request):
+    staff = request.POST['staff']
+    # staffObject = Staff.objects.get(user=staff)
+    staffObject = Staff()
+    staffObject.user = User.objects.get(id=staff)
+    staffObject.specialization = "nurse"
+    staffObject.doctor = Doctor.objects.get(id=1)
+    staffObject.save()
+    return redirect('seApp:staffManager')
+
+def removeStaff(request):
+    staff = request.POST['staff']
+    staffObject = Staff.objects.get(user=staff)
+    staffObject.delete()
+    return redirect('seApp:staffManager')
+
+
 
 
 def browse(request):
     doctors = Doctor.objects.all()
     context = {'doctors':doctors}
-    return render(request,'seApp/browse.html',context)
+    return render(request,'seApp/browse.html', context)
+
+def appointmentUser(request, app_id):
+    patient = Patient.objects.get(id=app_id)
+    app_pending =patient.appointment_set.filter(status="Pending")
+    app_done = patient.appointment_set.filter(status="Done")
+    app_cancelled = patient.appointment_set.filter(status="Cancelled")
+
+    context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled}
+
+    return render(request, 'seApp/appointmentUser.html', context)    
+    
+
+
+def viewDoctor(request, doctor_id):
+    doctors = Doctor.objects.get(id=doctor_id)
+    context = {'doctors':doctors}
+    return render(request, 'seApp/viewDoctor.html', context)
+    
