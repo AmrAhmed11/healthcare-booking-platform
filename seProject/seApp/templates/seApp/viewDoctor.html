@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Doctor</title>
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+<head>    
     <style>
-        body{
-        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    body{
+        background: -webkit-linear-gradient(left, black, black);
     }
     .emp-profile{
         padding: 3%;
@@ -105,9 +95,12 @@
         font-weight: 600;
         color: #0062cc;
     }
-    </style>
-</head>
+</style></head>
 
+
+{%  extends 'seApp/main.html' %}
+{%block content%}
+<br>
 <body>
     <div class="container emp-profile">
         <form method="post">
@@ -140,14 +133,14 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <!-- <div class="col-md-2">
                     <input type="submit" class="profile-edit-btn" style="width: 160px;" name="btnAddMore" value="Book Appointment"/>
-                </div>
+                </div> -->
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="profile-work">
-                        <!-- <p>WORK LINK</p>
+                    <!-- <div class="profile-work">
+                        <p>WORK LINK</p>
                         <a href="">Website Link</a><br/>
                         <a href="">Bootsnipp Profile</a><br/>
                         <a href="">Bootply Profile</a>
@@ -155,11 +148,8 @@
                         <a href="">Web Designer</a><br/>
                         <a href="">Web Developer</a><br/>
                         <a href="">WordPress</a><br/>
-                        <a href="">WooCommerce</a><br/> -->
-                        {% for timeslot in doctors.time_slots %}
-                        <a href="">{{ timeslot }}</a><br/>
-                        {% endfor %}
-                    </div>
+                        <a href="">WooCommerce</a><br/>
+                    </div> -->
                 </div>
                 <div class="col-md-8">
                     <div class="tab-content profile-tab" id="myTabContent">
@@ -204,8 +194,16 @@
                                             <p>{{doctors.specialization}}</p>
                                         </div>
                                     </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                           
+                                            
+                                            
+                                        </div>
+                                    </div>
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <!-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label>Experience</label>
@@ -251,12 +249,13 @@
                                     <label>Your Bio</label><br/>
                                     <p>Your detail description</p>
                                 </div>
-                            </div>
-                        </div>
+                            </div> -->
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>
         </form>           
     </div>
+
 </body>
-</html>
+{% endblock %}

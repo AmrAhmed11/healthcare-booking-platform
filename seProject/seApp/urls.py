@@ -23,6 +23,8 @@ urlpatterns = [
 
     path('doctor/appointment', views.appointmentManager, name='appointmentManager'),
     path('doctor/appointment/<int:app_id>', views.appointment, name='appointment'),
+    path('doctor/patients/', views.doctorGetPatients, name='patients'),
+    path('doctor/patients/transfer/<int:patient_id>', views.doctorTransferPatient, name='TransferPatients'),
     path('doctor/staff', views.staffManager, name='staffManager'),
     path('doctor/services', views.servicesManager, name='servicesManager'),
     path('doctor/deleteTimeslot', views.deleteTimeslotDoctor, name='deleteTimeslotDoctor'),
@@ -33,8 +35,12 @@ urlpatterns = [
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
 
     
+    
+    path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
     path('user/appointment/<int:user_id>', views.appointmentUser, name='appointmentUser'),
     path('user/appointmentview/<int:app_id>', views.appointmentView, name='appointmentView'),
+    path('user/appointmentview/viewprescription/<int:app_id>', views.viewprescription, name='viewprescription'),
+    path('user/appointmentview/review/<int:app_id>', views.review, name='review'),
     path('user/browse',views.browse,name='browse'),
 
 

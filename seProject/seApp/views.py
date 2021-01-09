@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import PrescriptionForm
+from .forms import *
 from django.utils.dateparse import parse_datetime
 from pytz import timezone
 import pytz
@@ -114,6 +114,34 @@ def appointment(request, app_id):
     context = {'app': app, 'doctor': app.doctor, 'patient': app.patient, 'form': form}
     return render(request, 'seApp/appointment.html', context)
 
+def doctorGetPatients(request):    
+    doctor = Doctor.objects.get(id=1)
+    app_list = doctor.appointment_set.all()
+    patient_list = []
+    for app in app_list:
+        if app.patient not in patient_list:
+            patient_list.append(app.patient)
+    context = {'patients': patient_list}        
+    return render(request, 'seApp/patients.html', context)
+
+
+def doctorTransferPatient(request, patient_id):
+    patient = Patient.objects.get(id=patient_id)  
+    doctors = Doctor.objects.all()
+    if request.method == 'POST':
+        timeslots = Doctor.objects.get(id=request.POST['newDoctor']).time_slots
+        appointment = Appointment(
+                patient = patient,
+                doctor = Doctor.objects.get(id=request.POST['newDoctor']),
+                status = 'Pending',
+                time_slot =  timeslots[0],
+                review = 'None',
+                prescription = []
+        )
+        appointment.save()
+        return redirect('seApp:patients')
+    context = {'patient': patient, 'doctors': doctors}
+    return render(request, 'seApp/patientsTransfer.html', context)
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 
 
@@ -234,12 +262,63 @@ def appointmentView(request, app_id):
        return render(request, 'seApp/appointmentcancelled.html', context)  
 
     
+def viewprescription(request, app_id ) :
+    appointment = Appointment.objects.get(id=app_id)
+
+    context = {'appointment': appointment}
+
+    return render(request, 'seApp/viewprescription.html', context)      
+
+def review(request, app_id ) :
+    form = ReviewForm()
+    formrate = RateForm()
+    app = Appointment.objects.get(id=app_id)
+    form = ReviewForm(instance=app)
+    formrate = RateForm(instance=app.doctor)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=app)   
+        if form.is_valid():
+            form.save()
+            #return redirect('appointmentView')
         
-    
+    if request.method == 'GET':
+        formrate = RateForm(request.POST, instance=app.doctor)        
+        if id == "ch1":
+            formrate.save(rating = 1)    
+
+        if id == "ch2":
+            formrate.save(rating = 2)  
+
+        if id == "ch3":
+            formrate.save(rating = 3)  
+
+        if id == "ch4":
+            formrate.save(rating = 4)     
+
+        if id == "ch5":
+            formrate.save(rating = 5)               
+  
+
+    context = {'app': app, 'form': form, 'formrate': formrate}
+    return render(request, 'seApp/review.html', context)          
 
 
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
-    context = {'doctors':doctors}
+    if request.method == 'POST':
+        appointment = Appointment(
+                patient = 1,
+                doctor = doctor_id,
+                status = 'Pending',
+                time_slot =  request.POST['TimeSlot'],
+                review = 'None',
+                prescription = []
+        )
+        if appointment.is_valid():
+            form.save()
+            return redirect('')
+    context = {'doctors':doctors,}
     return render(request, 'seApp/viewDoctor.html', context)
     
+

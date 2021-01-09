@@ -60,3 +60,20 @@ class CreateStaffForm (UserCreationForm):
         return user
 
 
+        model=User
+        fields=['username','email','password1','password2',]
+
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Appointment 
+        fields = ['review',]
+
+class RateForm(ModelForm):
+    class Meta:
+        model = Doctor
+        fields = ['rating',]
+       
+class chooseAppointmentForm(ModelForm):
+    class Meta:
+        model = Doctor
+        fields =['time_slots',]

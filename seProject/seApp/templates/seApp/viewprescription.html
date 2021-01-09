@@ -23,15 +23,11 @@
         <div class="col-12 col-md-12">
             <div class="card p-5 shadow-md">
               <div class="card-body">
-                <h3 class="text-center mb-5">Appointment {{appointment.doctor.specialization}}</h3>
-                <p class="card-text">Date: {{appointment.time_slot}}</p>
-                <p class="card-text"> Doctor: {{appointment.doctor}}</p>
-                <p class="card-text"> Specilization: {{appointment.doctor.specialization}}</p>
-                <p class="card-text"> Clinic: {{appointment.doctor.clinic}}</p>
-                <p class="card-text"> Description: {{appointment.doctor.description}}</p>
-                <p class="card-text"> Returned Fees: {{appointment.doctor.fees}}</p>
+                <h5 class="text-center mb-5">Prescription {{appointment.doctor.specialization}}</h5>
+                {% for prescription in appointment.prescription %} 
+                    <p class="card-text">{{prescription}}</p>
+                {% endfor %}
                 <br>
-                <h6 class="text-center" style="color :red;"> This Appointment was {{appointment.status}}</h6>
                  
               </div>
             </div>
