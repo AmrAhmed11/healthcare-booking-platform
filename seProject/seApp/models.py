@@ -1,26 +1,31 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import AbstractUser
 
-class User(models.Model):
+class UserProfile(AbstractUser):
     GENDER = (
         ('Male','Male'),
         ('Female','Female')
         )
-    name = models.CharField(max_length=200,null=True)
+    ROLES=(
+        ('doctor','Doctor'),
+        ('patient','Patient'),
+        ('staff','Staff')
+    )
     phone = models.CharField(max_length=200,null=True)
-    email = models.CharField(max_length=200,null=True)
-    data_created = models.DateTimeField(auto_now_add=True,null=True)
     birth_date = models.DateTimeField(null=True)
     gender = models.CharField(max_length=200,null=True,choices=GENDER)
-    def __str__(self):
-        return self.name
+    role=models.CharField(max_length=200,null=True,choices=ROLES)
+
+    # def __str__(self):
+    #     return self.UserProfile.name
 
 
 class Patient(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     medical_history = ArrayField(models.CharField(max_length = 200, null = True), size = 1000, null= True)
     def __str__(self):
-        return self.user.name
+        return self.user.username
 
 class Clinic(models.Model):
     name = models.CharField(max_length = 200, null = True)
@@ -31,8 +36,8 @@ class Clinic(models.Model):
  
 
 class Doctor(models.Model):
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
-    clinic = models.ForeignKey(Clinic, on_delete = models.CASCADE)
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    clinic = models.ForeignKey(Clinic, on_delete = models.CASCADE,null=True)
     specialization = models.CharField(max_length = 50, null= True)
     rating = models.FloatField(null = True)
     fees =  models.IntegerField(null = True)
@@ -41,7 +46,7 @@ class Doctor(models.Model):
     medical_id = models.CharField(max_length = 20, null = True)
     
     def __str__(self):
-        return self.user.name
+        return self.user.username
 
 
 class Staff(models.Model):
@@ -49,7 +54,7 @@ class Staff(models.Model):
         ('nurse','Nurse'),
         ('lab_specialist','Lab Specialist')
         )
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
     specialization = models.CharField(max_length = 20, null= True, choices = specialization_choices)
     def __str__(self):

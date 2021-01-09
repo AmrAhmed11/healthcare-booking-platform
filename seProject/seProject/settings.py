@@ -86,7 +86,7 @@ DATABASES = {
         'PORT': '5432'
     }
 }
-
+AUTH_USER_MODEL = 'seApp.UserProfile'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
