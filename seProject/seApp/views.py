@@ -233,7 +233,7 @@ def review(request, app_id ) :
     form = ReviewForm(instance=app)
 
     if request.method == 'POST':
-        form = ReviewForm(request.POST, instance=app)        
+        form = ReviewForm(request.POST, instance=app)   
         if form.is_valid():
             form.save()
 
@@ -241,9 +241,16 @@ def review(request, app_id ) :
     return render(request, 'seApp/review.html', context)          
 
 
-def viewDoctor(request, doctor_id):
+def viewDoctor(request, doctor_id, patient_id):
     doctors = Doctor.objects.get(id=doctor_id)
-    context = {'doctors':doctors}
+    user = Patient.objects.get(id=patient_id)
+    chooseAppointment = chooseAppointmentForm(instance = user)
+    if request.method == 'POST':
+        chooseAppointment = chooseAppointmentForm(request.POST,instance = user)
+        if chooseAppointment.is_valid():
+            form.save()
+            return redirect('')
+    context = {'doctors':doctors,'chooseAppointment':chooseAppointment,'user':user}
     return render(request, 'seApp/viewDoctor.html', context)
     
 

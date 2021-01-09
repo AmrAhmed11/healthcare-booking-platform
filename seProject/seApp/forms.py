@@ -19,4 +19,7 @@ class ReviewForm(ModelForm):
         model = Appointment
         fields = ('review',)
 
-       
+class chooseAppointmentForm(ModelForm):
+    class Meta:
+        model = Doctor
+        fields =['time_slots',]
