@@ -24,3 +24,7 @@ class RateForm(ModelForm):
         model = Doctor
         fields = ['rating',]
        
+class chooseAppointmentForm(ModelForm):
+    class Meta:
+        model = Doctor
+        fields =['time_slots',]
