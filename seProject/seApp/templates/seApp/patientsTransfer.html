@@ -1,0 +1,72 @@
+{%  extends 'seApp/main.html' %}
+{%block content%}
+<style>
+  .card{
+    min-height: 600px;
+  }
+</style>
+<main>
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Transfer Patients</h1>
+      </div>
+    </div>
+  </section>
+
+  <div class="bg-light py-5 ">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% if patient %}
+        <div class="col-12 mb-3">
+            <div class="card p-5 shadow-md">
+              <div class="card-body">
+                <h5 class="text-center mb-5">Patient Profile</h5>
+                <div class="row">
+                  <div class="col-6 col-md-6">
+                    <p class="card-text h6">Name:</p>
+                    <p class="card-text h6">Gender: </p>
+                    <p class="card-text h6">Phone: </p>
+                    <p class="card-text h6">Email: </p>
+                    <p class="card-text h6">Birthdate: </p>
+                    <p class="card-text h6">Medical history: </p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user.name}}</p>
+                    <p class="card-text">{{patient.user.gender}}</p>
+                    <p class="card-text">{{patient.user.phone}}</p>
+                    <p class="card-text">{{patient.user.email}}</p>
+                    <p class="card-text">{{patient.user.birth_date}}</p>
+                    {% for medical_history in patient.medical_history %}
+                      <p class="card-text">{{medical_history}}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="col-12">
+                    <p class="card-text h5 text-center">Select Doctor</p>
+                    <form action="/doctor/patients/transfer/{{patient.id}}" method="POST">
+                        {% csrf_token %}
+                    <div class="col-12">
+                    <select class="form-control" name="newDoctor">
+                        {% for doctor in doctors %}
+                            <option value="{{doctor.id}}">{{doctor.user.name}}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-primary btn-block">Transfer</button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      {% else %}
+        <p>Patient not found</p>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+
+</main>
+{%endblock%}

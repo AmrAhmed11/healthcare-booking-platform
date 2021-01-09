@@ -100,6 +100,34 @@ def appointment(request, app_id):
     context = {'app': app, 'doctor': app.doctor, 'patient': app.patient, 'form': form}
     return render(request, 'seApp/appointment.html', context)
 
+def doctorGetPatients(request):    
+    doctor = Doctor.objects.get(id=1)
+    app_list = doctor.appointment_set.all()
+    patient_list = []
+    for app in app_list:
+        if app.patient not in patient_list:
+            patient_list.append(app.patient)
+    context = {'patients': patient_list}        
+    return render(request, 'seApp/patients.html', context)
+
+
+def doctorTransferPatient(request, patient_id):
+    patient = Patient.objects.get(id=patient_id)  
+    doctors = Doctor.objects.all()
+    if request.method == 'POST':
+        timeslots = Doctor.objects.get(id=request.POST['newDoctor']).time_slots
+        appointment = Appointment(
+                patient = patient,
+                doctor = Doctor.objects.get(id=request.POST['newDoctor']),
+                status = 'Pending',
+                time_slot =  timeslots[0],
+                review = 'None',
+                prescription = []
+        )
+        appointment.save()
+        return redirect('seApp:patients')
+    context = {'patient': patient, 'doctors': doctors}
+    return render(request, 'seApp/patientsTransfer.html', context)
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 
 

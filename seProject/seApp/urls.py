@@ -23,6 +23,8 @@ urlpatterns = [
 
     path('doctor/appointment', views.appointmentManager, name='appointmentManager'),
     path('doctor/appointment/<int:app_id>', views.appointment, name='appointment'),
+    path('doctor/patients/', views.doctorGetPatients, name='patients'),
+    path('doctor/patients/transfer/<int:patient_id>', views.doctorTransferPatient, name='TransferPatients'),
     path('doctor/staff', views.staffManager, name='staffManager'),
     path('doctor/services', views.servicesManager, name='servicesManager'),
     path('doctor/deleteTimeslot', views.deleteTimeslotDoctor, name='deleteTimeslotDoctor'),
