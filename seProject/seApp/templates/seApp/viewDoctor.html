@@ -197,37 +197,9 @@
                                     <br>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-                                                Choose Appointment
-                                            </button>
+                                           
                                             
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Choose Appointment</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                    <form method="POST" action="">
-                                                    {% csrf_token %}
-                                                    {% for timeSlot in doctors.time_slots %}
-                                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                                        <label for="vehicle1"> {{timeSlot}}</label><br>
-                                                    {% endfor %}
-                                                    </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Book Appointment</button>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                         </div>

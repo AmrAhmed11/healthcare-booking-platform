@@ -290,16 +290,21 @@ def review(request, app_id ) :
     return render(request, 'seApp/review.html', context)          
 
 
-def viewDoctor(request, doctor_id, patient_id):
+def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
-    user = Patient.objects.get(id=patient_id)
-    chooseAppointment = chooseAppointmentForm(instance = user)
     if request.method == 'POST':
-        chooseAppointment = chooseAppointmentForm(request.POST,instance = user)
-        if chooseAppointment.is_valid():
+        appointment = Appointment(
+                patient = 1,
+                doctor = doctor_id,
+                status = 'Pending',
+                time_slot =  request.POST['TimeSlot'],
+                review = 'None',
+                prescription = []
+        )
+        if appointment.is_valid():
             form.save()
             return redirect('')
-    context = {'doctors':doctors,'chooseAppointment':chooseAppointment,'user':user}
+    context = {'doctors':doctors,}
     return render(request, 'seApp/viewDoctor.html', context)
     
 
