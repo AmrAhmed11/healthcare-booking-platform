@@ -6,7 +6,7 @@ import pytz
 from datetime import datetime
 from django.http import HttpResponse
 from .models import *
-from .forms import CreateUserForm
+from .forms import PrescriptionForm, CreatePatientForm, CreateDoctorForm, CreateStaffForm
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import  UserCreationForm
 from django.contrib import messages
@@ -38,18 +38,17 @@ def logoutuser (request):
     logout(request)
     return redirect ('seApp:loginpage')
 
-
+#patient_registration
 def register (request):
     if request.user.is_authenticated:
         return redirect('/')
     else:
-        form = CreateUserForm()
+        form =  CreatePatientForm()
         
         if request.method == 'POST':
-            form =CreateUserForm(request.POST)
+            form = CreatePatientForm(request.POST)
             if form.is_valid():
-                form.save()
-               
+                user=form.save()
                 group=Group.objects.get(name='patient')
                 user.groups.add(group)
                 messages.success(request,'Account is created successfully')
@@ -57,27 +56,42 @@ def register (request):
     context ={ 'form' : form }
     return render(request, 'seApp/register.html',context)
 
-
+#Doctor_registration
 def registerdoctor (request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('seApp:home')
     else:
-        form =CreateUserForm()
+        form =CreateDoctorForm()
         if request.method == 'POST':
-            form =CreateUserForm(request.POST)
+            form =CreateDoctorForm(request.POST)
             if form.is_valid():
-                form.save()
+                user=form.save()
                 group=Group.objects.get(name='doctor')
                 user.groups.add(group)
                 messages.success(request,'Account is created successfully')
-                return redirect('loginpage')
+                return redirect('seApp:loginpage')
     context ={ 'form' : form }
     return render(request, 'seApp/registerdoctor.html',context)
+#Staff_registration
+def registerstaff (request):
+    if request.user.is_authenticated:
+        return redirect('seApp:home')
+    else:
+        form =CreateStaffForm()
+        if request.method == 'POST':
+            form =CreateStaffForm(request.POST)
+            if form.is_valid():
+                user=form.save()
+                messages.success(request,'Account is created successfully')
+                return redirect('seApp:loginpage')
+    context ={ 'form' : form }
+    return render(request, 'seApp/registerstaff.html',context)
 
 
 
 def index(request):
     return render(request, 'seApp/index.html')
+
 def test(request):
     return render(request, 'seApp/test.html')
 
@@ -185,7 +199,7 @@ def addTimeslotDoctor(request):
 # RENDERDING DOCTOR STAFF MANAGER
 def staffManager(request):
     staff_list = Staff.objects.filter(doctor=1)
-    user_list = User.objects.all()
+    user_list = UserProfile.objects.all()
     staffToBeAdded_list = []
     for user in user_list:
         if not Patient.objects.filter(user=user.id) and not Doctor.objects.filter(user=user.id) and not Staff.objects.filter(user=user.id):
@@ -199,7 +213,7 @@ def addNewStaff(request):
     staff = request.POST['staff']
     # staffObject = Staff.objects.get(user=staff)
     staffObject = Staff()
-    staffObject.user = User.objects.get(id=staff)
+    staffObject.user = UserProfile.objects.get(id=staff)
     staffObject.specialization = "nurse"
     staffObject.doctor = Doctor.objects.get(id=1)
     staffObject.save()

@@ -32,6 +32,7 @@ urlpatterns = [
     path('doctor/removeStaff', views.removeStaff, name='removeStaff'),
     path('doctor/addTimeslot', views.addTimeslotDoctor, name='addTimeslotDoctor'),
     path('doctor/changeMedicalDetails', views.changeMedicalDetailsDoctor, name='changeMedicalDetailsDoctor'),
+    path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
 
     
     
@@ -41,9 +42,12 @@ urlpatterns = [
     path('user/appointmentview/viewprescription/<int:app_id>', views.viewprescription, name='viewprescription'),
     path('user/appointmentview/review/<int:app_id>', views.review, name='review'),
     path('user/browse',views.browse,name='browse'),
+
+
     path('logout/',views.logoutuser,name="logout"),
     path('login/',views.loginpage,name="loginpage"),
     path('register/',views.register,name="register"),
     path('registerdoctor/',views.registerdoctor,name="register_doctor"),
+    path('registerstaff/',views.registerstaff,name="register_staff"),
     path('user/view-doctor/<int:doctor_id>', views.viewDoctor, name='viewDoctor'),
 ]

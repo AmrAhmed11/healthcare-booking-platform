@@ -13,13 +13,13 @@
 			margin: 0;
 			padding: 0;
 			height: 100%;
-			background: #7abecc !important;
+			background:white !important;
 		}
 		.user_card {
 			width: 350px;
 			margin-top: auto;
 			margin-bottom: auto;
-			background: #74cfbf;
+			background: #101c56;
 			position: relative;
 			display: flex;
 			justify-content: center;
@@ -62,7 +62,22 @@
 			box-shadow: none !important;
 			outline: 0px !important;
 		}
-
+		p{
+			color: white;
+		}
+		/* #id_gender{
+			display: block;
+			width: 100%;
+			padding: .375rem .75rem;
+			font-size: 1rem;
+			line-height: 1.5;
+			color: #495057;
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 1px solid #ced4da;
+			border-radius: .25rem;
+			transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+			} */
 	</style>
 
 </head>
@@ -83,6 +98,7 @@
 							</div>
 							{{form.username}}
 						</div>
+						
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
@@ -101,6 +117,23 @@
 							</div>
 							{{form.password2}}
 						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-key"></i></span>
+							</div>
+							{{form.phone}}
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-key"></i></span>
+							</div>
+							{{form.birth_date}}
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+							</div>
+							{{form.gender}}
+						</div>
 
 				   		<div class="d-flex justify-content-center mt-3 login_container">
 				 			<input class="btn login_btn" type="submit" value="Register Account">
@@ -110,7 +143,7 @@
 				{{form.errors}}
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links">
-						Already have an account? <a href="/login" class="ml-2">Login</a>
+						<p>Already have an account?</p> <a href="/login" class="ml-2">Login</a>
 					</div>
 				</div>
 			</div>
@@ -127,6 +160,9 @@
 		form_fields[2].placeholder='Email..';
 		form_fields[3].placeholder='Enter password...';
 		form_fields[4].placeholder='Re-enter Password...';
+		form_fields[5].placeholder='phone..';
+		form_fields[6].placeholder='Birth Date..';
+
 
 
 		for (var field in form_fields){	
@@ -135,3 +171,29 @@
 	</script>
 </body>
 </html>
+<!-- <h3>sign Up</h3>
+<form method="POST">
+    
+    {{form.username.label}}
+    {{form.username}}
+    <hr>
+
+    {{form.email.label}}
+ 
+    
+    <hr>
+
+    {{form.password1.label}}
+    {{form.password1}}
+    <hr>
+
+
+    {{form.password2.label}}
+    {{form.password2}}
+    <br>
+
+
+    
+
+    <input type="submit" name="create user">
+</form> -->
