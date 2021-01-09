@@ -297,7 +297,7 @@ def viewDoctor(request, doctor_id):
                 patient = 1,
                 doctor = doctor_id,
                 status = 'Pending',
-                time_slot =  request.POST['TimeSlot'],
+                time_slot = request.POST['appointment'],
                 review = 'None',
                 prescription = []
         )

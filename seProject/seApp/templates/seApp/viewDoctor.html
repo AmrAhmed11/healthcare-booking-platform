@@ -95,7 +95,14 @@
         font-weight: 600;
         color: #0062cc;
     }
-</style></head>
+    #panel {
+  display: none;
+}
+#book {
+  display: none;
+}
+</style>
+</head>
 
 
 {%  extends 'seApp/main.html' %}
@@ -103,7 +110,6 @@
 <br>
 <body>
     <div class="container emp-profile">
-        <form method="post">
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-img">
@@ -203,7 +209,7 @@
                                         </div>
                                     </div>
                         </div>
-                        <!-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label>Experience</label>
@@ -249,13 +255,38 @@
                                     <label>Your Bio</label><br/>
                                     <p>Your detail description</p>
                                 </div>
-                            </div> -->
-                        <!-- </div> -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </form>           
+            
+            <div class="text-center">
+                <button onclick="myFunction()" class="btn btn-info">Choose Appointment</button>
+            </div>
+
+            <div class="mt-5 row">
+                <div class="mx-auto col-lg-6">
+                    <form action="/user/view-doctor/{{doctors.id}}" method="POST">
+                        {% csrf_token %}
+                        <select name="appointment" id="panel" class="form-control custom-select">
+                            <option selected disabled>Choose Appointment</option>
+                        {% for timeSlot in doctors.time_slots %}
+                            <option value="time">{{timeSlot}}</option>
+                        {% endfor %}
+                        </select>
+                        <button type="submit" id="book" class="mt-2 float-right btn btn-success">Book</button>
+                    </form>
+                </div>
+        </div>
+
     </div>
 
 </body>
+<script>
+    function myFunction() {
+      document.getElementById("panel").style.display = "block";
+      document.getElementById("book").style.display = "block";
+    }
+    </script>
 {% endblock %}
