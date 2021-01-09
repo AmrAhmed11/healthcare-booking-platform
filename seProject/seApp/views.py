@@ -229,15 +229,36 @@ def viewprescription(request, app_id ) :
 
 def review(request, app_id ) :
     form = ReviewForm()
+    formrate = RateForm()
     app = Appointment.objects.get(id=app_id)
     form = ReviewForm(instance=app)
+    formrate = RateForm(instance=app.doctor)
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=app)        
         if form.is_valid():
             form.save()
+            #return redirect('appointmentView')
+        
+    if request.method == 'GET':
+        formrate = RateForm(request.POST, instance=app.doctor)        
+        if id == "ch1":
+            formrate.save(rating = 1)    
 
-    context = {'app': app, 'form': form }
+        if id == "ch2":
+            formrate.save(rating = 2)  
+
+        if id == "ch3":
+            formrate.save(rating = 3)  
+
+        if id == "ch4":
+            formrate.save(rating = 4)     
+
+        if id == "ch5":
+            formrate.save(rating = 5)               
+  
+
+    context = {'app': app, 'form': form, 'formrate': formrate}
     return render(request, 'seApp/review.html', context)          
 
 

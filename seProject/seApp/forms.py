@@ -16,7 +16,11 @@ class CreateUserForm (UserCreationForm):
 
 class ReviewForm(ModelForm):
     class Meta:
-        model = Appointment
-        fields = ('review',)
+        model = Appointment 
+        fields = ['review',]
 
+class RateForm(ModelForm):
+    class Meta:
+        model = Doctor
+        fields = ['rating',]
        
