@@ -77,19 +77,37 @@
   <div class="bg-light py-2 mt-5 ">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if appointment %}
+        {% if app %}
         <div class="col-12 col-md-12">
             <div class="card p-5 shadow-md">
               <div class="card-body">
-                <h5 class="text-center mb-5">Appointment {{appointment.doctor.specialization}}</h5>
-                <p class="card-text">Date: {{appointment.time_slot}}</p>
-                <p class="card-text"> Doctor: {{appointment.doctor}}</p>
-                <p class="card-text"> Specilization: {{appointment.doctor.specialization}}</p>
-                <p class="card-text"> Clinic: {{appointment.doctor.clinic}}</p>
-                <p class="card-text"> Description: {{appointment.doctor.description}}</p>
-                <p class="card-text"> Returned Fees: {{appointment.doctor.fees}}</p>
+                <h3 class="text-center mb-5">Give Feedback</h3>
+                <h4 class="text-center">Rate your Doctor  </h4>
+                <form action="" method="POST" class="text-center">
+                    <input type="radio" name="rate" id="ch1" value="1" required="ch1">
+                    <label for="ch1" style="margin-right:30px; color: red; font-size: 30px;"> 1 </label>
+                    <input type="radio" name="rate" id="ch2" value="2" required="ch2">
+                    <label for="ch2" style="margin-right:30px; color: orangered; font-size: 30px;"> 2 </label>   
+                    <input type="radio" name="rate" id="ch3" value="3" required="ch3">
+                    <label for="ch3" style="margin-right:30px; color: orange; font-size: 30px;"> 3 </label>
+                    <input type="radio" name="rate" id="ch4" value="4" required="ch4">
+                    <label for="ch4" style="margin-right:30px; color: rgb(124, 194, 18); font-size: 30px;"> 4 </label>
+                    <input type="radio" name="rate" id="ch5" value="5" required="ch5">
+                    <label for="ch5" style="margin-right:30px; color: green; font-size: 30px;"> 5 </label>
+                </form>
                 <br>
-                <p class="text-center" style="color :red;"> This Appointment was {{appointment.status}}</p>
+                <br>
+                <h5 class="card-text">Comment :</h5>
+                <form action="/user/review/{{app.id}}" method="POST" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                      {{ form.review }}
+                    </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-outline-primary btn-md mt-3">Update</button>
+                  </div>
+                </form>
+                <br>
                  
               </div>
             </div>

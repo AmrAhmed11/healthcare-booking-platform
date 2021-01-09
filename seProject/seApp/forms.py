@@ -13,3 +13,10 @@ class CreateUserForm (UserCreationForm):
     class Meta:
         model=User
         fields=['username','email','password1','password2',]
+
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Appointment
+        fields = ('review',)
+
+       

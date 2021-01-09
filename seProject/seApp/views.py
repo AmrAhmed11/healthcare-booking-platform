@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import PrescriptionForm
+from .forms import *
 from django.utils.dateparse import parse_datetime
 from pytz import timezone
 import pytz
@@ -220,8 +220,25 @@ def appointmentView(request, app_id):
        return render(request, 'seApp/appointmentcancelled.html', context)  
 
     
-        
-    
+def viewprescription(request, app_id ) :
+    appointment = Appointment.objects.get(id=app_id)
+
+    context = {'appointment': appointment}
+
+    return render(request, 'seApp/viewprescription.html', context)      
+
+def review(request, app_id ) :
+    form = ReviewForm()
+    app = Appointment.objects.get(id=app_id)
+    form = ReviewForm(instance=app)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=app)        
+        if form.is_valid():
+            form.save()
+
+    context = {'app': app, 'form': form }
+    return render(request, 'seApp/review.html', context)          
 
 
 def viewDoctor(request, doctor_id):
@@ -229,3 +246,4 @@ def viewDoctor(request, doctor_id):
     context = {'doctors':doctors}
     return render(request, 'seApp/viewDoctor.html', context)
     
+

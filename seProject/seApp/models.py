@@ -70,8 +70,6 @@ class Appointment(models.Model):
 	
 
 
-
-
 class Payment(models.Model):
     key = models.CharField(max_length=250)
     amount = models.IntegerField(null=True)
