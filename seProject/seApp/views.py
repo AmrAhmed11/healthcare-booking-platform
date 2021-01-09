@@ -43,7 +43,8 @@ def register (request):
     if request.user.is_authenticated:
         return redirect('/')
     else:
-        form =CreateUserForm()
+        form = CreateUserForm()
+        
         if request.method == 'POST':
             form =CreateUserForm(request.POST)
             if form.is_valid():
