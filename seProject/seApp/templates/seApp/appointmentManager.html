@@ -1,5 +1,10 @@
 {%  extends 'seApp/main.html' %}
 {%block content%}
+<style>
+  .card{
+    min-height: 500px;
+  }
+</style>
 <main>
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -14,14 +19,22 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% if app_list %}
         {% for app in app_list %}
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 mb-3">
             <div class="card p-5 shadow-md">
               <div class="card-body">
-                <h5 class="text-center mb-5">Appointment {{app.id}}</h5>
-                <p class="card-text">Appointment date: {{app.time_slot}}</p>
-                <p class="card-text">Appointment review: {{app.review}}</p>
-                <div class="text-center">
-                <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
+                <div class="row">
+                  <div class="col-12">
+                    <h5 class="text-center mb-5">Appointment {{app.id}}</h5>
+                  </div>
+                  <div class="col-4">
+                    <p class="card-text h6">Appointment date:</p>
+                    <p class="card-text h6">Appointment review:</p>
+                  </div>
+                  <div class="col-8">
+                    <p class="card-text">{{app.time_slot}}</p>
+                    <p class="card-text">{{app.review}}</p>
+                  </div>
+                    <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
                 </div>
               </div>
             </div>
