@@ -343,12 +343,12 @@ def viewDoctor(request, doctor_id):
             timeslot = timeslots[int(request.POST['appointment']) - 1]
             doctors.time_slots.remove(timeslot)
             appointment = Appointment(
-            patient = patient,
-            doctor = doctors,
-            status = 'Pending',
-            time_slot = timeslot,
-            review = 'None',
-            prescription = []
+                patient = patient,
+                doctor = doctors,
+                status = 'Pending',
+                time_slot = timeslot,
+                review = 'None',
+                prescription = []
             )
             appointment.save()
             doctors.save()
