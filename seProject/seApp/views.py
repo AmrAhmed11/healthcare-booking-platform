@@ -14,6 +14,7 @@ from django.contrib.auth import  authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import string
 from django.contrib.auth.models import Group
+from django.utils import timezone
 
 
 def loginpage (request):
@@ -55,7 +56,7 @@ def register (request):
                                                password=form.cleaned_data['password1'],
                                               )
                     login(request, new_patient)
-                    return redirect("")
+                    return redirect("seApp:test")
                 elif(user.role == 'doctor'):
                     group=Group.objects.get(name='doctor')
                     user.groups.add(group)
@@ -63,7 +64,7 @@ def register (request):
                                                password=form.cleaned_data['password1'],
                                               )
                     login(request, new_doctor)
-                    return redirect("/")
+                    return redirect("seApp:test")
                 elif(user.role == 'staff'):
                     group=Group.objects.get(name='staff')
                     user.groups.add(group)
@@ -71,7 +72,7 @@ def register (request):
                                                     password=form.cleaned_data['password1'],
                                                    )
                     login(request, new_staff_member)
-                    return redirect("/")
+                    return redirect("seApp:test")
 
     context ={ 'form' : form }
     return render(request, 'seApp/register.html',context)
@@ -94,7 +95,7 @@ def test(request):
     else:
         return redirect('seApp:loginpage')
 def appointmentManager(request):
-    doctor = Doctor.objects.get(id=1)
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
     app_list = doctor.appointment_set.all()
     context = {'app_list': app_list}
     return render(request, 'seApp/appointmentManager.html', context)
@@ -107,6 +108,8 @@ def appointment(request, app_id):
 def doctorPostPrescription(request, app_id):
     app = Appointment.objects.get(id=app_id)
     newMedication = request.POST['newMedication']
+    if(app.prescription == None):
+        app.prescription = []
     app.prescription.append(newMedication)
     app.save()
     return redirect('seApp:appointment', app_id=app_id)
@@ -120,7 +123,7 @@ def doctorDeletePrescription(request, app_id):
     
 
 def doctorGetPatients(request):    
-    doctor = Doctor.objects.get(id=1)
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
     app_list = doctor.appointment_set.all()
     patient_list = []
     for app in app_list:
@@ -154,7 +157,7 @@ def doctorTransferPatient(request, patient_id):
 
 #  MANAGING DOCTOR SERVICES 
 def servicesManager(request):
-    doctor = Doctor.objects.get(id=1)
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
     services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
@@ -162,7 +165,7 @@ def servicesManager(request):
 #  CHANGING DOCTOR FEES ACTION
 def changeFeeDoctor(request):
     fee = request.POST['fees']
-    doctor = Doctor.objects.get(id=1)
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
     doctor.fees = fee
     doctor.save()
     return redirect('seApp:servicesManager')
@@ -173,7 +176,7 @@ def changeMedicalDetailsDoctor(request):
     description = request.POST['description']
     specialization = request.POST['specialization']
     medicalId = request.POST['medicalId']
-    doctor = Doctor.objects.get(id=1)
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
     doctor.description = description
     doctor.specialization = specialization
     doctor.medical_id = medicalId
@@ -184,7 +187,7 @@ def changeMedicalDetailsDoctor(request):
 def deleteTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
     print(timeslot)
-    doctor = Doctor.objects.get(id=1)
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
     timeslotParsed = parse_datetime(timeslot) 
     doctor.time_slots.remove(timeslotParsed)
     doctor.save()
@@ -197,7 +200,9 @@ def addTimeslotDoctor(request):
     #checking if time is in the past
     if((parse_datetime(timeslot) - datetime.now()).total_seconds() < 0):
         return redirect('seApp:servicesManager')
-    doctor = Doctor.objects.get(id=1)
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    if(doctor.time_slots == None):
+        doctor.time_slots = []
     doctor.time_slots.append(timeslot)
     doctor.save()
     return redirect('seApp:servicesManager')
@@ -205,11 +210,11 @@ def addTimeslotDoctor(request):
 
 # RENDERDING DOCTOR STAFF MANAGER
 def staffManager(request):
-    staff_list = Staff.objects.filter(doctor=1)
-    user_list = UserProfile.objects.all()
+    staff_list = Staff.objects.filter(doctor=request.user.doctor.id)
+    user_list = Staff.objects.all()
     staffToBeAdded_list = []
     for user in user_list:
-        if not Patient.objects.filter(user=user.id) and not Doctor.objects.filter(user=user.id) and not Staff.objects.filter(user=user.id):
+        if user.doctor == None:
             staffToBeAdded_list.append(user)
     context = {'staff_list': staff_list,'staffToBeAdded_list': staffToBeAdded_list}
     return render(request, 'seApp/staffManager.html', context)
@@ -218,11 +223,9 @@ def staffManager(request):
 # ADDING NEW STAFF FOR DOCTOR ACTION 
 def addNewStaff(request):
     staff = request.POST['staff']
-    # staffObject = Staff.objects.get(user=staff)
-    staffObject = Staff()
-    staffObject.user = UserProfile.objects.get(id=staff)
-    staffObject.specialization = "nurse"
-    staffObject.doctor = Doctor.objects.get(id=1)
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    staffObject = Staff.objects.get(user_id=staff)
+    staffObject.doctor = doctor
     staffObject.save()
     return redirect('seApp:staffManager')
 
@@ -336,22 +339,30 @@ def cancel(request, app_id ) :
     
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
-    patient = Patient.objects.get(id=1)
+    timeslots = []
+    for timeslot in doctors.time_slots:
+        if((timeslot - timezone.now()).total_seconds() > 0):
+            timeslots.append(timeslot)
+    doctors.time_slots = timeslots
+    doctors.save()
     if request.method == 'POST':
-        timeslots = Doctor.objects.get(id=doctor_id).time_slots
-        timeslot = timeslots[int(request.POST['appointment']) - 1]
-        doctors.time_slots.remove(timeslot)
-        appointment = Appointment(
+        if request.user.is_authenticated:
+            patient = Patient.objects.get(id=request.user.patient.id)
+            timeslots = doctors.time_slots
+            timeslot = timeslots[int(request.POST['appointment']) - 1]
+            doctors.time_slots.remove(timeslot)
+            appointment = Appointment(
                 patient = patient,
                 doctor = doctors,
                 status = 'Pending',
                 time_slot = timeslot,
                 review = 'None',
                 prescription = []
-        )
-        if appointment.is_valid:
+            )
             appointment.save()
             doctors.save()
+        else:
+            return render(request, 'seApp/login.html')
     context = {'doctors':doctors,}
     return render(request, 'seApp/viewDoctor.html', context)
 
