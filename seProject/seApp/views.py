@@ -6,7 +6,7 @@ import pytz
 from datetime import datetime
 from django.http import HttpResponse
 from .models import *
-from .forms import PrescriptionForm, CreatePatientForm, CreateDoctorForm, CreateStaffForm
+from .forms import PrescriptionForm, CreateUserForm
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import  UserCreationForm
 from django.contrib import messages
@@ -14,7 +14,6 @@ from django.contrib.auth import  authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import string
 from django.contrib.auth.models import Group
-
 
 
 def loginpage (request):
@@ -34,62 +33,59 @@ def loginpage (request):
     return render(request, 'seApp/login.html')
 
 
-def logoutuser (request):
+def logout_path (request):
     logout(request)
-    return redirect ('seApp:loginpage')
+    return redirect ('seApp:home')
 
 #patient_registration
 def register (request):
     if request.user.is_authenticated:
         return redirect('/')
     else:
-        form =  CreatePatientForm()
+        form =  CreateUserForm()
         
         if request.method == 'POST':
-            form = CreatePatientForm(request.POST)
+            form = CreateUserForm(request.POST)
             if form.is_valid():
                 user=form.save()
-                group=Group.objects.get(name='patient')
-                user.groups.add(group)
-                messages.success(request,'Account is created successfully')
-                return redirect('loginpage')
+                if(user.role == 'patient'):
+                    group=Group.objects.get(name='patient')
+                    user.groups.add(group)
+                    new_patient = authenticate(username=form.cleaned_data['username'], 
+                                               password=form.cleaned_data['password1'],
+                                              )
+                    login(request, new_patient)
+                    return redirect("/")
+                elif(user.role == 'doctor'):
+                    group=Group.objects.get(name='doctor')
+                    user.groups.add(group)
+                    new_doctor = authenticate(username=form.cleaned_data['username'], 
+                                               password=form.cleaned_data['password1'],
+                                              )
+                    login(request, new_doctor)
+                    return redirect("/")
+                elif(user.role == 'staff'):
+                    group=Group.objects.get(name='staff')
+                    user.groups.add(group)
+                    new_staff_member = authenticate(username=form.cleaned_data['username'], 
+                                                    password=form.cleaned_data['password1'],
+                                                   )
+                    login(request, new_staff_member)
+                    return redirect("/")
+
     context ={ 'form' : form }
     return render(request, 'seApp/register.html',context)
 
-#Doctor_registration
-def registerdoctor (request):
-    if request.user.is_authenticated:
-        return redirect('seApp:home')
-    else:
-        form =CreateDoctorForm()
-        if request.method == 'POST':
-            form =CreateDoctorForm(request.POST)
-            if form.is_valid():
-                user=form.save()
-                group=Group.objects.get(name='doctor')
-                user.groups.add(group)
-                messages.success(request,'Account is created successfully')
-                return redirect('seApp:loginpage')
-    context ={ 'form' : form }
-    return render(request, 'seApp/registerdoctor.html',context)
-#Staff_registration
-def registerstaff (request):
-    if request.user.is_authenticated:
-        return redirect('seApp:home')
-    else:
-        form =CreateStaffForm()
-        if request.method == 'POST':
-            form =CreateStaffForm(request.POST)
-            if form.is_valid():
-                user=form.save()
-                messages.success(request,'Account is created successfully')
-                return redirect('seApp:loginpage')
-    context ={ 'form' : form }
-    return render(request, 'seApp/registerstaff.html',context)
-
-
 
 def index(request):
+    if request.user.is_authenticated:
+        role = request.user.role
+        if(role == 'patient'):
+            return redirect('/')
+        elif(role == 'doctor'):
+            return redirect('seApp:test')
+        elif(role == 'staff'):
+            return redirect('/')
     return render(request, 'seApp/index.html')
 
 def test(request):

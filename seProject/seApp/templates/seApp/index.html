@@ -30,15 +30,7 @@
           <div class="mobile-menu">
             <ul class="m-menu"> 
               <li><a href="#">Log in</a></li>
-              <li>
-                <a href="#">Register</a>
-                <ul class="mobile-submenu red">
-                  <li><a href="#">I am a Doctor</a></li>
-                  <li><a href="#">I am a Patient</a></li>
-                  <li><a href="#">I am a Nurse</a></li>
-                  <li><a href="#">I am a Lab Specialist</a></li>
-                </ul>
-              </li>
+              <li><a href="#">Register</a></li>
             </ul>
           </div>
         </div>
@@ -60,20 +52,14 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="header-cart-ticket-option pull-right">
+              <!-- <ul class="header-cart-ticket-option pull-right">
                 <li><a href="ticket.html" class="menu-button">Log in</a></li>
+              </ul> -->
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url 'seApp:loginpage' %}" class="menu-button">Log in</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-      
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Register<span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="product.html">I am a Doctor</a></li>
-                    <li><a href="product-details.html">I am a Patient</a></li>
-                    <li><a href="product-details.html">I am a Nurse</a></li>
-                    <li><a href="product-details.html">I am a Lab Specialist</a></li>
-                  </ul>
-                </li>
+                <li><a href="{% url 'seApp:register' %}" class="menu-button">Register</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container -->
