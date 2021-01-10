@@ -256,10 +256,26 @@ def appointmentView(request, app_id):
     if appointment.status == 'Pending':
         
        if request.method == 'POST':
-           appointment.status = "Cancelled"
-           appointment.save()
-           return render(request, 'seApp/appointmentcancelled.html', context)  
+           if 'cancel' in request.POST:
+              appointment.status = "Cancelled"
+              appointment.save()
+              return render(request, 'seApp/appointmentcancelled.html', context)  
 
+           if 'edit' in request.POST:
+              appointment.status = "Cancelled"
+              appointment.save()
+              appointmentnew = Appointment(
+                       patient = appointment.patient,
+                       doctor = appointment.doctor,
+                       status = 'Pending',
+                       time_slot = request.POST.get('time'),
+                       review = 'None',
+                       prescription = []
+              )
+              appointmentnew.save()
+              return render(request, 'seApp/appointmentcancelled.html', context)  
+             
+        
 
        return render(request, 'seApp/appointmentpending.html', context) 
 

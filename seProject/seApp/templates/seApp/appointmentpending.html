@@ -37,20 +37,21 @@
                 <h5 class="card-text " style="color :orange;"> {{appointment.status}}</h5>
                 <div class="text-center">
                   
-                 <th><a href="#" class="btn btn-primary " style="margin-right: 20px;">Edit</a>
+                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#example" style="margin-right:50px ;">
+                    Edit
+                  </button>
                
                  <!--<th><a href="cancel/{{appointment.id}}" class="btn btn-outline-danger btn-md" style="margin-left: 20px;">Cancel</a></th> -->
                  <!-- Button trigger modal -->
-                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModel">
                   Cancel
-                </button>
+               </button>
                 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 <div class="modal fade" id="exampleModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel appointment {{appointment.doctor.specialization}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel appointment {{appointment.doctor.specialization}}?</h5>
                         <button type="button" class="close" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -61,11 +62,41 @@
                       <div class="modal-footer">
                         <form action="/user/appointmentview/{{appointment.id}}" method="POST" class="text-center">
                           {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger btn-md mt-3">Ok</button>
-                            <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-top : 18px; margin-left: 40px;">Cancel</a>
+                            <button type="submit" class="btn btn-outline-danger btn-md mt-3" name="cancel">Yes</button>
+                            <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-top : 16px; margin-left: 10px;">Cancel</a>
                           </div>
                         </form>
                       </div>
+                    </div>
+                  </div>
+                </div> 
+                <!-- Modal -->
+                <div class="modal fade" id="example" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Choose another appointment</h5>
+                        <button type="button" class="close" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/user/appointmentview/{{appointment.id}}" method="POST" >
+                          {% csrf_token %}
+                          <select name="appointment" id="panel" class="form-control custom-select">
+                            <option selected disabled>Choose Appointment</option>
+                              
+                          {% for timeSlot in appointment.doctor.time_slots %}
+                              <option value="time">{{timeSlot}}</option>
+                          {% endfor %}
+                          </select>
+                          <button type="submit" id="book" class="mt-2 btn btn-outline-success" style="margin-left:220px" name="edit">Replace</button>
+                          <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary " style="margin-left: 10px; margin-top: 8px;">Cancel</a>
+                          
+                          
+                      </form>
+                      </div>
+                      
                     </div>
                   </div>
                 </div>
