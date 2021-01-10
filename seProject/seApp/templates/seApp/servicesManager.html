@@ -1,10 +1,10 @@
 {%  extends 'seApp/main.html' %}
 {%block content%}
-
+<div class="col-12">
 <main>
 
   {% if services_list.clinic == None %}
-  <div class="bg-light py-2 mt-5 mb-5 ">
+  <div class="bg-light py-2 mb-5 ">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
    
@@ -40,7 +40,7 @@
 
   
 {% else %}
-  <div class="bg-light py-2 mt-5 mb-5 ">
+  <div class="bg-light py-2 mb-5 ">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
    
@@ -196,7 +196,7 @@
  
 </main>
 
-
+</div>
 
 <script>
   const doctorSpecialization = document.getElementById('newSpecialization')

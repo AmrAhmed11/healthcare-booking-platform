@@ -1,6 +1,8 @@
 {%  extends 'seApp/main.html' %}
 {%block content%}
+<div class="col">
 <main>
+  
   <section class="py-5 text-center container ">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto mt-4 pt-2">
@@ -20,6 +22,9 @@
 
 
   <div class="bg-light py-5 ">
+    <div class="text-center">
+    <h4>Doctors</h4>
+    </div>
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% if doctor_list %}
@@ -35,7 +40,7 @@
                 <p class="card-text">Doctor gender: {{doctor.user.gender}}</p>
                 <p class="card-text">Doctor birth date: {{doctor.user.birth_date}}</p>
                 <div class="text-center">
-                  <form action="{% url 'seApp:addNewDoctor' %}" method="post">
+                  <form action="{% url 'seApp:removeDoctor' %}" method="post">
                     {% csrf_token %}
                         
                       <input type="hidden" name="doctor" value="{{doctor.user.id}}">                
@@ -54,7 +59,6 @@
       </div>
     </div>
   </div>
-
   <div class="bg-light py-5 ">
     <div class="container">
       
@@ -90,7 +94,49 @@
 
   {% endif %}
 
+  
   <div class="bg-light py-5 ">
+    <div class="text-center">
+    <h4>Nurses and Lab Specialists</h4>
+    </div>
+    
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% if staff_list %}
+        {% for staff in staff_list %}
+        <div class="col-12 col-md-12 col-lg-6">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <h5 class="text-center mb-5">{{staff.user.first_name}} {{staff.user.last_name}} </h5>
+                <p class="card-text">Staff id: {{staff.id}}</p>
+                <p class="card-text">Staff specialization: {{staff.specialization|title}}</p>
+                <p class="card-text">Staff phone: {{staff.user.phone}}</p>
+                <p class="card-text">Staff email: {{staff.user.email}}</p>
+                <p class="card-text">Staff gender: {{staff.user.gender}}</p>
+                <p class="card-text">Staff birth date: {{staff.user.birth_date}}</p>
+                <div class="text-center">
+                  <form action="{% url 'seApp:removeStaff' %}" method="post">
+                    {% csrf_token %}
+                        
+                      <input type="hidden" name="staff" value="{{staff.user.id}}">                
+                      <button class="btn btn-outline-danger btn-md">Remove</button>
+  
+                      
+                        </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>No Staff available</p>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-light py-5 ">
+    
     <div class="container">
       
         <div class="col-12">
@@ -124,5 +170,5 @@
   </div>
 
 </main>
-
+</div>
 {%endblock%}
