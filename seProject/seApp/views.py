@@ -6,7 +6,7 @@ import pytz
 from datetime import datetime
 from django.http import HttpResponse
 from .models import *
-from .forms import CreateUserForm
+from .forms import PrescriptionForm, CreatePatientForm, CreateDoctorForm, CreateStaffForm
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import  UserCreationForm
 from django.contrib import messages
@@ -38,18 +38,17 @@ def logoutuser (request):
     logout(request)
     return redirect ('seApp:loginpage')
 
-
+#patient_registration
 def register (request):
     if request.user.is_authenticated:
         return redirect('/')
     else:
-        form = CreateUserForm()
+        form =  CreatePatientForm()
         
         if request.method == 'POST':
-            form =CreateUserForm(request.POST)
+            form = CreatePatientForm(request.POST)
             if form.is_valid():
-                form.save()
-               
+                user=form.save()
                 group=Group.objects.get(name='patient')
                 user.groups.add(group)
                 messages.success(request,'Account is created successfully')
@@ -57,27 +56,42 @@ def register (request):
     context ={ 'form' : form }
     return render(request, 'seApp/register.html',context)
 
-
+#Doctor_registration
 def registerdoctor (request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('seApp:home')
     else:
-        form =CreateUserForm()
+        form =CreateDoctorForm()
         if request.method == 'POST':
-            form =CreateUserForm(request.POST)
+            form =CreateDoctorForm(request.POST)
             if form.is_valid():
-                form.save()
+                user=form.save()
                 group=Group.objects.get(name='doctor')
                 user.groups.add(group)
                 messages.success(request,'Account is created successfully')
-                return redirect('loginpage')
+                return redirect('seApp:loginpage')
     context ={ 'form' : form }
     return render(request, 'seApp/registerdoctor.html',context)
+#Staff_registration
+def registerstaff (request):
+    if request.user.is_authenticated:
+        return redirect('seApp:home')
+    else:
+        form =CreateStaffForm()
+        if request.method == 'POST':
+            form =CreateStaffForm(request.POST)
+            if form.is_valid():
+                user=form.save()
+                messages.success(request,'Account is created successfully')
+                return redirect('seApp:loginpage')
+    context ={ 'form' : form }
+    return render(request, 'seApp/registerstaff.html',context)
 
 
 
 def index(request):
     return render(request, 'seApp/index.html')
+
 def test(request):
     return render(request, 'seApp/test.html')
 
@@ -194,7 +208,7 @@ def addTimeslotDoctor(request):
 # RENDERDING DOCTOR STAFF MANAGER
 def staffManager(request):
     staff_list = Staff.objects.filter(doctor=1)
-    user_list = User.objects.all()
+    user_list = UserProfile.objects.all()
     staffToBeAdded_list = []
     for user in user_list:
         if not Patient.objects.filter(user=user.id) and not Doctor.objects.filter(user=user.id) and not Staff.objects.filter(user=user.id):
@@ -208,7 +222,7 @@ def addNewStaff(request):
     staff = request.POST['staff']
     # staffObject = Staff.objects.get(user=staff)
     staffObject = Staff()
-    staffObject.user = User.objects.get(id=staff)
+    staffObject.user = UserProfile.objects.get(id=staff)
     staffObject.specialization = "nurse"
     staffObject.doctor = Doctor.objects.get(id=1)
     staffObject.save()
@@ -248,7 +262,14 @@ def appointmentView(request, app_id):
 
     context = {'appointment': appointment}
     if appointment.status == 'Pending':
-       return render(request, 'seApp/appointmentpending.html', context)  
+        
+       if request.method == 'POST':
+           appointment.status = "Cancelled"
+           appointment.save()
+           return render(request, 'seApp/appointmentcancelled.html', context)  
+
+
+       return render(request, 'seApp/appointmentpending.html', context) 
 
     if appointment.status == 'Done':
        return render(request, 'seApp/appointmentdone.html', context)  
@@ -266,28 +287,56 @@ def viewprescription(request, app_id ) :
 
 def review(request, app_id ) :
     form = ReviewForm()
+    formrate = RateForm()
     app = Appointment.objects.get(id=app_id)
     form = ReviewForm(instance=app)
+    formrate = RateForm(instance=app.doctor)
 
     if request.method == 'POST':
-        form = ReviewForm(request.POST, instance=app)   
+        form = ReviewForm(request.POST, instance=app)  
+        formrate = RateForm(request.POST, instance=app.doctor)     
         if form.is_valid():
             form.save()
+            #return redirect('appointmentView')
 
-    context = {'app': app, 'form': form }
-    return render(request, 'seApp/review.html', context)          
+        if formrate.is_valid():
+            formrate.save()
+            #return redirect('appointmentView')
+       
 
+   
+    context = {'app': app, 'form': form, 'formrate': formrate}
+    return render(request, 'seApp/review.html', context)     
 
-def viewDoctor(request, doctor_id, patient_id):
-    doctors = Doctor.objects.get(id=doctor_id)
-    user = Patient.objects.get(id=patient_id)
-    chooseAppointment = chooseAppointmentForm(instance = user)
-    if request.method == 'POST':
-        chooseAppointment = chooseAppointmentForm(request.POST,instance = user)
-        if chooseAppointment.is_valid():
-            form.save()
-            return redirect('')
-    context = {'doctors':doctors,'chooseAppointment':chooseAppointment,'user':user}
-    return render(request, 'seApp/viewDoctor.html', context)
+def cancel(request, app_id ) :
+    app = Appointment.objects.get(id=app_id)
+ 
     
+    if request.method == 'POST':
+        app.status = "Cancelled"
+        app.save()
 
+    context = {'app': app}
+    return render(request, 'seApp/cancel.html', context)
+    
+def viewDoctor(request, doctor_id):
+    doctors = Doctor.objects.get(id = 3)
+    patient = Patient.objects.get(id = 2)
+    if request.method == 'POST':
+        timeslots = Doctor.objects.get(id = doctor_id).time_slots
+        appointment = Appointment(
+                patient = patient,
+                doctor = doctors,
+                status = 'Pending',
+                time_slot = timeslots[int(request.POST['appointment']) - 1],
+                review = 'None',
+                prescription = []
+        )
+        appointment.save()
+    context = {'doctors':doctors,}
+    return render(request, 'seApp/viewDoctor.html', context)
+
+def editappointment (request, app_id):    
+  
+    context = {}
+    return render(request, 'seApp/editappointment.html', context)     

@@ -34,18 +34,22 @@ urlpatterns = [
     path('doctor/removeStaff', views.removeStaff, name='removeStaff'),
     path('doctor/addTimeslot', views.addTimeslotDoctor, name='addTimeslotDoctor'),
     path('doctor/changeMedicalDetails', views.changeMedicalDetailsDoctor, name='changeMedicalDetailsDoctor'),
+    path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
 
     
     
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
     path('user/appointment/<int:user_id>', views.appointmentUser, name='appointmentUser'),
     path('user/appointmentview/<int:app_id>', views.appointmentView, name='appointmentView'),
-    path('user/viewprescription/<int:app_id>', views.viewprescription, name='viewprescription'),
-    path('user/review/<int:app_id>', views.review, name='review'),
+    path('user/appointmentview/viewprescription/<int:app_id>', views.viewprescription, name='viewprescription'),
+    path('user/appointmentview/review/<int:app_id>', views.review, name='review'),
     path('user/browse',views.browse,name='browse'),
+
+
     path('logout/',views.logoutuser,name="logout"),
     path('login/',views.loginpage,name="loginpage"),
     path('register/',views.register,name="register"),
     path('registerdoctor/',views.registerdoctor,name="register_doctor"),
+    path('registerstaff/',views.registerstaff,name="register_staff"),
     path('user/view-doctor/<int:doctor_id>', views.viewDoctor, name='viewDoctor'),
 ]

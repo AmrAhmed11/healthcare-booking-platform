@@ -95,7 +95,14 @@
         font-weight: 600;
         color: #0062cc;
     }
-</style></head>
+    #panel {
+  display: none;
+}
+#book {
+  display: none;
+}
+</style>
+</head>
 
 
 {%  extends 'seApp/main.html' %}
@@ -103,7 +110,6 @@
 <br>
 <body>
     <div class="container emp-profile">
-        <form method="post">
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-img">
@@ -167,7 +173,7 @@
                                             <label>Name</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <p>{{doctors.user.name}}</p>
+                                            <p>{{doctors.user}}</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -197,41 +203,13 @@
                                     <br>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-                                                Choose Appointment
-                                            </button>
+                                           
                                             
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Choose Appointment</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                    <form method="POST" action="">
-                                                    {% csrf_token %}
-                                                    {% for timeSlot in doctors.time_slots %}
-                                                        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                                        <label for="vehicle1"> {{timeSlot}}</label><br>
-                                                    {% endfor %}
-                                                    </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Book Appointment</button>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                         </div>
-                        <!-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label>Experience</label>
@@ -277,13 +255,38 @@
                                     <label>Your Bio</label><br/>
                                     <p>Your detail description</p>
                                 </div>
-                            </div> -->
-                        <!-- </div> -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </form>           
+            
+            <div class="text-center">
+                <button onclick="myFunction()" class="btn btn-info">Choose Appointment</button>
+            </div>
+
+            <div class="mt-5 row">
+                <div class="mx-auto col-lg-6">
+                    <form action="/user/view-doctor/{{doctors.id}}" method="POST">
+                        {% csrf_token %}
+                        <select name="appointment" id="panel" class="form-control custom-select">
+                            <option selected disabled>Choose Appointment</option>
+                        {% for timeSlot in doctors.time_slots %}
+                            <option value="{{forloop.counter}}">{{timeSlot}}</option>
+                        {% endfor %}
+                        </select>
+                        <button type="submit" id="book" class="mt-2 float-right btn btn-success">Book</button>
+                    </form>
+                </div>
+        </div>
+
     </div>
 
 </body>
+<script>
+    function myFunction() {
+      document.getElementById("panel").style.display = "block";
+      document.getElementById("book").style.display = "block";
+    }
+    </script>
 {% endblock %}
