@@ -6,7 +6,7 @@ import pytz
 from datetime import datetime
 from django.http import HttpResponse
 from .models import *
-from .forms import PrescriptionForm, CreatePatientForm, CreateDoctorForm, CreateStaffForm
+from .forms import CreatePatientForm, CreateDoctorForm, CreateStaffForm
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import  UserCreationForm
 from django.contrib import messages
