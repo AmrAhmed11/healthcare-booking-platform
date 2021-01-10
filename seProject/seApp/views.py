@@ -248,11 +248,12 @@ def browse(request):
 
 def appointmentUser(request, user_id):
     patient = Patient.objects.get(id=user_id)
+    app_all= patient.appointment_set.all()
     app_pending =patient.appointment_set.filter(status="Pending")
     app_done = patient.appointment_set.filter(status="Done")
     app_cancelled = patient.appointment_set.filter(status="Cancelled")
 
-    context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled}
+    context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled,'app_all':app_all}
 
     return render(request, 'seApp/appointmentUser.html', context)    
 

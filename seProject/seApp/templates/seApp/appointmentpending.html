@@ -59,7 +59,7 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                        <form action="/user/view-doctor/{{doctors.id}}" method="POST">
+                        <form action="/user/appointmentview/{{appointment.id}}" method="POST">
                           {% csrf_token %}
                           <select name="appointment" id="panel" class="form-control custom-select">
                           {% for timeSlot in appointment.doctor.time_slots %}
