@@ -169,6 +169,7 @@ def createNewClinic(request):
     address = request.POST['clinicAddress']
     clinic = Clinic()
     clinic.name = name
+    clinic.owner_id = request.user.id
     clinic.address = address
     clinic.rating = 0
     clinic.save()
@@ -198,7 +199,6 @@ def changeMedicalDetailsDoctor(request):
 # DELETE TIMESLOTS FOR DOCTOR ACTION
 def deleteTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
-    print(timeslot)
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     timeslotParsed = parse_datetime(timeslot) 
     doctor.time_slots.remove(timeslotParsed)
@@ -225,10 +225,28 @@ def staffManager(request):
     staff_list = Staff.objects.filter(doctor=request.user.doctor.id)
     user_list = Staff.objects.all()
     staffToBeAdded_list = []
+    doctor_list = []
+    doctor_new_list = []
+    clinicOwner = 0
+    clinicId = 0
+    clinic = request.user.doctor.clinic 
+    if clinic.owner_id == request.user.id:
+        clinicId = clinic.id
+        clinicOwner = 1
+        doctors = Doctor.objects.all()
+        for doctor in doctors:
+            if doctor.clinic.id == clinic.id:
+                doctor_list.append(doctor)
+            elif doctor.clinic == None:
+                doctor_new_list.append(doctor)
+    
+    
     for user in user_list:
         if user.doctor == None:
             staffToBeAdded_list.append(user)
-    context = {'staff_list': staff_list,'staffToBeAdded_list': staffToBeAdded_list}
+
+    
+    context = {'staff_list': staff_list,'staffToBeAdded_list': staffToBeAdded_list, 'doctor_list': doctor_list, 'doctor_new_list':doctor_new_list,'clinicOwner':clinicOwner,'clinicId':clinicId}
     return render(request, 'seApp/staffManager.html', context)
 
 
@@ -249,6 +267,27 @@ def removeStaff(request):
     staffObject.delete()
     return redirect('seApp:staffManager')
 
+
+
+
+# ADDING NEW DOCTOR FOR DOCTOR ACTION 
+def addNewDoctor(request):
+    doctor = request.POST['doctor']
+    clinic = request.POST['clinic']
+    clinicObj = Clinic.objects.get(id=clinic)
+    doctorObject = Doctor.objects.get(user_id=doctor)
+    doctorObject.clinic = clinicObj
+    doctorObject.save()
+    return redirect('seApp:staffManager')
+
+
+#REMOVING DOCTOR FROM CLINIC ACTION
+def removeDoctor(request):
+    doctor = request.POST['doctor']
+    doctorObject = Doctor.objects.get(user=doctor)
+    doctorObject.clinic = ''
+    doctorObject.save()
+    return redirect('seApp:staffManager')
 
 # ///////////////////////////////////////////////////////////////////////////////////////////
 
