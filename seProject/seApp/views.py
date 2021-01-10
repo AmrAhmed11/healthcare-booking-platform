@@ -14,6 +14,7 @@ from django.contrib.auth import  authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import string
 from django.contrib.auth.models import Group
+from django.utils import timezone
 
 
 def loginpage (request):
@@ -336,6 +337,12 @@ def cancel(request, app_id ) :
     
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
+    timeslots = []
+    for timeslot in doctors.time_slots:
+        if((timeslot - timezone.now()).total_seconds() > 0):
+            timeslots.append(timeslot)
+    doctors.time_slots = timeslots
+    doctors.save()
     if request.method == 'POST':
         if request.user.is_authenticated:
             patient = Patient.objects.get(id=request.user.patient.id)
