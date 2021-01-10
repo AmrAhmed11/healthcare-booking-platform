@@ -4,10 +4,6 @@ from django.contrib.auth.forms import  UserCreationForm
 from django import forms
 from django.db import transaction
 
-class PrescriptionForm(ModelForm):
-    class Meta:
-        model = Appointment
-        fields = ('prescription',)
 
 class DateInput(forms.DateInput):
     input_type='Date'
@@ -42,7 +38,3 @@ class RateForm(ModelForm):
         model = Doctor
         fields = ['rating',]
        
-class chooseAppointmentForm(ModelForm):
-    class Meta:
-        model = Doctor
-        fields =['time_slots',]
