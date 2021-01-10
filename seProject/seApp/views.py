@@ -88,17 +88,24 @@ def appointmentManager(request):
     return render(request, 'seApp/appointmentManager.html', context)
 
 def appointment(request, app_id):
-    form = PrescriptionForm()
     app = Appointment.objects.get(id=app_id)
-    form = PrescriptionForm(instance=app)
-
-    if request.method == 'POST':
-        form = PrescriptionForm(request.POST, instance=app)        
-        if form.is_valid():
-            form.save()
-
-    context = {'app': app, 'doctor': app.doctor, 'patient': app.patient, 'form': form}
+    context = {'app': app, 'doctor': app.doctor, 'patient': app.patient}
     return render(request, 'seApp/appointment.html', context)
+
+def doctorPostPrescription(request, app_id):
+    app = Appointment.objects.get(id=app_id)
+    newMedication = request.POST['newMedication']
+    app.prescription.append(newMedication)
+    app.save()
+    return redirect('seApp:appointment', app_id=app_id)
+
+def doctorDeletePrescription(request, app_id):
+    app = Appointment.objects.get(id=app_id)
+    deletedMedication = request.POST['deletedMedication']
+    app.prescription.remove(deletedMedication)
+    app.save()
+    return redirect('seApp:appointment', app_id=app_id)
+    
 
 def doctorGetPatients(request):    
     doctor = Doctor.objects.get(id=1)
@@ -128,6 +135,8 @@ def doctorTransferPatient(request, patient_id):
         return redirect('seApp:patients')
     context = {'patient': patient, 'doctors': doctors}
     return render(request, 'seApp/patientsTransfer.html', context)
+
+
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 
 
