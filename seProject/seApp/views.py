@@ -336,11 +336,12 @@ def cancel(request, app_id ) :
     
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
-    patient = Patient.objects.get(id=1)
     if request.method == 'POST':
-        timeslots = Doctor.objects.get(id=doctor_id).time_slots
-        timeslot = timeslots[int(request.POST['appointment']) - 1]
-        doctors.time_slots.remove(timeslot)
+       if request.user.is_authenticated:
+            patient = Patient.objects.get(id=request.user.patient.id)
+            timeslots = doctors.time_slots
+            timeslot = timeslots[int(request.POST['appointment']) - 1]
+            doctors.time_slots.remove(timeslot)
         appointment = Appointment(
                 patient = patient,
                 doctor = doctors,
@@ -349,9 +350,10 @@ def viewDoctor(request, doctor_id):
                 review = 'None',
                 prescription = []
         )
-        if appointment.is_valid:
-            appointment.save()
-            doctors.save()
+        appointment.save()
+        doctors.save()
+        else:
+        return render(request, 'seApp/login.html')
     context = {'doctors':doctors,}
     return render(request, 'seApp/viewDoctor.html', context)
 
