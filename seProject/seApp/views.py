@@ -307,8 +307,8 @@ def cancel(request, app_id ) :
     return render(request, 'seApp/cancel.html', context)
     
 def viewDoctor(request, doctor_id):
-    doctors = Doctor.objects.get(id = 3)
-    patient = Patient.objects.get(id = 2)
+    doctors = Doctor.objects.get(id = doctor_id)
+    patient = Patient.objects.get(id = 1)
     if request.method == 'POST':
         appointment = Appointment(
                 patient = patient,
