@@ -350,10 +350,10 @@ def viewDoctor(request, doctor_id):
                 review = 'None',
                 prescription = []
             )
-        appointment.save()
-        doctors.save()
+            appointment.save()
+            doctors.save()
         else:
-        return render(request, 'seApp/login.html')
+            return render(request, 'seApp/login.html')
     context = {'doctors':doctors,}
     return render(request, 'seApp/viewDoctor.html', context)
 
