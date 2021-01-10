@@ -107,6 +107,8 @@ def appointment(request, app_id):
 def doctorPostPrescription(request, app_id):
     app = Appointment.objects.get(id=app_id)
     newMedication = request.POST['newMedication']
+    if(app.prescription == None):
+        app.prescription = []
     app.prescription.append(newMedication)
     app.save()
     return redirect('seApp:appointment', app_id=app_id)
@@ -198,6 +200,8 @@ def addTimeslotDoctor(request):
     if((parse_datetime(timeslot) - datetime.now()).total_seconds() < 0):
         return redirect('seApp:servicesManager')
     doctor = Doctor.objects.get(id=request.user.doctor.id)
+    if(doctor.time_slots == None):
+        doctor.time_slots = []
     doctor.time_slots.append(timeslot)
     doctor.save()
     return redirect('seApp:servicesManager')
@@ -206,10 +210,10 @@ def addTimeslotDoctor(request):
 # RENDERDING DOCTOR STAFF MANAGER
 def staffManager(request):
     staff_list = Staff.objects.filter(doctor=request.user.doctor.id)
-    user_list = UserProfile.objects.all()
+    user_list = Staff.objects.all()
     staffToBeAdded_list = []
     for user in user_list:
-        if not Patient.objects.filter(user=user.id) and not Doctor.objects.filter(user=user.id) and not Staff.objects.filter(user=user.id):
+        if user.doctor == None:
             staffToBeAdded_list.append(user)
     context = {'staff_list': staff_list,'staffToBeAdded_list': staffToBeAdded_list}
     return render(request, 'seApp/staffManager.html', context)
@@ -218,11 +222,9 @@ def staffManager(request):
 # ADDING NEW STAFF FOR DOCTOR ACTION 
 def addNewStaff(request):
     staff = request.POST['staff']
-    # staffObject = Staff.objects.get(user=staff)
-    staffObject = Staff()
-    staffObject.user = UserProfile.objects.get(id=staff)
-    staffObject.specialization = "nurse"
-    staffObject.doctor = Doctor.objects.get(id=request.user.doctor.id)
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    staffObject = Staff.objects.get(user_id=staff)
+    staffObject.doctor = doctor
     staffObject.save()
     return redirect('seApp:staffManager')
 
