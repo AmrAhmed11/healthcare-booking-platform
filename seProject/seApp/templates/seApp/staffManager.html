@@ -60,7 +60,7 @@
                          <select class="form-control" name="staff" id="staff">
                            <option disabled selected>Choose...</option>
                            {% for staffNew in staffToBeAdded_list %}
-                           <option value="{{staffNew.id}}">{{staffNew.email}}</option>
+                           <option value="{{staffNew.user.id}}">{{staffNew.user.email}}</option>
                            {% endfor %}
                          </select>
                       </div>
