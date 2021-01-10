@@ -55,7 +55,7 @@ def register (request):
                                                password=form.cleaned_data['password1'],
                                               )
                     login(request, new_patient)
-                    return redirect("/")
+                    return redirect("")
                 elif(user.role == 'doctor'):
                     group=Group.objects.get(name='doctor')
                     user.groups.add(group)
@@ -81,16 +81,18 @@ def index(request):
     if request.user.is_authenticated:
         role = request.user.role
         if(role == 'patient'):
-            return redirect('/')
+            return redirect('seApp:test')
         elif(role == 'doctor'):
             return redirect('seApp:test')
         elif(role == 'staff'):
-            return redirect('/')
+            return redirect('seApp:test')
     return render(request, 'seApp/index.html')
 
 def test(request):
-    return render(request, 'seApp/test.html')
-
+    if request.user.is_authenticated:
+        return render(request, 'seApp/test.html')
+    else:
+        return redirect('seApp:loginpage')
 def appointmentManager(request):
     doctor = Doctor.objects.get(id=1)
     app_list = doctor.appointment_set.all()

@@ -17,15 +17,15 @@ class UserProfile(AbstractUser):
     gender = models.CharField(max_length=200,null=True,choices=GENDER)
     role=models.CharField(max_length=200,null=True,choices=ROLES)
 
-    # def __str__(self):
-    #     return self.UserProfile.name
+    def __str__(self):
+        return self.first_name+' '+self.last_name
 
 
 class Patient(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     medical_history = ArrayField(models.CharField(max_length = 200, null = True), size = 1000, null= True)
     def __str__(self):
-        return self.user.username
+        return self.user.first_name + ' ' + self.user.last_name
 
 class Clinic(models.Model):
     name = models.CharField(max_length = 200, null = True)
@@ -46,7 +46,7 @@ class Doctor(models.Model):
     medical_id = models.CharField(max_length = 20, null = True)
     
     def __str__(self):
-        return self.user.username
+        return self.user.first_name + ' ' + self.user.last_name
 
 
 class Staff(models.Model):
@@ -55,10 +55,10 @@ class Staff(models.Model):
         ('lab_specialist','Lab Specialist')
         )
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE, null=True)
     specialization = models.CharField(max_length = 20, null= True, choices = specialization_choices)
     def __str__(self):
-        return self.user.username
+        return self.user.first_name + ' ' + self.user.last_name
 
 class Appointment(models.Model):
     STATUS = (
