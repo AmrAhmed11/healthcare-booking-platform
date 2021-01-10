@@ -37,10 +37,39 @@
                 <h5 class="card-text " style="color :orange;"> {{appointment.status}}</h5>
                 <div class="text-center">
                   
-                 <th><a href="#" class="btn btn-outline-primary btn-md" style="margin-right: 20px;">Edit</a>
+                 <th><a href="#" class="btn btn-primary " style="margin-right: 20px;">Edit</a>
                
-                 <th><a href="cancel/{{appointment.id}}" class="btn btn-outline-danger btn-md" style="margin-left: 20px;">Cancel</a></th> 
+                 <!--<th><a href="cancel/{{appointment.id}}" class="btn btn-outline-danger btn-md" style="margin-left: 20px;">Cancel</a></th> -->
+                 <!-- Button trigger modal -->
+                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                  Cancel
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel appointment {{appointment.doctor.specialization}}</h5>
+                        <button type="button" class="close" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                         An ammount of {{appointment.doctor.fees}} will be returned to you.
+                      </div>
+                      <div class="modal-footer">
+                        <form action="/user/appointmentview/{{appointment.id}}" method="POST" class="text-center">
+                          {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-md mt-3">Ok</button>
+                            <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-top : 18px; margin-left: 40px;">Cancel</a>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+               </div>
               </div>
             </div>
           </div>
