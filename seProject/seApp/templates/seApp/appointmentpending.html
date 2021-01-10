@@ -63,7 +63,7 @@
                           {% csrf_token %}
                           <select name="appointment" id="panel" class="form-control custom-select">
                           {% for timeSlot in appointment.doctor.time_slots %}
-                              <option value="time">{{timeSlot}}</option>
+                              <option value="{{timeSlot|date:"c"}}">{{timeSlot}}</option>
                           {% endfor %}
                           </select>
                           <button type="submit" id="book" class="mt-2 btn btn-outline-success " style="margin-left: 220px;" name="edit" >Replace</button>

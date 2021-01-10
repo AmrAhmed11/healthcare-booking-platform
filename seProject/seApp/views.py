@@ -277,7 +277,7 @@ def appointmentView(request, app_id):
                        patient = appointment.patient,
                        doctor = appointment.doctor,
                        status = 'Pending',
-                       time_slot = request.POST.get('time'),
+                       time_slot = request.POST['appointment'],
                        review = 'None',
                        prescription = []
               )
