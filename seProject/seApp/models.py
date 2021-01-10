@@ -58,7 +58,7 @@ class Staff(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
     specialization = models.CharField(max_length = 20, null= True, choices = specialization_choices)
     def __str__(self):
-        return self.user.name
+        return self.user.username
 
 class Appointment(models.Model):
     STATUS = (

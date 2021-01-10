@@ -303,7 +303,7 @@ def review(request, app_id ) :
 
 
 def viewDoctor(request, doctor_id):
-    doctors = Doctor.objects.get(id = 3)
+    doctors = Doctor.objects.get(id = doctor_id)
     patient = Patient.objects.get(id = 1)
     if request.method == 'POST':
         appointment = Appointment(
