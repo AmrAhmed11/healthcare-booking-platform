@@ -306,11 +306,12 @@ def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id = doctor_id)
     patient = Patient.objects.get(id = 1)
     if request.method == 'POST':
+        timeslots = Doctor.objects.get(id = doctor_id).time_slots
         appointment = Appointment(
                 patient = patient,
                 doctor = doctors,
                 status = 'Pending',
-                time_slot = request.POST.get('time'),
+                time_slot = timeslots[int(request.POST['appointment']) - 1],
                 review = 'None',
                 prescription = []
         )
