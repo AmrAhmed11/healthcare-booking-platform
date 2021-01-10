@@ -154,12 +154,24 @@ def doctorTransferPatient(request, patient_id):
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 
 
+
 #  MANAGING DOCTOR SERVICES 
 def servicesManager(request):
     doctor = Doctor.objects.get(id=request.user.doctor.id)
-    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization }
+    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization, 'clinic':doctor.clinic }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
+
+# CREATE NEW CLINIC ACTION
+def createNewClinic(request):
+    name = request.POST['clinicName']
+    address = request.POST['clinicAddress']
+    clinic = Clinic()
+    clinic.name = name
+    clinic.address = address
+    clinic.rating = 0
+    clinic.save()
+    return redirect('seApp:createNewClinic')
 
 #  CHANGING DOCTOR FEES ACTION
 def changeFeeDoctor(request):
