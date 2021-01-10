@@ -317,25 +317,25 @@ def viewprescription(request, app_id ) :
 
 def review(request, app_id ) :
     form = ReviewForm()
-    formrate = RateForm()
     app = Appointment.objects.get(id=app_id)
     form = ReviewForm(instance=app)
-    formrate = RateForm(instance=app.doctor)
+  
+
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=app)  
-        formrate = RateForm(request.POST, instance=app.doctor)     
+        app.doctor.rating = request.POST['rate']
+        app.doctor.save()
+            
         if form.is_valid():
             form.save()
-            #return redirect('appointmentView')
+         
 
-        if formrate.is_valid():
-            formrate.save()
-            #return redirect('appointmentView')
+        
        
 
    
-    context = {'app': app, 'form': form, 'formrate': formrate}
+    context = {'app': app, 'form': form}
     return render(request, 'seApp/review.html', context)     
 
 def cancel(request, app_id ) :
