@@ -353,7 +353,3 @@ def viewDoctor(request, doctor_id):
     context = {'doctors':doctors,}
     return render(request, 'seApp/viewDoctor.html', context)
 
-def editappointment (request, app_id):    
-  
-    context = {}
-    return render(request, 'seApp/editappointment.html', context)     
