@@ -33,10 +33,8 @@ class ReviewForm(ModelForm):
         model = Appointment 
         fields = ['review',]
 
-class RateForm(ModelForm):
-    class Meta:
-        model = Doctor
-        fields = ['rating',]
+
+
        
 class chooseAppointmentForm(ModelForm):
     class Meta:
