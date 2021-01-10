@@ -55,7 +55,7 @@ def register (request):
                                                password=form.cleaned_data['password1'],
                                               )
                     login(request, new_patient)
-                    return redirect("")
+                    return redirect("seApp:test")
                 elif(user.role == 'doctor'):
                     group=Group.objects.get(name='doctor')
                     user.groups.add(group)
@@ -63,7 +63,7 @@ def register (request):
                                                password=form.cleaned_data['password1'],
                                               )
                     login(request, new_doctor)
-                    return redirect("/")
+                    return redirect("seApp:test")
                 elif(user.role == 'staff'):
                     group=Group.objects.get(name='staff')
                     user.groups.add(group)
@@ -71,7 +71,7 @@ def register (request):
                                                     password=form.cleaned_data['password1'],
                                                    )
                     login(request, new_staff_member)
-                    return redirect("/")
+                    return redirect("seApp:test")
 
     context ={ 'form' : form }
     return render(request, 'seApp/register.html',context)
