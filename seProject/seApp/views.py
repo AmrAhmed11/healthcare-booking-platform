@@ -277,33 +277,35 @@ def review(request, app_id ) :
     formrate = RateForm(instance=app.doctor)
 
     if request.method == 'POST':
-        form = ReviewForm(request.POST, instance=app)   
+        form = ReviewForm(request.POST, instance=app)  
+        formrate = RateForm(request.POST, instance=app.doctor)     
         if form.is_valid():
             form.save()
             #return redirect('appointmentView')
-        
-    if request.method == 'GET':
-        formrate = RateForm(request.POST, instance=app.doctor)        
-        if id == "ch1":
-            formrate.save(rating = 1)    
 
-        if id == "ch2":
-            formrate.save(rating = 2)  
+        if formrate.is_valid():
+            formrate.save()
+            #return redirect('appointmentView')
+       
 
-        if id == "ch3":
-            formrate.save(rating = 3)  
-
-        if id == "ch4":
-            formrate.save(rating = 4)     
-
-        if id == "ch5":
-            formrate.save(rating = 5)               
-  
-
+   
     context = {'app': app, 'form': form, 'formrate': formrate}
-    return render(request, 'seApp/review.html', context)          
+    return render(request, 'seApp/review.html', context)     
 
+def cancel(request, app_id ) :
+    app = Appointment.objects.get(id=app_id)
+ 
+    
+    if request.method == 'POST':
+        app.status = "Cancelled"
+        app.save()
 
+        
+
+   
+    context = {'app': app}
+    return render(request, 'seApp/cancel.html', context)
+    
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id = 3)
     patient = Patient.objects.get(id = 2)

@@ -23,28 +23,16 @@
         <div class="col-12 col-md-12">
             <div class="card p-5 shadow-md">
               <div class="card-body">
-                <h2 class="text-center mb-5">Give Feedback</h2>
-                <h4 class="text-center">Rate your Doctor  </h4>
+                <h3 class="text-center mb-5">Are you sure you want to cancel appointment {{app.doctor.specialization}} ?</h3>
+                <h5 class="text-center">an ammount of {{app.doctor.fees}} L.E will be returned to you.</h5>
                 <br>
-                <form action="/user/appointmentview/review/{{app.id}}" method="POST" class="text-center">
+                <form action="/user/appointmentview/cancel/{{app.id}}" method="POST" class="text-center">
                   {% csrf_token %}
-                  <div class="form-group">
-                    {{ formrate.rating }}
-                  </div>
-                  <h5 class="card-text">Comment :</h5>
-                  <div class="form-group">
-                    {{ form.review }}
-                  </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-outline-primary btn-md mt-3">Submit</button>
+                    <button type="submit" class="btn btn-outline-danger btn-md mt-3">Ok</button>
+                    <a href="/user/appointmentview/{{app.id}}" class="btn btn-outline-primary btn-md" style="margin-top : 18px; margin-left: 40px;">Cancel</a>
                   </div>
                 </form>
-                <br>
-                <br>
                 
-                
-                <br>
-                 
               </div>
             </div>
           </div>
@@ -57,9 +45,5 @@
                
             
 </main>
-
-<footer class="blog-footer">
-    <br> <br>
-</footer>
 </body>
 {%endblock%}

@@ -30,14 +30,16 @@
                 <p class="card-text"> Doctor: {{appointment.doctor}}</p>
                 <p class="card-text"> Specilization: {{appointment.doctor.specialization}}</p>
                 <p class="card-text"> Clinic: {{appointment.doctor.clinic}}</p>
+                <p class="card-text"> Address: {{appointment.doctor.clinic.address}}</p>
                 <p class="card-text"> Description: {{appointment.doctor.description}}</p>
                 <p class="card-text"> Paid Fees: {{appointment.doctor.fees}}</p>
                 <br>
                 <h5 class="card-text " style="color :orange;"> {{appointment.status}}</h5>
                 <div class="text-center">
-                  <th><button type="submit" class="btn btn-outline-primary btn-md mt-3" style="margin-right: 20px;">Edit</button></th>
-                 
-                 <th><button type="submit" class="btn btn-outline-primary btn-md mt-3 text-center" style="margin-left: 20px;">Cancel</button></th> 
+                  
+                 <th><a href="#" class="btn btn-outline-primary btn-md" style="margin-right: 20px;">Edit</a>
+               
+                 <th><a href="cancel/{{appointment.id}}" class="btn btn-outline-danger btn-md" style="margin-left: 20px;">Cancel</a></th> 
                 </div>
               </div>
             </div>

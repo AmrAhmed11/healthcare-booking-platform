@@ -41,6 +41,7 @@ urlpatterns = [
     path('user/appointmentview/<int:app_id>', views.appointmentView, name='appointmentView'),
     path('user/appointmentview/viewprescription/<int:app_id>', views.viewprescription, name='viewprescription'),
     path('user/appointmentview/review/<int:app_id>', views.review, name='review'),
+    path('user/appointmentview/cancel/<int:app_id>', views.cancel, name='cancel'),
     path('user/browse',views.browse,name='browse'),
 
 
