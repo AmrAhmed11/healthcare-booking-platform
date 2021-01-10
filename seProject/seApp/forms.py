@@ -8,56 +8,25 @@ from django.db import transaction
 class DateInput(forms.DateInput):
     input_type='Date'
 
-class CreatePatientForm (UserCreationForm):
+class CreateUserForm (UserCreationForm):
     class Meta:
         model=UserProfile
-        fields=['username','email','password1','password2','gender','phone','birth_date']
+        fields=['first_name','last_name','username','email','password1','password2','gender','phone','birth_date','role']
         widgets = {
             'gender': forms.Select(attrs={'class': 'form-control'}),
-            'birth_date':DateInput()
+            'birth_date':DateInput(),
+            'role': forms.Select(attrs={'class': 'form-control'})
         }
     def save(self):
-        user = super().save(commit=False)
-        user.role = 'Patient'
+        user = super().save(commit=False)        
         user.save()
-        patient = Patient.objects.create(user=user)
+        if(user.role == 'patient'):
+            patient = Patient.objects.create(user=user)
+        elif(user.role == 'doctor'):
+            doctor = Doctor.objects.create(user=user)
+        elif(user.role == 'staff'):
+            staff = Staff.objects.create(user=user)
         return user
-
-
-class CreateDoctorForm (UserCreationForm):
-    class Meta:
-        model=UserProfile
-        fields=['username','email','password1','password2','gender','phone','birth_date']
-        widgets = {
-            'gender': forms.Select(attrs={'class': 'form-control'}),
-            'birth_date':DateInput()
-        }
-    def save(self):
-        user = super().save(commit=False)
-        user.role = 'Doctor'
-        user.save()
-        doctor = Doctor.objects.create(user=user)
-        return user
-
-        
-class CreateStaffForm (UserCreationForm):
-    class Meta:
-        model=UserProfile
-        fields=['username','email','password1','password2','gender','phone','birth_date']
-        widgets = {
-            'gender': forms.Select(attrs={'class': 'form-control'}),
-            'birth_date':DateInput()
-        }
-    def save(self):
-        user = super().save(commit=False)
-        user.role = 'Staff'
-        user.save()
-        staff = Staff.objects.create(user=user)
-        return user
-
-
-        model=User
-        fields=['username','email','password1','password2',]
 
 class ReviewForm(ModelForm):
     class Meta:
