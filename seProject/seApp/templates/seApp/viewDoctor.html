@@ -272,7 +272,7 @@
                         <select name="appointment" id="panel" class="form-control custom-select">
                             <option selected disabled>Choose Appointment</option>
                         {% for timeSlot in doctors.time_slots %}
-                            <option value="time">{{timeSlot}}</option>
+                            <option value="{{forloop.counter}}">{{timeSlot}}</option>
                         {% endfor %}
                         </select>
                         <button type="submit" id="book" class="mt-2 float-right btn btn-success">Book</button>
