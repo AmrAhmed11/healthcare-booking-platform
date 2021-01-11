@@ -143,18 +143,21 @@ def staffPostDetails(request):
     staff = Staff.objects.get(id=request.user.staff.id)
     staff.specialization = request.POST['staffSpecialization']
     staff.save()
-    if staff.doctor == null:
-        return redirect('seApp:home',)   
+    if staff.doctor is None:
+        return redirect('seApp:staffGetDetails',)   
     else:
-        return redirect('seApp:home',)     
+        return redirect('seApp:servicesManager', doctor_id = staff.doctor.id)     
 
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 
 
 
 #  MANAGING DOCTOR SERVICES 
-def servicesManager(request):
-    doctor = Doctor.objects.get(id=request.user.doctor.id)
+def servicesManager(request, doctor_id=None):
+    if doctor_id is None:
+        doctor = Doctor.objects.get(id=doctor_id)
+    else:
+        doctor = Doctor.objects.get(id=request.user.doctor.id)
     services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization, 'clinic':doctor.clinic }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
