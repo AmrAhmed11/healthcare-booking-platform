@@ -39,9 +39,9 @@ urlpatterns = [
     path('doctor/addTimeslot', views.addTimeslotDoctor, name='addTimeslotDoctor'),
     path('doctor/changeMedicalDetails', views.changeMedicalDetailsDoctor, name='changeMedicalDetailsDoctor'),
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
-
+    path('doctor/profile', views.DoctorProfile, name="DoctorProfile"),
     
-    path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
+
     path('staff/details/', views.staffGetDetails, name='staffGetDetails'),
     path('staff/details/select', views.staffPostDetails, name='staffPostDetails'),
     path('user/appointment', views.appointmentUser, name='appointmentUser'),
