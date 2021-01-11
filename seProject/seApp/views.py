@@ -8,9 +8,9 @@ from django.http import HttpResponse
 from .models import *
 from .forms import CreateUserForm
 from django.forms import inlineformset_factory
-from django.contrib.auth.forms import  UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.contrib.auth import  authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import string
 from django.contrib.auth.models import Group
@@ -31,7 +31,7 @@ def loginpage (request):
             return render(request, 'seApp/login.html')
     return render(request, 'seApp/login.html')
 
-
+@login_required(login_url='seApp:loginpage')
 def logout_path (request):
     logout(request)
     return redirect ('seApp:home')
