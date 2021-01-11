@@ -66,6 +66,7 @@ class Appointment(models.Model):
 			('Pending', 'Pending'),
 			('Done', 'Done'),
 			('Cancelled', 'Cancelled'),
+            ('Paid', 'Paid'),
 			)
     patient = models.ForeignKey(Patient, on_delete = models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)

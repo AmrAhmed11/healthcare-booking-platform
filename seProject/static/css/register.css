@@ -41,3 +41,9 @@ i{
 #gender{
 	padding: 8px 1px;
 }
+.errors {
+  position: relative;
+  padding: 0.5rem 0.5rem 0rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
