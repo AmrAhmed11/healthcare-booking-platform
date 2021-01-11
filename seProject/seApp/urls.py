@@ -29,7 +29,7 @@ urlpatterns = [
     path('doctor/patients/prescription/<int:app_id>/create', views.doctorPostPrescription, name='PostPrescription'),
     path('doctor/patients/prescription/<int:app_id>/delete', views.doctorDeletePrescription, name='DeletePrescription'),
     path('doctor/staff', views.staffManager, name='staffManager'),
-    path('doctor/services/<int:doctor_id>', views.servicesManager, name='servicesManager'),
+    path('doctor/services', views.servicesManager, name='servicesManager'),
     path('doctor/createNewClinic', views.createNewClinic, name='createNewClinic'),
     path('doctor/deleteTimeslot', views.deleteTimeslotDoctor, name='deleteTimeslotDoctor'),
     path('doctor/addNewStaff', views.addNewStaff, name='addNewStaff'),
@@ -39,9 +39,9 @@ urlpatterns = [
     path('doctor/addTimeslot', views.addTimeslotDoctor, name='addTimeslotDoctor'),
     path('doctor/changeMedicalDetails', views.changeMedicalDetailsDoctor, name='changeMedicalDetailsDoctor'),
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
-
+    path('doctor/profile', views.DoctorProfile, name="DoctorProfile"),
     
-    path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
+
     path('staff/details/', views.staffGetDetails, name='staffGetDetails'),
     path('staff/details/select', views.staffPostDetails, name='staffPostDetails'),
     path('user/appointment', views.appointmentUser, name='appointmentUser'),

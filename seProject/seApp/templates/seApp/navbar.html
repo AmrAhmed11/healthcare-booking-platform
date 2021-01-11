@@ -6,23 +6,51 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown-2" aria-controls="navbarNavDropdown-2" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse mr-auto" id="navbarNavDropdown-2">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active"><a class="nav-link" href="#">Home
-            <span class="sr-only">(current)</span>
-          </a></li>
+
+        {%if request.user.role == 'patient'%}
         <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" href="#">Appointments</a>
         </li>
-        <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
-        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="https://designrevision.com"
-            id="navbarDropdownMenuLink-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Services</a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-2"><a class="dropdown-item"
-              href="#">Design</a> <a class="dropdown-item" href="#">Development</a> <a class="dropdown-item"
-              href="#">Marketing</a></div>
+        {%endif%}
+
+        {%if request.user.role == 'doctor'%}
+        <li class="nav-item">
+          <a class="nav-link" href="{%url 'seApp:appointmentManager'%}">Appointments</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{%url 'seApp:patients'%}">Patients</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{%url 'seApp:patients'%}">Services</a>
+        </li>
+        {%endif%}
+
+        {%if request.user.role == 'staff'%}
+        <li class="nav-item">
+          <a class="nav-link" href="#">Appointments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Patients</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Services</a>
+        </li>
+        {%endif%}
       </ul>
+
       <ul class="navbar-nav">
+        {%if request.user.role == 'patient'%}
+        <a class="nav-link float-right" href="{% url 'seApp:UserProfile' %}">Profile</a>
+        {%endif%}
+        {%if request.user.role == 'doctor'%}
+        <a class="nav-link float-right" href="#">Profile</a>
+        {%endif%}
+        {%if request.user.role == 'staff'%}
+        <a class="nav-link float-right" href="#">Profile</a>
+        {%endif%}
         <li class="nav-item float-right"><a class="nav-link" href="{% url 'seApp:logout'%}">Log Out</a></li>
       </ul>
     </div>
