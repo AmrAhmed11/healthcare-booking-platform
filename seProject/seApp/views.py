@@ -93,6 +93,7 @@ def test(request):
         return render(request, 'seApp/test.html')
     else:
         return redirect('seApp:loginpage')
+
 def appointmentManager(request):
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     app_list = doctor.appointment_set.all()
@@ -119,7 +120,6 @@ def doctorDeletePrescription(request, app_id):
     app.prescription.remove(deletedMedication)
     app.save()
     return redirect('seApp:appointment', app_id=app_id)
-    
 
 def doctorGetPatients(request):    
     doctor = Doctor.objects.get(id=request.user.doctor.id)
@@ -130,7 +130,6 @@ def doctorGetPatients(request):
             patient_list.append(app.patient)
     context = {'patients': patient_list}        
     return render(request, 'seApp/patients.html', context)
-
 
 def doctorTransferPatient(request, patient_id):
     patient = Patient.objects.get(id=patient_id)  
@@ -150,6 +149,17 @@ def doctorTransferPatient(request, patient_id):
     context = {'patient': patient, 'doctors': doctors}
     return render(request, 'seApp/patientsTransfer.html', context)
 
+def staffGetDetails(request):   
+    return render(request, 'seApp/staffSpecialization.html', context)
+
+def staffPostDetails(request):
+    staff = Staff.objects.get(id=request.user.staff.id)
+    staff.specialization = request.POST['staffSpecialization']
+    staff.save()
+    if staff.doctor == null:
+        return redirect('seApp:home',)   
+    else:
+        return redirect('seApp:home',)     
 
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 

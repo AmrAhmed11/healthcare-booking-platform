@@ -1,0 +1,28 @@
+{%  extends 'seApp/main.html' %}
+{%block content%}
+  <div class="bg-light py-2 mt-5">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col-12">
+            <div class="card p-5 shadow-md">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12">
+                      <form action="{% url 'seApp:staffPostDetails'%}" method="POST">
+                          <h5>Select Specialization</h5>
+                          <select name="specialization">
+                              <option value="lab_specialist">Lab Specialist</option>
+                              <option value="nurse">Nurse</option>
+                          </select>
+                          <button type="submit">Select</button>
+                      </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+{%endblock%}
+
