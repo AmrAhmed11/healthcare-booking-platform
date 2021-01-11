@@ -34,8 +34,6 @@ class ReviewForm(ModelForm):
         fields = ['review',]
 
 
-
-       
 class chooseAppointmentForm(ModelForm):
     class Meta:
         model = Doctor
