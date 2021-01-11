@@ -316,16 +316,26 @@ def browse(request):
     context = {'doctors':doctors}
     return render(request,'seApp/browse.html', context)
 
-def appointmentUser(request, user_id):
-    patient = Patient.objects.get(id=user_id)
-    app_all= patient.appointment_set.all()
-    app_pending =patient.appointment_set.filter(status="Pending")
-    app_done = patient.appointment_set.filter(status="Done")
-    app_cancelled = patient.appointment_set.filter(status="Cancelled")
+def appointmentUser(request):
+ if request.user.is_authenticated:
+        role = request.user.role
+        if(role == 'patient'):
+             patient = Patient.objects.get(id=request.user.patient.id)
+             app_all= patient.appointment_set.all()
+             app_pending =patient.appointment_set.filter(status="Pending")
+             app_done = patient.appointment_set.filter(status="Done")
+             app_cancelled = patient.appointment_set.filter(status="Cancelled")
 
-    context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled,'app_all':app_all}
+             context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled,'app_all':app_all}
 
-    return render(request, 'seApp/appointmentUser.html', context)    
+             return render(request, 'seApp/appointmentUser.html', context)   
+
+        else :  
+             return redirect('/')   
+
+ else:
+     return redirect('seApp:loginpage')
+    
 
 def appointmentView(request, app_id):
     appointment = Appointment.objects.get(id=app_id)
@@ -341,21 +351,37 @@ def appointmentView(request, app_id):
            if 'cancel' in request.POST:
               appointment.status = "Cancelled"
               appointment.save()
-              return render(request, 'seApp/appointmentcancelled.html', context)
+              timeslots = appointment.time_slot
+              appointment.doctor.time_slots.append(timeslots)
+              appointment.doctor.save()
+              return render(request, 'seApp/appointmentcancelled.html', context)  
 
            if 'edit' in request.POST:
-              appointment.status = "Cancelled"
-              appointment.save()
-              appointmentnew = Appointment(
-                       patient = appointment.patient,
-                       doctor = appointment.doctor,
-                       status = 'Pending',
-                       time_slot = request.POST['appointment'],
-                       review = 'None',
-                       prescription = []
-              )
-              appointmentnew.save()
-              return render(request, 'seApp/appointmentcancelled.html', context)  
+               timeslots = []
+               for timeslot in appointment.doctor.time_slots:
+                   if((timeslot - timezone.now()).total_seconds() > 0):
+                        timeslots.append(timeslot)
+
+               appointment.doctor.time_slots = timeslots
+               appointment.doctor.save() 
+
+               appointment.status = "Cancelled"
+               appointment.save()
+               timeslotadd = appointment.time_slot
+               appointment.doctor.time_slots.append(timeslotadd)
+               timeslot =request.POST['appointment']
+               #appointment.doctor.time_slots.remove(timeslot)
+               appointment.doctor.save()
+               appointmentnew = Appointment(
+                    patient = appointment.patient,
+                    doctor = appointment.doctor,
+                    status = 'Pending',
+                    time_slot = timeslot,
+                    review = 'None',
+                    prescription = []
+                )
+               appointmentnew.save()
+               return render(request, 'seApp/appointmentcancelled.html', context)  
              
         
 
@@ -402,16 +428,7 @@ def viewprescription(request, app_id ) :
 #     context = {'app': app, 'form': form}
 #     return render(request, 'seApp/review.html', context)     
 
-def cancel(request, app_id ) :
-    app = Appointment.objects.get(id=app_id)
- 
-    
-    if request.method == 'POST':
-        app.status = "Cancelled"
-        app.save()
 
-    context = {'app': app}
-    return render(request, 'seApp/cancel.html', context)
     
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
