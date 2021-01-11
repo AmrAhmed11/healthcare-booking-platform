@@ -412,9 +412,18 @@ def appointmentView(request, app_id):
     
     
 def viewprescription(request, app_id ) :
-    appointment = Appointment.objects.get(id=app_id)
+    if request.user.is_authenticated:
+        role = request.user.role
+        if(role == 'patient'):
+                appointment = Appointment.objects.get(id=app_id)
 
-    context = {'appointment': appointment}
+                context = {'appointment': appointment}
+
+        else :
+                return redirect('/')
+
+    else:
+     return redirect('seApp:loginpage')
 
     return render(request, 'seApp/viewprescription.html', context)      
 
