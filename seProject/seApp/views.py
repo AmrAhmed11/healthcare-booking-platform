@@ -324,75 +324,92 @@ def appointmentUser(request):
     
 
 def appointmentView(request, app_id):
-    appointment = Appointment.objects.get(id=app_id)
+    if request.user.is_authenticated:
+        role = request.user.role
+        if(role == 'patient'):
+                appointment = Appointment.objects.get(id=app_id)
 
-    form = ReviewForm()
-    app = Appointment.objects.get(id=app_id)
-    form = ReviewForm(instance=app)
+                form = ReviewForm()
+                app = Appointment.objects.get(id=app_id)
+                form = ReviewForm(instance=app)
 
-    context = {'appointment': appointment ,'app': app, 'form': form}
-    if appointment.status == 'Pending':
-        
-       if request.method == 'POST':
-           if 'cancel' in request.POST:
-              appointment.status = "Cancelled"
-              appointment.save()
-              timeslots = appointment.time_slot
-              appointment.doctor.time_slots.append(timeslots)
-              appointment.doctor.save()
-              return render(request, 'seApp/appointmentcancelled.html', context)  
+                context = {'appointment': appointment ,'app': app, 'form': form}
+                if appointment.status == 'Pending':
+                   if request.method == 'POST':
+                       if 'cancel' in request.POST:
+                          appointment.status = "Cancelled"
+                          appointment.save()
+                          timeslots = appointment.time_slot
+                          appointment.doctor.time_slots.append(timeslots)
+                          appointment.doctor.save()
+                          return render(request, 'seApp/appointmentcancelled.html', context)  
 
-           if 'edit' in request.POST:
-               timeslots = []
-               for timeslot in appointment.doctor.time_slots:
-                   if((timeslot - timezone.now()).total_seconds() > 0):
-                        timeslots.append(timeslot)
+                       if 'edit' in request.POST:
+                           timeslots = []
+                           for timeslot in appointment.doctor.time_slots:
+                               if((timeslot - timezone.now()).total_seconds() > 0):
+                                    timeslots.append(timeslot)
+                           appointment.doctor.time_slots = timeslots
+                           appointment.doctor.save() 
 
-               appointment.doctor.time_slots = timeslots
-               appointment.doctor.save() 
-
-               appointment.status = "Cancelled"
-               appointment.save()
-               timeslotadd = appointment.time_slot
-               appointment.doctor.time_slots.append(timeslotadd)
-               timeslot =request.POST['appointment']
-               #appointment.doctor.time_slots.remove(timeslot)
-               appointment.doctor.save()
-               appointmentnew = Appointment(
-                    patient = appointment.patient,
-                    doctor = appointment.doctor,
-                    status = 'Pending',
-                    time_slot = timeslot,
-                    review = 'None',
-                    prescription = []
-                )
-               appointmentnew.save()
-               return render(request, 'seApp/appointmentcancelled.html', context)  
+                           appointment.status = "Cancelled"
+                           appointment.save()
+                           timeslotadd = appointment.time_slot
+                           appointment.doctor.time_slots.append(timeslotadd)
+                           timeslot =request.POST['appointment']
+                           #appointment.doctor.time_slots.remove(timeslot)
+                           appointment.doctor.save()
+                           appointmentnew = Appointment(
+                                patient = appointment.patient,
+                                doctor = appointment.doctor,
+                                status = 'Pending',
+                                time_slot = timeslot,
+                                review = 'None',
+                                prescription = []
+                            )
+                           appointmentnew.save()
+                           return render(request, 'seApp/appointmentcancelled.html', context)  
              
         
 
-       return render(request, 'seApp/appointmentpending.html', context)
+                   return render(request, 'seApp/appointmentpending.html', context)
 
-    if(appointment.status == 'Done'):
+                if(appointment.status == 'Done'):
 
-        if request.method == 'POST':
-            if 'submit' in request.POST:
-                form = ReviewForm(request.POST,instance=app)
-                app.doctor.rating = request.POST['rate']
-                app.doctor.save()
+                    if request.method == 'POST':
+                        if 'submit' in request.POST:
+                            form = ReviewForm(request.POST,instance=app)
+                            app.doctor.rating = request.POST['rate']
+                            app.doctor.save()
 
-                if form.is_valid():
-                    form.save()
-        return render(request, 'seApp/appointmentdone.html',context)
+                            if form.is_valid():
+                                form.save()
+                    return render(request, 'seApp/appointmentdone.html',context)
+
+                else:
+                  return render(request, 'seApp/appointmentcancelled.html', context)  
+  
+
+        else :  
+             return redirect('/')   
 
     else:
-       return render(request, 'seApp/appointmentcancelled.html', context)  
-
+     return redirect('seApp:loginpage')
+    
     
 def viewprescription(request, app_id ) :
-    appointment = Appointment.objects.get(id=app_id)
+    if request.user.is_authenticated:
+        role = request.user.role
+        if(role == 'patient'):
+                appointment = Appointment.objects.get(id=app_id)
 
-    context = {'appointment': appointment}
+                context = {'appointment': appointment}
+
+        else :
+                return redirect('/')
+
+    else:
+     return redirect('seApp:loginpage')
 
     return render(request, 'seApp/viewprescription.html', context)      
 
