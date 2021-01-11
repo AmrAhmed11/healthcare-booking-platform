@@ -158,20 +158,26 @@ def DoctorProfile(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff'])
 def staffGetDetails(request):   
-    return render(request, 'seApp/staffSpecialization.html', context)
+    return render(request, 'seApp/staffSpecialization.html')
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff'])
 def staffPostDetails(request):
     staff = Staff.objects.get(id=request.user.staff.id)
-    staff.specialization = request.POST['staffSpecialization']
+    print(request.user.staff.id)
+    staff.specialization = request.POST['specialization']
     staff.save()
     if staff.doctor is None:
         return redirect('seApp:staffGetDetails',)   
     else:
-        return redirect('seApp:servicesManager', doctor_id = staff.doctor.id)     
+        return redirect('seApp:servicesManager')     
 
-
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['staff'])
+def StaffProfile(request):
+    staff = Staff.objects.get(id=request.user.staff.id)
+    context = {'staff': staff}
+    return render(request, 'seApp/staffProfile.html', context)
 
 
 
@@ -183,7 +189,7 @@ def staffPostDetails(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def servicesManager(request):
-    if request.user.role is 'staff':
+    if request.user.role == 'staff':
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
     else:
         doctor = Doctor.objects.get(id=request.user.doctor.id)
