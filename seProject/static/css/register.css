@@ -1,60 +1,43 @@
-body,
-		html {
-			margin: 0;
-			padding: 0;
-			height: 100%;
-			background: #000F57 !important;
-		}
+html,
+body {
+  height: 100%;
+}
 
-		.user_card {
-			width: 350px;
-			margin-top: auto;
-			margin-bottom: auto;
-			background: white;
-			position: relative;
-			display: flex;
-			justify-content: center;
-			flex-direction: column;
-			padding: 10px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			border-radius: 5px;
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
 
-		}
+  background-color: #ffffff;
+  background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);;
+}
 
-		.form_container {
-			margin-top: 20px;
-		}
+.form-signin {
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
 
-		#form-title {
-			color: #000;
-		}
 
-		.login_btn {
-			width: 100%;
-			background: #000F57 !important;
-			color: white !important;
-		}
+i{
+	padding: 8px 3px;
+}
 
-		.login_btn:focus {
-			box-shadow: none !important;
-			outline: 0px !important;
-		}
-
-		.login_container {
-			padding: 0 2rem;
-		}
-
-		.input-group-text {
-			background: #f7ba5b !important;
-			color: white !important;
-			border: 0 !important;
-			border-radius: 0.25rem 0 0 0.25rem !important;
-		}
-
-		.input_user,
-		.input_pass:focus {
-			box-shadow: none !important;
-			outline: 0px !important;
-		}
+#gender{
+	padding: 8px 1px;
+}
