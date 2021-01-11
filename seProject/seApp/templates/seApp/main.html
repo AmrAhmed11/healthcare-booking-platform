@@ -14,14 +14,23 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shards-ui/3.0.0/css/shards.min.css"
     integrity="sha512-ATPNLwY6zsriAW9aWaVyzCz5bRunkyNF3m7Es87HrwwhcJ2LwGDHnkPJzNRUOZI4fUcg6kEoNqC/rAUfvRizRw=="
     crossorigin="anonymous" />
+  <link rel="stylesheet" href="{% static '/css/main.css'%}">
 </head>
 
 <body>
-    {%include 'seApp/navbar.html'%}
-    <div class="main-content-container mt-4"></div>
+  <div class="container-fluid p-0">
+    <div class="row"  >
+      {%include 'seApp/navbar.html'%}
+    </div>
+    <div class="row" id="content">
+      
       {%block content%}
       {%endblock%}
+    
     </div>
+  </div>
+    
+
   <!-- Optional JavaScript -->
   <!-- JavaScript Dependencies: jQuery, Popper.js, Bootstrap JS, Shards JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
