@@ -410,23 +410,7 @@ def viewprescription(request, app_id ) :
 
     return render(request, 'seApp/viewprescription.html', context)      
 
-# def review(request, app_id ) :
-#     form = ReviewForm()
-#     app = Appointment.objects.get(id=app_id)
-#     form = ReviewForm(instance=app)
-  
-
-
-#     if request.method == 'POST':
-#         form = ReviewForm(request.POST, instance=app)  
-#         app.doctor.rating = request.POST['rate']
-#         app.doctor.save()
-            
-#         if form.is_valid():
-#             form.save()
-         
-#     context = {'app': app, 'form': form}
-#     return render(request, 'seApp/review.html', context)     
+   
 
 
     
