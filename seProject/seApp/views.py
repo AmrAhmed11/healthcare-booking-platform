@@ -15,22 +15,20 @@ from django.contrib.auth.decorators import login_required
 import string
 from django.contrib.auth.models import Group
 from django.utils import timezone
+from .decorators import *
 
-
+@unauthenticted_user
 def loginpage (request):
-    if request.user.is_authenticated:
-        return redirect('seApp:home')
-    else:
-        if request.method=='POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            user = authenticate(request, username = username, password = password)
-            if user is not None:
-                login(request,user)
-                return redirect('seApp:home')
-            else:
-                messages.info(request,'Username or password is not correct')
-                return render(request, 'seApp/login.html')
+    if request.method=='POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username = username, password = password)
+        if user is not None:
+            login(request,user)
+            return redirect('seApp:test')
+        else:
+            messages.info(request,'Username or password is not correct')
+            return render(request, 'seApp/login.html')
     return render(request, 'seApp/login.html')
 
 
@@ -39,61 +37,49 @@ def logout_path (request):
     return redirect ('seApp:home')
 
 #patient_registration
+@unauthenticted_user
 def register (request):
-    if request.user.is_authenticated:
-        return redirect('/')
-    else:
-        form =  CreateUserForm()
-        
-        if request.method == 'POST':
-            form = CreateUserForm(request.POST)
-            if form.is_valid():
-                user=form.save()
-                if(user.role == 'patient'):
-                    group=Group.objects.get(name='patient')
-                    user.groups.add(group)
-                    new_patient = authenticate(username=form.cleaned_data['username'], 
-                                               password=form.cleaned_data['password1'],
-                                              )
-                    login(request, new_patient)
-                    return redirect("seApp:test")
-                elif(user.role == 'doctor'):
-                    group=Group.objects.get(name='doctor')
-                    user.groups.add(group)
-                    new_doctor = authenticate(username=form.cleaned_data['username'], 
-                                               password=form.cleaned_data['password1'],
-                                              )
-                    login(request, new_doctor)
-                    return redirect("seApp:test")
-                elif(user.role == 'staff'):
-                    group=Group.objects.get(name='staff')
-                    user.groups.add(group)
-                    new_staff_member = authenticate(username=form.cleaned_data['username'], 
-                                                    password=form.cleaned_data['password1'],
-                                                   )
-                    login(request, new_staff_member)
-                    return redirect("seApp:test")
+    form =  CreateUserForm()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user=form.save()
+            if(user.role == 'patient'):
+                group=Group.objects.get(name='patient')
+                user.groups.add(group)
+                new_patient = authenticate(username=form.cleaned_data['username'], 
+                                            password=form.cleaned_data['password1'],
+                                            )
+                login(request, new_patient)
+                return redirect("seApp:test")
+            elif(user.role == 'doctor'):
+                group=Group.objects.get(name='doctor')
+                user.groups.add(group)
+                new_doctor = authenticate(username=form.cleaned_data['username'], 
+                                            password=form.cleaned_data['password1'],
+                                            )
+                login(request, new_doctor)
+                return redirect("seApp:test")
+            elif(user.role == 'staff'):
+                group=Group.objects.get(name='staff')
+                user.groups.add(group)
+                new_staff_member = authenticate(username=form.cleaned_data['username'], 
+                                                password=form.cleaned_data['password1'],
+                                                )
+                login(request, new_staff_member)
+                return redirect("seApp:test")
 
     context ={ 'form' : form }
     return render(request, 'seApp/register.html',context)
 
-
+@unauthenticted_user
 def index(request):
-    if request.user.is_authenticated:
-        role = request.user.role
-        if(role == 'patient'):
-            return redirect('seApp:test')
-        elif(role == 'doctor'):
-            return redirect('seApp:test')
-        elif(role == 'staff'):
-            return redirect('seApp:test')
     return render(request, 'seApp/index.html')
 
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['doctor'])
 def test(request):
-    if request.user.is_authenticated:
-        return render(request, 'seApp/test.html')
-    else:
-        return redirect('seApp:loginpage')
+    return render(request, 'seApp/test.html')
 
 def appointmentManager(request):
     doctor = Doctor.objects.get(id=request.user.doctor.id)
