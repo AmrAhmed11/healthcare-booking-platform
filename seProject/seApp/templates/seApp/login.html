@@ -26,17 +26,24 @@
 				<div class="col-12 col-md-12">
 					<div class="card p-3 shadow-lg" style="border-radius:3%;">
 						<div class="card-body">
-							<h3 class="card-title mb-4">Log in</h3>
+							<h3 class="card-title mb-3">Log in</h3>
 
 							<form class="form-floating" method="POST" action="">
 								{% csrf_token %}
-								<div class="input-group mb-3">
+								{% if messages  %}
+									<div class="errors alert-danger mb-2">
+										{% for message in messages %}
+											<p id="messages" >{{message}}</p>
+										{% endfor %}
+									</div>
+								{% endif %}
+								<div class="input-group mb-2">
 									<div class="input-group-append">
 										<span class="input-group-text"><i class="fas fa-user"></i></span>
 									</div>
 									<input type="text" name="username" placeholder="Enter your Username" class="form-control">
 								</div>
-								<div class="input-group mb-3">
+								<div class="input-group mb-2">
 									<div class="input-group-append">
 										<span class="input-group-text"><i class="fas fa-key"></i></span>
 									</div>
