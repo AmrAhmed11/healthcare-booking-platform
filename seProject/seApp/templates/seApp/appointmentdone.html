@@ -36,9 +36,50 @@
                 <h5 class="card-text " style="color:green;"> {{appointment.status}}</h5>
                 <br><br>
                 <div class="text-center">
-                  <th><a href="review/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-right: 20px;">Rate</a>
-               
-                  <th><a href="viewprescription/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-left: 20px;">View Prescription</a></th> 
+                  <!-- <th><a href="review/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-right: 20px;">Rate</a> -->
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Model" style="margin-right: 10px;">
+                      Rate
+                    </button>
+                  
+                    <!-- Modal -->
+                    <div class="modal fade" id="Model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                           <h2 class="modal-title " id="exampleModalLabel" style="margin-left: 80px ;">Give Feedback</h2>
+                          </div>
+                          <div class="modal-body">
+                            <h4 class="modal-title" id="exampleModalLabel">Rate your Doctor </h4>
+                            <form action="/user/appointmentview/{{app.id}}" method="POST" class="text-center">
+                              {% csrf_token %}
+                                <input type="radio" name="rate" id="ch1" value="{{1}}" >
+                                <label for="ch1" style="margin-right:30px; color: red; font-size: 30px;"> 1 </label>
+                                <input type="radio" name="rate" id="ch2" value="{{2}}" >
+                                <label for="ch2" style="margin-right:30px; color: orangered; font-size: 30px;"> 2 </label>   
+                                <input type="radio" name="rate" id="ch3" value="{{3}}" >
+                                <label for="ch3" style="margin-right:30px; color: orange; font-size: 30px;"> 3 </label>
+                                <input type="radio" name="rate" id="ch4" value="{{4}}" >
+                                <label for="ch4" style="margin-right:30px; color: rgb(124, 194, 18); font-size: 30px;"> 4 </label>
+                                <input type="radio" name="rate" id="ch5" value="{{5}}" >
+                                <label for="ch5" style="margin-right:30px; color: green; font-size: 30px;"> 5 </label>
+                                <br>
+                                <br>
+                              <h5 class="card-text">Write a Review</h5>
+                              <div class="form-group">
+                                {{ form.review }}
+                              </div>
+                            </form>
+                          </div>
+
+                          <div class="modal-footer">
+                              <div class="text-center">
+                                <button type="submit" class="btn btn-outline-primary btn-md mt-0" style="margin-right: 170px ;" name="submit">Submit</button>
+                              </div>
+                          </div>
+                       </div>
+                     </div>
+                   </div> 
+                  <th><a href="viewprescription/{{appointment.id}}" class="btn btn-primary btn-md" style="margin-left: 50px;">View Prescription</a></th> 
           
                  </div>
               </div>

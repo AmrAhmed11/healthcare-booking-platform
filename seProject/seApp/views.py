@@ -329,16 +329,19 @@ def appointmentUser(request, user_id):
 
 def appointmentView(request, app_id):
     appointment = Appointment.objects.get(id=app_id)
-   
 
-    context = {'appointment': appointment}
+    form = ReviewForm()
+    app = Appointment.objects.get(id=app_id)
+    form = ReviewForm(instance=app)
+
+    context = {'appointment': appointment ,'app': app, 'form': form}
     if appointment.status == 'Pending':
         
        if request.method == 'POST':
            if 'cancel' in request.POST:
               appointment.status = "Cancelled"
               appointment.save()
-              return render(request, 'seApp/appointmentcancelled.html', context)  
+              return render(request, 'seApp/appointmentcancelled.html', context)
 
            if 'edit' in request.POST:
               appointment.status = "Cancelled"
@@ -356,10 +359,19 @@ def appointmentView(request, app_id):
              
         
 
-       return render(request, 'seApp/appointmentpending.html', context) 
+       return render(request, 'seApp/appointmentpending.html', context)
 
-    if appointment.status == 'Done':
-       return render(request, 'seApp/appointmentdone.html', context)  
+    if(appointment.status == 'Done'):
+
+        if request.method == 'POST':
+            if 'submit' in request.POST:
+                form = ReviewForm(request.POST,instance=app)
+                app.doctor.rating = request.POST['rate']
+                app.doctor.save()
+
+                if form.is_valid():
+                    form.save()
+        return render(request, 'seApp/appointmentdone.html',context)
 
     else:
        return render(request, 'seApp/appointmentcancelled.html', context)  
@@ -372,28 +384,23 @@ def viewprescription(request, app_id ) :
 
     return render(request, 'seApp/viewprescription.html', context)      
 
-def review(request, app_id ) :
-    form = ReviewForm()
-    app = Appointment.objects.get(id=app_id)
-    form = ReviewForm(instance=app)
+# def review(request, app_id ) :
+#     form = ReviewForm()
+#     app = Appointment.objects.get(id=app_id)
+#     form = ReviewForm(instance=app)
   
 
 
-    if request.method == 'POST':
-        form = ReviewForm(request.POST, instance=app)  
-        app.doctor.rating = request.POST['rate']
-        app.doctor.save()
+#     if request.method == 'POST':
+#         form = ReviewForm(request.POST, instance=app)  
+#         app.doctor.rating = request.POST['rate']
+#         app.doctor.save()
             
-        if form.is_valid():
-            form.save()
+#         if form.is_valid():
+#             form.save()
          
-
-        
-       
-
-   
-    context = {'app': app, 'form': form}
-    return render(request, 'seApp/review.html', context)     
+#     context = {'app': app, 'form': form}
+#     return render(request, 'seApp/review.html', context)     
 
 def cancel(request, app_id ) :
     app = Appointment.objects.get(id=app_id)

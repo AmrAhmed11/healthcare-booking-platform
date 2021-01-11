@@ -46,7 +46,7 @@ urlpatterns = [
     path('user/appointment/<int:user_id>', views.appointmentUser, name='appointmentUser'),
     path('user/appointmentview/<int:app_id>', views.appointmentView, name='appointmentView'),
     path('user/appointmentview/viewprescription/<int:app_id>', views.viewprescription, name='viewprescription'),
-    path('user/appointmentview/review/<int:app_id>', views.review, name='review'),
+    # path('user/appointmentview/review/<int:app_id>', views.review, name='review'),
     path('user/browse',views.browse,name='browse'),
 
 
