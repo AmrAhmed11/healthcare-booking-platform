@@ -182,9 +182,9 @@ def staffPostDetails(request):
 #  MANAGING DOCTOR SERVICES 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
-def servicesManager(request, doctor_id=None):
-    if doctor_id is None:
-        doctor = Doctor.objects.get(id=doctor_id)
+def servicesManager(request):
+    if request.user.role is 'staff':
+        doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
     else:
         doctor = Doctor.objects.get(id=request.user.doctor.id)
     services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization, 'clinic':doctor.clinic }
