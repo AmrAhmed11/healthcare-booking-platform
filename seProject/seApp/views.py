@@ -433,22 +433,41 @@ def viewDoctor(request, doctor_id):
     doctors.save()
     if request.method == 'POST':
         if request.user.is_authenticated:
-            patient = Patient.objects.get(id=request.user.patient.id)
-            timeslots = doctors.time_slots
-            timeslot = timeslots[int(request.POST['appointment']) - 1]
-            doctors.time_slots.remove(timeslot)
-            appointment = Appointment(
-                patient = patient,
-                doctor = doctors,
-                status = 'Pending',
-                time_slot = timeslot,
-                review = 'None',
-                prescription = []
-            )
-            appointment.save()
-            doctors.save()
+            role = request.user.role
+            if(role == "patient"):
+                patient = Patient.objects.get(id=request.user.patient.id)
+                timeslots = doctors.time_slots
+                timeslot = timeslots[int(request.POST['appointment']) - 1]
+                doctors.time_slots.remove(timeslot)
+                appointment = Appointment(
+                    patient = patient,
+                    doctor = doctors,
+                    status = 'Pending',
+                    time_slot = timeslot,
+                    review = 'None',
+                    prescription = []
+                )
+                appointment.save()
+                doctors.save()
+            else:
+                return render(request, 'seApp/test.html')
         else:
             return render(request, 'seApp/login.html')
     context = {'doctors':doctors,}
     return render(request, 'seApp/viewDoctor.html', context)
+
+def UserProfile(request):
+    if request.user.is_authenticated:
+        role = request.user.role
+        if(role == "patient"):
+            patient = Patient.objects.get(id = request.user.patient.id)
+            context = {'patient':patient}
+            return render(request, 'seApp/userProfile.html', context)
+        else:
+            return render(request, 'seApp/test.html')
+    else:
+        return render(request, 'seApp/login.html')
+
+
+
 

@@ -21,6 +21,7 @@ urlpatterns = [
     path('',views.index,name='home'),
     path('test',views.test,name='test'),
 
+
     path('doctor/appointment', views.appointmentManager, name='appointmentManager'),
     path('doctor/appointment/<int:app_id>', views.appointment, name='appointment'),
     path('doctor/patients/', views.doctorGetPatients, name='patients'),
@@ -40,7 +41,6 @@ urlpatterns = [
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
 
     
-    
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
     path('staff/details/select', views.staffPostDetails, name='staffPostDetails'),
     path('user/appointment', views.appointmentUser, name='appointmentUser'),
@@ -54,4 +54,5 @@ urlpatterns = [
     path('login/',views.loginpage,name="loginpage"),
     path('register/',views.register,name="register"),
     path('user/view-doctor/<int:doctor_id>', views.viewDoctor, name='viewDoctor'),
+    path('user/profile', views.UserProfile, name="UserProfile"),
 ]
