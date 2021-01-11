@@ -72,7 +72,7 @@
                           <label for="doctor">Choose Doctor</label>
                          <select class="form-control" name="doctor" id="doctor">
                            <option disabled selected>Choose...</option>
-                           {% for doctorNew in doctorToBeAdded_list %}
+                           {% for doctorNew in doctor_new_list %}
                            <option value="{{doctorNew.user.id}}">{{doctorNew.user.email}}</option>
                            {% endfor %}
                          </select>

@@ -165,15 +165,19 @@ def servicesManager(request):
 
 # CREATE NEW CLINIC ACTION
 def createNewClinic(request):
-    name = request.POST['clinicName']
-    address = request.POST['clinicAddress']
+    clinicName = request.POST['clinicName']
+    clinicAddress = request.POST['clinicAddress']
     clinic = Clinic()
-    clinic.name = name
+    clinic.name = clinicName
+    clinic.address = clinicAddress
     clinic.owner_id = request.user.id
-    clinic.address = address
     clinic.rating = 0
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    doctor.clinic = clinic
     clinic.save()
-    return redirect('seApp:createNewClinic')
+    doctor.save()
+    return redirect('seApp:servicesManager')
+
 
 #  CHANGING DOCTOR FEES ACTION
 def changeFeeDoctor(request):
@@ -229,16 +233,20 @@ def staffManager(request):
     doctor_new_list = []
     clinicOwner = 0
     clinicId = 0
-    clinic = request.user.doctor.clinic 
+    clinicTemp = request.user.doctor.clinic.id 
+    clinicId = clinicTemp
+    clinic = Clinic.objects.get(id=clinicTemp)
+    
     if clinic.owner_id == request.user.id:
-        clinicId = clinic.id
         clinicOwner = 1
         doctors = Doctor.objects.all()
         for doctor in doctors:
-            if doctor.clinic.id == clinic.id:
-                doctor_list.append(doctor)
-            elif doctor.clinic == None:
+            if doctor.clinic == None:
+                
                 doctor_new_list.append(doctor)
+            elif doctor.clinic.id == clinicId:
+                doctor_list.append(doctor)
+                
     
     
     for user in user_list:
