@@ -155,12 +155,29 @@ def doctorTransferPatient(request, patient_id):
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 
 
+
 #  MANAGING DOCTOR SERVICES 
 def servicesManager(request):
     doctor = Doctor.objects.get(id=request.user.doctor.id)
-    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization }
+    services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization, 'clinic':doctor.clinic }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
+
+# CREATE NEW CLINIC ACTION
+def createNewClinic(request):
+    clinicName = request.POST['clinicName']
+    clinicAddress = request.POST['clinicAddress']
+    clinic = Clinic()
+    clinic.name = clinicName
+    clinic.address = clinicAddress
+    clinic.owner_id = request.user.id
+    clinic.rating = 0
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    doctor.clinic = clinic
+    clinic.save()
+    doctor.save()
+    return redirect('seApp:servicesManager')
+
 
 #  CHANGING DOCTOR FEES ACTION
 def changeFeeDoctor(request):
@@ -186,7 +203,6 @@ def changeMedicalDetailsDoctor(request):
 # DELETE TIMESLOTS FOR DOCTOR ACTION
 def deleteTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
-    print(timeslot)
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     timeslotParsed = parse_datetime(timeslot) 
     doctor.time_slots.remove(timeslotParsed)
@@ -213,10 +229,32 @@ def staffManager(request):
     staff_list = Staff.objects.filter(doctor=request.user.doctor.id)
     user_list = Staff.objects.all()
     staffToBeAdded_list = []
+    doctor_list = []
+    doctor_new_list = []
+    clinicOwner = 0
+    clinicId = 0
+    clinicTemp = request.user.doctor.clinic.id 
+    clinicId = clinicTemp
+    clinic = Clinic.objects.get(id=clinicTemp)
+    
+    if clinic.owner_id == request.user.id:
+        clinicOwner = 1
+        doctors = Doctor.objects.all()
+        for doctor in doctors:
+            if doctor.clinic == None:
+                
+                doctor_new_list.append(doctor)
+            elif doctor.clinic.id == clinicId:
+                doctor_list.append(doctor)
+                
+    
+    
     for user in user_list:
         if user.doctor == None:
             staffToBeAdded_list.append(user)
-    context = {'staff_list': staff_list,'staffToBeAdded_list': staffToBeAdded_list}
+
+    
+    context = {'staff_list': staff_list,'staffToBeAdded_list': staffToBeAdded_list, 'doctor_list': doctor_list, 'doctor_new_list':doctor_new_list,'clinicOwner':clinicOwner,'clinicId':clinicId}
     return render(request, 'seApp/staffManager.html', context)
 
 
@@ -237,6 +275,27 @@ def removeStaff(request):
     staffObject.delete()
     return redirect('seApp:staffManager')
 
+
+
+
+# ADDING NEW DOCTOR FOR DOCTOR ACTION 
+def addNewDoctor(request):
+    doctor = request.POST['doctor']
+    clinic = request.POST['clinic']
+    clinicObj = Clinic.objects.get(id=clinic)
+    doctorObject = Doctor.objects.get(user_id=doctor)
+    doctorObject.clinic = clinicObj
+    doctorObject.save()
+    return redirect('seApp:staffManager')
+
+
+#REMOVING DOCTOR FROM CLINIC ACTION
+def removeDoctor(request):
+    doctor = request.POST['doctor']
+    doctorObject = Doctor.objects.get(user=doctor)
+    doctorObject.clinic = ''
+    doctorObject.save()
+    return redirect('seApp:staffManager')
 
 # ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -305,25 +364,25 @@ def viewprescription(request, app_id ) :
 
 def review(request, app_id ) :
     form = ReviewForm()
-    formrate = RateForm()
     app = Appointment.objects.get(id=app_id)
     form = ReviewForm(instance=app)
-    formrate = RateForm(instance=app.doctor)
+  
+
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=app)  
-        formrate = RateForm(request.POST, instance=app.doctor)     
+        app.doctor.rating = request.POST['rate']
+        app.doctor.save()
+            
         if form.is_valid():
             form.save()
-            #return redirect('appointmentView')
+         
 
-        if formrate.is_valid():
-            formrate.save()
-            #return redirect('appointmentView')
+        
        
 
    
-    context = {'app': app, 'form': form, 'formrate': formrate}
+    context = {'app': app, 'form': form}
     return render(request, 'seApp/review.html', context)     
 
 def cancel(request, app_id ) :

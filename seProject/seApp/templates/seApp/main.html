@@ -18,13 +18,15 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="row">
+  <div class="container-fluid p-0">
+    <div class="row"  >
       {%include 'seApp/navbar.html'%}
     </div>
     <div class="row" id="content">
+      
       {%block content%}
       {%endblock%}
+    
     </div>
   </div>
     
