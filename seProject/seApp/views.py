@@ -349,24 +349,36 @@ def appointmentView(request, app_id):
               appointment.status = "Cancelled"
               appointment.save()
               timeslots = appointment.time_slot
-              appointment.doctor.time_slots.add(timeslots)
+              appointment.doctor.time_slots.append(timeslots)
+              appointment.doctor.save()
               return render(request, 'seApp/appointmentcancelled.html', context)  
 
            if 'edit' in request.POST:
-              appointment.status = "Cancelled"
-              appointment.save()
-              timeslot =request.POST['appointment']
-              appointment.doctor.time_slots.remove(timeslot)
-              appointmentnew = Appointment(
-                       patient = appointment.patient,
-                       doctor = appointment.doctor,
-                       status = 'Pending',
-                       time_slot = timeslot,
-                       review = 'None',
-                       prescription = []
-              )
-              appointmentnew.save()
-              return render(request, 'seApp/appointmentcancelled.html', context)  
+               timeslots = []
+               for timeslot in appointment.doctor.time_slots:
+                   if((timeslot - timezone.now()).total_seconds() > 0):
+                        timeslots.append(timeslot)
+
+               appointment.doctor.time_slots = timeslots
+               appointment.doctor.save() 
+
+               appointment.status = "Cancelled"
+               appointment.save()
+               timeslotadd = appointment.time_slot
+               appointment.doctor.time_slots.append(timeslotadd)
+               timeslot =request.POST['appointment']
+               #appointment.doctor.time_slots.remove(timeslot)
+               appointment.doctor.save()
+               appointmentnew = Appointment(
+                    patient = appointment.patient,
+                    doctor = appointment.doctor,
+                    status = 'Pending',
+                    time_slot = timeslot,
+                    review = 'None',
+                    prescription = []
+                )
+               appointmentnew.save()
+               return render(request, 'seApp/appointmentcancelled.html', context)  
              
         
 
