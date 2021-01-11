@@ -98,7 +98,7 @@
     #panel {
   display: none;
 }
-#book {
+#book-normal {
   display: none;
 }
 </style>
@@ -265,28 +265,33 @@
                 <button onclick="myFunction()" class="btn btn-info">Choose Appointment</button>
             </div>
 
-            <div class="mt-5 row">
-                <div class="mx-auto col-lg-6">
+            <div class="mt-5 row justify-content-center">
+                {% if doctors.time_slots %}
+                <div class="mx-auto col-lg-6 text-center">
                     <form action="/user/view-doctor/{{doctors.id}}" method="POST">
                         {% csrf_token %}
-                        <select name="appointment" id="panel" class="form-control custom-select">
-                            <option selected disabled>Choose Appointment</option>
+                        <select required name="appointment" id="panel" class="form-control custom-select">
                         {% for timeSlot in doctors.time_slots %}
                             <option value="{{forloop.counter}}">{{timeSlot}}</option>
                         {% endfor %}
                         </select>
-                        <button type="submit" id="book" class="mt-2 float-right btn btn-success">Book</button>
+                        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group ">
+                            <button type="submit" id="book-normal" class="mt-3 btn btn-outline-success" value="Book">Book</button>
+                        </div>
                     </form>
                 </div>
+            {% else %}
+            <div class="col-12 col-md-12 text-center"><h5> No time slots Available </h5></div>
+            {% endif %}
         </div>
-
     </div>
 
 </body>
 <script>
     function myFunction() {
       document.getElementById("panel").style.display = "block";
-      document.getElementById("book").style.display = "block";
+      document.getElementById("book-normal").style.display = "block";
     }
-    </script>
+</script>
+
 {% endblock %}
