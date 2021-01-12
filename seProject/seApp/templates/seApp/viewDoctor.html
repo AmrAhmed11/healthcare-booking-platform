@@ -1,14 +1,12 @@
 <head>    
-    <style>
-    body{
-        background: -webkit-linear-gradient(left, black, black);
-    }
+<style>
     .emp-profile{
         padding: 3%;
         margin-top: 3%;
         margin-bottom: 3%;
         border-radius: 0.5rem;
         background: #fff;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
     .profile-img{
         text-align: center;
@@ -51,7 +49,6 @@
     .proile-rating{
         font-size: 12px;
         color: #818182;
-        margin-top: 5%;
     }
     .proile-rating span{
         color: #495057;
@@ -59,7 +56,7 @@
         font-weight: 600;
     }
     .profile-head .nav-tabs{
-        margin-bottom:5%;
+        margin-bottom:3%;
     }
     .profile-head .nav-tabs .nav-link{
         font-weight:600;
@@ -130,23 +127,18 @@
 
 {%  extends 'seApp/main.html' %}
 {%block content%}
-<br>
-<body>
-    <div class="container emp-profile">
-            <div class="row justify-content-center">
-                
-
-
-                
-                <div class="col-md-6">
+<body class="bg-light">
+    <div class="container emp-profile" style="width: 40%;">
+            <div class="row">
+                <div class="col-md-12">
                     <div class="profile-head">
-                                <h5>
-                                    {{doctors.user}}
-                                </h5>
-                                <h6>
-                                    {{doctors.specialization}}
-                                </h6>
-                                <p class="proile-rating lead">Rating : <span>{{doctors.rating}}</span></p>
+                        <h5 class="ml-3">
+                            {{doctors.user}}
+                        </h5>
+                        <h6 class="ml-3">
+                            {{doctors.specialization}}
+                        </h6>
+                        <p class="proile-rating lead ml-3" style="margin-bottom: 0.75rem;">Rating : <span>{{doctors.rating}}</span></p>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
@@ -157,59 +149,48 @@
                         </ul>
                     </div>
                 </div>
-                <!-- <div class="col-md-2">
-                    <input type="submit" class="profile-edit-btn" style="width: 160px;" name="btnAddMore" value="Book Appointment"/>
-                </div> -->
             </div>
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="tab-content profile-tab" id="myTabContent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tab-content profile-tab ml-3" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                    <!-- <div class="row">
-                                        <div class="col-md-6">
-                                            <label>User Id</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p>Kshiti123</p>
-                                        </div>
-                                    </div> -->
                                     <div class="row justify-content-center">
-                                        <div class="col-md-4 " style="width:fit-content;">
+                                        <div class="col-md-6" style="width:fit-content;">
                                             <label>Name</label>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <div class="col-md-6">
                                             <p>{{doctors.user}}</p>
                                         </div>
                                     </div>
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-4 ">
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <label>Email</label>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <div class="col-md-6">
                                             <p>{{doctors.user.email}}</p>
                                         </div>
                                     </div>
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-4 ">
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <label>Phone</label>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <div class="col-md-6">
                                             <p>{{doctors.user.phone}}</p>
                                         </div>
                                     </div>
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-4 ">
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <label>Profession</label>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <div class="col-md-6">
                                             <p>{{doctors.specialization}}</p>
                                         </div>
                                     </div>
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <label>Fees</label>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <p>{{doctors.fees}} EGP</p>
                                         </div>
                                     </div>
