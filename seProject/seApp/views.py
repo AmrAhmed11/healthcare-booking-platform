@@ -559,6 +559,11 @@ def viewprescription(request, app_id ) :
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
     doctorEmail = doctors.user.email
+    doctorAppointments = []
+    doctorAppointments =Appointment.objects.filter(doctor__id = doctor_id )
+    reviews = []
+    for app in doctorAppointments:
+        reviews.append(app.review)
     timeslots = []
     for timeslot in doctors.time_slots:
         if((timeslot - timezone.now()).total_seconds() > 0):
@@ -579,7 +584,7 @@ def viewDoctor(request, doctor_id):
     #             return render(request, 'seApp/test.html')
     #     else:
     #         return render(request, 'seApp/login.html')
-    context = {'doctors':doctors,}
+    context = {'doctors':doctors,'reviews':reviews}
     return render(request, 'seApp/viewDoctor.html', context)
 
 def UserProfile(request):
