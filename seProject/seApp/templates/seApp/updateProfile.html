@@ -5,6 +5,10 @@
         <form method="POST" action="/user/update-profile">
             {% csrf_token %}
             {{form}}
+            {% if request.user.role == 'patient' %}
+                {{medical_history}}
+            {% endif %}
+            <small class="text-muted">Please enter your medical history separated by commas e.g. Diabetic,High blood pressure  </small>
             <button type="submit" class="btn btn-success mt-4 float-right">Update Profile</button>
         </form>
     </div>
@@ -15,6 +19,7 @@
     document.getElementById('id_last_name').classList.add('form-control')
     document.getElementById('id_email').classList.add('form-control')
     document.getElementById('id_phone').classList.add('form-control')
+    document.getElementById('id_medical_history').classList.add('form-control')
 </script>
 
 {% endblock %}

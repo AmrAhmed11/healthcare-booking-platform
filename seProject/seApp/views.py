@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from .models import *
 from .forms import CreateUserForm, editProfileForm, updateProfileForm
 from django.forms import inlineformset_factory
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import *
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -573,7 +573,8 @@ def viewprescription(request, app_id ) :
    
 
 
-    
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['patient'])   
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
     doctorEmail = doctors.user.email
@@ -605,6 +606,7 @@ def viewDoctor(request, doctor_id):
     context = {'doctors':doctors,'reviews':reviews}
     return render(request, 'seApp/viewDoctor.html', context)
 
+@login_required(login_url='seApp:loginpage')
 def UserProfile(request):
     if request.user.is_authenticated:
         role = request.user.role
@@ -617,7 +619,8 @@ def UserProfile(request):
     else:
         return render(request, 'seApp/login.html')
 
-
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['patient']) 
 def paymentComplete(request, doctor_id):
     body = json.loads(request.body)
     print('BODY:', body)
@@ -672,7 +675,7 @@ def paymentComplete(request, doctor_id):
 #         form = editProfileForm(instance=request.user)
 #         args = {'form':form}
 #         return render(request, 'seApp/editProfile.html', args)
-
+@login_required(login_url='seApp:loginpage')
 def changePassword(request):
     if request.method == 'POST':
         form = PasswordChangeForm(data=request.POST, user=request.user)
@@ -688,14 +691,20 @@ def changePassword(request):
         args = {'form':form}
         return render(request, 'seApp/changepassword.html', args)
 
+@login_required(login_url='seApp:loginpage')
 def updateProfile(request):
     if request.method == 'POST':
         form = updateProfileForm(request.POST, instance=request.user)
-        if form.is_valid:
+        if request.user.role == "patient":
+            medical_history =  medicalHistoryForm(request.POST, instance=request.user.patient)
+        if form.is_valid and medical_history.is_valid:
             form.save()
+            medical_history.save()
             return redirect('/user/profile')
     else:
         form = updateProfileForm(instance=request.user)
+        if request.user.role == "patient":
+            medical_history =  medicalHistoryForm(instance=request.user.patient)
         
-    context = {'form':form}
+    context = {'form':form, 'medical_history':medical_history}
     return render(request, 'seApp/updateProfile.html', context)
