@@ -697,14 +697,22 @@ def updateProfile(request):
         form = updateProfileForm(request.POST, instance=request.user)
         if request.user.role == "patient":
             medical_history =  medicalHistoryForm(request.POST, instance=request.user.patient)
-        if form.is_valid and medical_history.is_valid:
-            form.save()
-            medical_history.save()
-            return redirect('/user/profile')
+            context = {'form':form, 'medical_history':medical_history}
+            if form.is_valid and medical_history.is_valid:
+                form.save()
+                medical_history.save()
+                return redirect('/user/profile')
+
+        if request.user.role == "doctor":
+            context = {'form':form}
+            if form.is_valid:
+                form.save()
+                return redirect('/doctor/profile')
     else:
         form = updateProfileForm(instance=request.user)
         if request.user.role == "patient":
             medical_history =  medicalHistoryForm(instance=request.user.patient)
-        
-    context = {'form':form, 'medical_history':medical_history}
-    return render(request, 'seApp/updateProfile.html', context)
+            context = {'form':form, 'medical_history':medical_history}
+        if request.user.role == "doctor":
+            context = {'form':form}
+        return render(request, 'seApp/updateProfile.html', context)
