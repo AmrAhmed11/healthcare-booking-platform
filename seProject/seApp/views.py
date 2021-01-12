@@ -442,18 +442,18 @@ def appointmentView(request, app_id):
                             for timeslot in appointment.doctor.time_slots:
                                if((timeslot - timezone.now()).total_seconds() > 0):
                                     timeslots.append(timeslot)
-                           appointment.doctor.time_slots = timeslots
-                           appointment.doctor.save() 
+                            appointment.doctor.time_slots = timeslots
+                            appointment.doctor.save() 
 
-                           appointment.status = "Cancelled"
-                           appointment.save()
-                           timeslotadd = appointment.time_slot
-                           appointment.doctor.time_slots.append(timeslotadd)
-                           timeslot =request.POST['appointment']
-                           timeslotParsed = parse_datetime(timeslot) 
-                           appointment.doctor.time_slots.remove(timeslotParsed)
-                           appointment.doctor.save()
-                           appointmentnew = Appointment(
+                            appointment.status = "Cancelled"
+                            appointment.save()
+                            timeslotadd = appointment.time_slot
+                            appointment.doctor.time_slots.append(timeslotadd)
+                            timeslot =request.POST['appointment']
+                            timeslotParsed = parse_datetime(timeslot) 
+                            appointment.doctor.time_slots.remove(timeslotParsed)
+                            appointment.doctor.save()
+                            appointmentnew = Appointment(
                                 patient = appointment.patient,
                                 doctor = appointment.doctor,
                                 status = 'Pending',
