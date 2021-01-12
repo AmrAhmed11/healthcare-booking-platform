@@ -3,78 +3,82 @@
 
 <body>
     
-<main>
+
+<div class="col-12 col-md-12">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Appointments</h1>
-        
+        <h1 class="fw-light">Appointment Manager</h1>
       </div>
     </div>
   </section>
 
-  <div class="bg-light py-5 " style="margin: 20px;">
+  
 
         {% if app_all %}
-        <div class ="card-deck">
-          {% for app in app_pending %} 
-          <div class="col-12 col-md-6 col-lg-4">
-              <div class="card p-5 shadow-md">
-                <div class="card-body">
-                  <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
-                  <p class="card-text">Doctor: {{app.doctor}}</p>
-                  <p class="card-text">Date: {{app.time_slot}}</p>
-                  <p class="card-text" style="color :orange;"> {{app.status}}</p>
-                  <div class="text-center">
-                  <a href="/user/appointmentview/{{app.id}}" class="btn btn-outline-primary btn-md">View</a>
+        <div class="bg-light py-5 " style="margin: 20px;"></div>
+          <div class ="card-deck">
+            {% for app in app_pending %} 
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card p-5 shadow-md">
+                  <div class="card-body">
+                    <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
+                    <p class="card-text">Doctor: {{app.doctor}}</p>
+                    <p class="card-text">Date: {{app.time_slot}}</p>
+                    <p class="card-text" style="color :orange;"> {{app.status}}</p>
+                    <div class="text-center">
+                    <a href="/user/appointmentview/{{app.id}}" class="btn btn-outline-primary btn-md">View</a>
+                    </div>
                   </div>
                 </div>
+                <br>
               </div>
-              <br>
-            </div>
-          {% endfor %}
-        
-          {% for app in app_done %}  
-          <div class="col-12 col-md-6 col-lg-4">
-              <div class="card p-5 shadow-md">
-                <div class="card-body">
-                  <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
-                  <p class="card-text">Doctor: {{app.doctor}}</p>
-                  <p class="card-text">Date: {{app.time_slot}}</p>
-                  <p class="card-text" style="color: green;"> {{app.status}}</p>
-                  <div class="text-center">
-                  <a href="/user/appointmentview/{{app.id}}" class="btn btn-outline-primary btn-md">View</a>
+            {% endfor %}
+          
+            {% for app in app_done %}  
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card p-5 shadow-md">
+                  <div class="card-body">
+                    <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
+                    <p class="card-text">Doctor: {{app.doctor}}</p>
+                    <p class="card-text">Date: {{app.time_slot}}</p>
+                    <p class="card-text" style="color: green;"> {{app.status}}</p>
+                    <div class="text-center">
+                    <a href="/user/appointmentview/{{app.id}}" class="btn btn-outline-primary btn-md">View</a>
+                    </div>
                   </div>
                 </div>
+                <br>
               </div>
-              <br>
-            </div>
-          {% endfor %}
-          {% for app in app_cancelled %} 
-          <div class="col-12 col-md-6 col-lg-4">
-              <div class="card p-5 shadow-md">
-                <div class="card-body">
-                  <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
-                  <p class="card-text">Doctor: {{app.doctor}}</p>
-                  <p class="card-text">Date: {{app.time_slot}}</p>
-                  <p class="card-text" style="color :rgb(255, 1, 1)  ;"> {{app.status}}</p>
-                  <div class="text-center">
-                  <a href="/user/appointmentview/{{app.id}}" class="btn btn-outline-primary btn-md">View</a>
+            {% endfor %}
+            {% for app in app_cancelled %} 
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card p-5 shadow-md">
+                  <div class="card-body">
+                    <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
+                    <p class="card-text">Doctor: {{app.doctor}}</p>
+                    <p class="card-text">Date: {{app.time_slot}}</p>
+                    <p class="card-text" style="color :rgb(255, 1, 1)  ;"> {{app.status}}</p>
+                    <div class="text-center">
+                    <a href="/user/appointmentview/{{app.id}}" class="btn btn-outline-primary btn-md">View</a>
+                    </div>
                   </div>
                 </div>
+                <br>
               </div>
-              <br>
-            </div>
-          {% endfor %}
-        </div>
+            {% endfor %}
+          </div>
+        </div> 
       {% else %}
-        <p>No appoinments available</p>
+        <div class="bg-light py-5 ">
+          <h5>No appoinments available</h5>
+        </div>
       {% endif %}
       
 
   </div>
 
-</main>
+</div>
 
       
 </body>
