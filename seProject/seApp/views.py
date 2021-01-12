@@ -103,7 +103,7 @@ def postAppointment(request, app_id):
     app.doctor.time_slots.pop(index)
     app.save()
     app.doctor.save()
-    patient = Appointment.patient
+    patient = app.patient
     sendEmail('test',patient,'doctorEdit')
     return redirect('seApp:appointment', app_id=app_id)
 
@@ -113,7 +113,7 @@ def deleteAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
     app.status = 'Cancelled'
     app.save()
-    patient = Appointment.patient
+    patient = app.patient
     sendEmail('test',patient,'doctorCancel')
     return redirect('seApp:appointmentGetManager')
 
