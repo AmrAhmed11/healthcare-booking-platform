@@ -184,6 +184,35 @@ def StaffProfile(request):
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 
 
+# COLLECT DOCTOR INFO
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['staff', 'doctor'])
+def collectedInfoDoctor(request):
+    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    apps = doctor.appointment_set.all()
+    patient_list = []
+    noPatients = 0
+    noAppPending = 0
+    noAppCancel = 0
+    noAppDone = 0
+    noAppPaid = 0
+    for app in apps:
+        if app.status == "Pending":
+            noAppPending += 1
+        elif app.status == "Cancelled":
+            noAppCancel += 1
+        elif app.status == "Done":
+            noAppDone += 1
+        else:
+            noAppPaid += 1
+        if app.patient not in patient_list:
+            patient_list.append(app.patient)
+            noPatients += 1
+    context = {'patient_list': patient_list , 'app_list':apps, 'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancel, 'noAppDone': noAppDone,'noAppPaid': noAppPaid}
+    return render(request, 'seApp/collectedInfoDoctor.html', context)
+
+    
+
 
 #  MANAGING DOCTOR SERVICES 
 @login_required(login_url='seApp:loginpage')
