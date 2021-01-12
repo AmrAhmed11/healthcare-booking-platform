@@ -183,7 +183,7 @@ def staffPostDetails(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def servicesManager(request):
-    if request.user.role is 'staff':
+    if request.user.role == 'staff':
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
     else:
         doctor = Doctor.objects.get(id=request.user.doctor.id)
