@@ -34,6 +34,8 @@
                       style="margin-right: 10px;">
                       Rate
                     </button>
+                    <th><a href="viewprescription/{{appointment.id}}" class="btn btn-primary btn-md" style="margin-left: 50px;">View Prescription</a></th> 
+                    
                     <!-- Modal -->
                     <div class="modal fade" id="Model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                       aria-hidden="true">
@@ -64,23 +66,16 @@
                               <div class="form-group">
                                 {{ form.review }}
                               </div>
+                              <button type="submit" class="btn btn-outline-primary btn-md mt-2" name="submit">Submit</button>
                             </form>
                           </div>
-
-                          <div class="modal-footer">
-                            <div class="text-center">
-                              <button type="submit" class="btn btn-outline-primary btn-md mt-0"
-                                style="margin-right: 170px ;" name="submit">Submit</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <th><a href="viewprescription/{{appointment.id}}" class="btn btn-primary btn-md"
-                        style="margin-left: 50px;">View Prescription</a></th>
-
-                  </div>
-                </div>
+                          
+                          
+                       </div>
+                     </div>
+                   </div> 
+          
+                 </div>
               </div>
             </div>
             {% else %}
