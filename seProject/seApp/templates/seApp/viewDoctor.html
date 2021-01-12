@@ -284,6 +284,7 @@
                         <form action="/user/checkout/{{doctors.id}}" method="POST">
                             {% csrf_token %}
                             <select required name="appointment" id="panel" class="form-control custom-select">
+                                <option selected disabled>Select an appointment</option>
                             {% for timeSlot in doctors.time_slots %}
                                 <option value="{{timeSlot|date:"c"}}">{{timeSlot}}</option>
                             {% endfor %}

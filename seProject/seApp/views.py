@@ -554,6 +554,7 @@ def paymentComplete(request, doctor_id):
     
     patient = Patient.objects.get(id=request.user.patient.id)
     doctor = Doctor.objects.get(id=doctor_id)
+    doctorEmail = doctor.user.email
 
     if body['status'] == 'completed':
         if body['user'] == '1':
@@ -566,8 +567,9 @@ def paymentComplete(request, doctor_id):
                 prescription = [],
                 patient_name = patient.user,
             )
-            doctors.time_slots.remove(body['timeSlot'])
-            doctors.save()
+            timeslotParsed = parse_datetime(body['timeSlot']) 
+            doctor.time_slots.remove(timeslotParsed)
+            doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
             return JsonResponse('Payment Completed!', safe=False)
@@ -581,8 +583,9 @@ def paymentComplete(request, doctor_id):
                 prescription = [],
                 patient_name = body['firstName'] + ' ' + body['lastName'],
             ) 
-            doctors.time_slots.remove(body['timeSlot'])
-            doctors.save()
+            timeslotParsed = parse_datetime(body['timeSlot']) 
+            doctor.time_slots.remove(timeslotParsed)
+            doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
             return JsonResponse('Payment Completed!', safe=False)
