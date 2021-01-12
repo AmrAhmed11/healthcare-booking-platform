@@ -6,9 +6,37 @@
   
         <section class="py-5 text-center container ">
           <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-8 mx-auto mt-4 pt-2">
+            <div class="col-lg-12 mt-4">
               <h1 class="fw-light">Information Manager</h1>
-              
+              <div class="col-12 col-md-12 col-lg-12 mt-5">
+            <div class="card p-2 shadow-md mt-4 ">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Filters</h4></div>
+              <div class="mt-1">
+                
+                    <button type="button" class="btn btn-outline-primary m-1 " id="appointmentStatisticsbutton" onclick="filter('appointmentStatistics','Appointments Statistics')">Hide Appointments Statistics</button>
+                    <button type="button" class="btn btn-outline-primary m-1" id="usersbutton" onclick="filter('users','Users')">Hide Users</button>
+                    <button type="button" class="btn btn-outline-primary m-1" id="totalAmountsbutton" onclick="filter('totalAmounts','Totals amounts')">Hide Totals amounts</button>
+                   
+            
+
+                  
+                  
+                    <button type="button" class="btn btn-outline-primary m-1" id="doctorsbutton" onclick="filter('doctors','Doctors')">Hide Doctors</button>
+                  <button type="button" class="btn btn-outline-primary m-1" id="patientsbutton" onclick="filter('patients','Patients')">Hide Patients</button>
+                   
+                
+                
+                <button type="button" class="btn btn-outline-primary m-1" id="staffbutton" onclick="filter('staff','Staff')">Hide Staff</button>
+                <button type="button" class="btn btn-outline-primary m-1" id="clinicbutton" onclick="filter('clinic','Clinic')">Hide Clinic</button>
+                <button type="button" class="btn btn-outline-primary m-1" id="appointmentbutton" onclick="filter('appointment','Appointments')">Hide Appointments</button>
+            
+            </div>
+        </div>
+    </div>
+
+            </div>
             </div>
           </div>
         </section>
@@ -25,7 +53,7 @@
         
         
 
-        <div class="col-12 col-md-12 col-lg-6">
+        <div class="col-12 col-md-12 col-lg-6" id="appointmentStatistics">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <div class="text-center mb-2">
@@ -75,14 +103,14 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-12 col-lg-6">
+          <div class="col-12 col-md-12 col-lg-6" id="users">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <div class="text-center mb-2">
                 <h4>Users</h4></div>
-                <canvas id="users" width="400" height="400"></canvas>
+                <canvas id="usersChart" width="400" height="400"></canvas>
                 <script>
-                var ctx = document.getElementById('users').getContext('2d');
+                var ctx = document.getElementById('usersChart').getContext('2d');
                 var myChart = new Chart(ctx, {
                     type: 'pie',
                     data: {
@@ -125,7 +153,7 @@
             </div>
           </div>
           
-          <div class="col-12 col-md-12 col-lg-12">
+          <div class="col-12 col-md-12 col-lg-12" id="totalAmounts">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <div class="text-center mb-2">
@@ -136,12 +164,12 @@
                 <h5>Number of Clinics: {{noClinics}}</h5>
                 <h5>Number of Payments: {{noPayments}}</h5>
                 <h5>Number of Appointments: {{noApps}}</h5>
-                <h5>Total Paid Amount: {{totalPaymentAmount}}</h5>
+                <h5>Total Paid Amount: ${{totalPaymentAmount}}</h5>
               </div>
             </div>
           </div>
         
-          <div class="col-12 col-md-12 col-lg-12">
+          <div class="col-12 col-md-12 col-lg-12" id="doctors">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <div class="text-center mb-2">
@@ -171,7 +199,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-12 col-lg-12">
+          <div class="col-12 col-md-12 col-lg-12" id="patients">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <div class="text-center mb-2">
@@ -200,7 +228,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-12 col-lg-12">
+          <div class="col-12 col-md-12 col-lg-12" id="staff"> 
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <div class="text-center mb-2">
@@ -229,7 +257,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-12 col-lg-12">
+          <div class="col-12 col-md-12 col-lg-12" id="clinic">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <div class="text-center mb-2">
@@ -255,7 +283,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-12 col-lg-12">
+          <div class="col-12 col-md-12 col-lg-12" id="appointment">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <div class="text-center mb-2">
@@ -301,7 +329,20 @@
 
 
 
-
+<script>
+    function filter(id,property){
+        const div  = document.getElementById(id)
+        buttonId = `${id}button`
+        const button = document.getElementById(buttonId)
+        if(div.hidden == true){
+            div.hidden = false
+            button.innerHTML = `Hide ${property}`
+        } else {
+            div.hidden = true
+            button.innerHTML = `Show ${property}`
+        }
+    }
+</script>
 
 
 
