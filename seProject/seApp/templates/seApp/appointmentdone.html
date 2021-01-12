@@ -1,70 +1,67 @@
-{%  extends 'seApp/main.html' %}
+{% extends 'seApp/main.html' %}
 {%block content%}
-  <body>
-    <div class="container">
-  <header class="blog-header py-3">
-    <div class="row flex-nowrap justify-content-between align-items-center">
-      <div class="col-8 pt-1">
-       
-    </div>
-      
-      
-    </div>
-  </header>
 
-  
-
-
-<main>
-
-  <div class="bg-light py-2 mt-5 ">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if appointment %}
-        <div class="col-12 col-md-12">
-            <div class="card p-5 shadow-md">
-              <div class="card-body">
-                <h3 class="text-center mb-5">Appointment {{appointment.doctor.specialization}}</h3>
-                <p class="card-text">Date: {{appointment.time_slot}}</p>
-                <p class="card-text"> Doctor: {{appointment.doctor}}</p>
-                <p class="card-text"> Specilization: {{appointment.doctor.specialization}}</p>
-                <p class="card-text"> Clinic: {{appointment.doctor.clinic}}</p>
-                <p class="card-text"> Address: {{appointment.doctor.clinic.address}}</p>
-                <p class="card-text"> Description: {{appointment.doctor.description}}</p>
-                <p class="card-text"> Paid Fees: {{appointment.doctor.fees}}</p>
-                <br>
-                <h5 class="card-text " style="color:green;"> {{appointment.status}}</h5>
-                <br><br>
-                <div class="text-center">
-                  <!-- <th><a href="review/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-right: 20px;">Rate</a> -->
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Model" style="margin-right: 10px;">
+<body>
+  <div class="container">
+    <header class="blog-header py-3">
+      <div class="row flex-nowrap justify-content-between align-items-center">
+        <div class="col-8 pt-1">
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="bg-light py-2 mt-5 ">
+        <div class="container">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% if appointment %}
+            <div class="col-12 col-md-12">
+              <div class="card p-5 shadow-md">
+                <div class="card-body">
+                  <h3 class="text-center mb-5">Appointment {{appointment.doctor.specialization}}</h3>
+                  <p class="card-text">Date: {{appointment.time_slot}}</p>
+                  <p class="card-text"> Doctor: {{appointment.doctor}}</p>
+                  <p class="card-text"> Specilization: {{appointment.doctor.specialization}}</p>
+                  <p class="card-text"> Clinic: {{appointment.doctor.clinic}}</p>
+                  <p class="card-text"> Address: {{appointment.doctor.clinic.address}}</p>
+                  <p class="card-text"> Description: {{appointment.doctor.description}}</p>
+                  <p class="card-text"> Paid Fees: {{appointment.doctor.fees}}</p>
+                  <br>
+                  <h5 class="card-text " style="color:green;"> {{appointment.status}}</h5>
+                  <br><br>
+                  <div class="text-center">
+                    <!-- <th><a href="review/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-right: 20px;">Rate</a> -->
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Model"
+                      style="margin-right: 10px;">
                       Rate
                     </button>
                     <th><a href="viewprescription/{{appointment.id}}" class="btn btn-primary btn-md" style="margin-left: 50px;">View Prescription</a></th> 
                     
                     <!-- Modal -->
-                    <div class="modal fade" id="Model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="Model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                      aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                           <h2 class="modal-title " id="exampleModalLabel" style="margin-left: 80px ;">Give Feedback</h2>
+                            <h2 class="modal-title " id="exampleModalLabel" style="margin-left: 80px ;">Give Feedback
+                            </h2>
                           </div>
                           <div class="modal-body">
                             <h4 class="modal-title" id="exampleModalLabel">Rate your Doctor </h4>
                             <form action="/user/appointmentview/{{app.id}}" method="POST" class="text-center">
                               {% csrf_token %}
-                                <input type="radio" name="rate" id="ch1" value="{{1}}" >
-                                <label for="ch1" style="margin-right:30px; color: red; font-size: 30px;"> 1 </label>
-                                <input type="radio" name="rate" id="ch2" value="{{2}}" >
-                                <label for="ch2" style="margin-right:30px; color: orangered; font-size: 30px;"> 2 </label>   
-                                <input type="radio" name="rate" id="ch3" value="{{3}}" >
-                                <label for="ch3" style="margin-right:30px; color: orange; font-size: 30px;"> 3 </label>
-                                <input type="radio" name="rate" id="ch4" value="{{4}}" >
-                                <label for="ch4" style="margin-right:30px; color: rgb(124, 194, 18); font-size: 30px;"> 4 </label>
-                                <input type="radio" name="rate" id="ch5" value="{{5}}" >
-                                <label for="ch5" style="margin-right:30px; color: green; font-size: 30px;"> 5 </label>
-                                <br>
-                                <br>
+                              <input type="radio" name="rate" id="ch1" value="{{1}}">
+                              <label for="ch1" style="margin-right:30px; color: red; font-size: 30px;"> 1 </label>
+                              <input type="radio" name="rate" id="ch2" value="{{2}}">
+                              <label for="ch2" style="margin-right:30px; color: orangered; font-size: 30px;"> 2 </label>
+                              <input type="radio" name="rate" id="ch3" value="{{3}}">
+                              <label for="ch3" style="margin-right:30px; color: orange; font-size: 30px;"> 3 </label>
+                              <input type="radio" name="rate" id="ch4" value="{{4}}">
+                              <label for="ch4" style="margin-right:30px; color: rgb(124, 194, 18); font-size: 30px;"> 4
+                              </label>
+                              <input type="radio" name="rate" id="ch5" value="{{5}}">
+                              <label for="ch5" style="margin-right:30px; color: green; font-size: 30px;"> 5 </label>
+                              <br>
+                              <br>
                               <h5 class="card-text">Write a Review</h5>
                               <div class="form-group">
                                 {{ form.review }}
@@ -81,26 +78,16 @@
                  </div>
               </div>
             </div>
-        </div>
-          {% else %}
-           <p>Appointment not found</p>
-          {% endif %}
-        
-      </div>
-    </div>
-  </div>
-  
-   
-                 
-               
-                  
-                   
-                
-            
-</main>
+            {% else %}
+            <p>Appointment not found</p>
+            {% endif %}
 
-<footer class="blog-footer">
-    <br> 
-</footer>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="blog-footer">
+      <br>
+    </footer>
 </body>
 {%endblock%}

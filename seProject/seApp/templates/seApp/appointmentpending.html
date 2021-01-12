@@ -1,115 +1,117 @@
-{%  extends 'seApp/main.html' %}
+{% extends 'seApp/main.html' %}
 {%block content%}
 
-  <body>
-    <div class="container">
-  <header class="blog-header py-3">
-    <div class="row flex-nowrap justify-content-between align-items-center">
-      <div class="col-8 pt-1">
-       
-    </div>
-      
-      
-    </div>
-  </header>
+<body>
+  <div class="container">
+    <header class="blog-header py-3">
+      <div class="row flex-nowrap justify-content-between align-items-center">
+        <div class="col-8 pt-1">
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="bg-light py-2 mt-5 ">
+        <div class="container">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% if appointment %}
+            <div class="col-12 col-md-12">
+              <div class="card p-5 shadow-md">
+                <div class="card-body">
+                  <h3 class="text-center mb-5">Appointment {{appointment.doctor.specialization}}</h3>
+                  <p class="card-text">Date: {{appointment.time_slot}}</p>
+                  <p class="card-text"> Doctor: {{appointment.doctor.user}}</p>
+                  <p class="card-text"> Specilization: {{appointment.doctor.specialization}}</p>
+                  <p class="card-text"> Clinic: {{appointment.doctor.clinic}}</p>
+                  <p class="card-text"> Address: {{appointment.doctor.clinic.address}}</p>
+                  <p class="card-text"> Description: {{appointment.doctor.description}}</p>
+                  <p class="card-text"> Paid Fees: {{appointment.doctor.fees}}</p>
+                  <br>
+                  <h5 class="card-text " style="color :orange;"> {{appointment.status}}</h5>
 
-  
+                  <div class="text-center">
 
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#example"
+                      style="margin-right:50px ;">
+                      Edit
+                    </button>
 
-<main>
+                    <!--<th><a href="cancel/{{appointment.id}}" class="btn btn-outline-danger btn-md" style="margin-left: 20px;">Cancel</a></th> -->
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal"
+                      style="margin-left: 50px;">
+                      Cancel
+                    </button>
 
-  <div class="bg-light py-2 mt-5 ">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if appointment %}
-        <div class="col-12 col-md-12">
-            <div class="card p-5 shadow-md">
-              <div class="card-body">
-                <h3 class="text-center mb-5">Appointment {{appointment.doctor.specialization}}</h3>
-                <p class="card-text">Date: {{appointment.time_slot}}</p>
-                <p class="card-text"> Doctor: {{appointment.doctor.user}}</p>
-                <p class="card-text"> Specilization: {{appointment.doctor.specialization}}</p>
-                <p class="card-text"> Clinic: {{appointment.doctor.clinic}}</p>
-                <p class="card-text"> Address: {{appointment.doctor.clinic.address}}</p>
-                <p class="card-text"> Description: {{appointment.doctor.description}}</p>
-                <p class="card-text"> Paid Fees: {{appointment.doctor.fees}}</p>
-                <br>
-                <h5 class="card-text " style="color :orange;"> {{appointment.status}}</h5>
-                
-                <div class="text-center">
-                  
-                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#example" style="margin-right:50px ;">
-                    Edit
-                  </button>
-               
-                 <!--<th><a href="cancel/{{appointment.id}}" class="btn btn-outline-danger btn-md" style="margin-left: 20px;">Cancel</a></th> -->
-                 <!-- Button trigger modal -->
-                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" style="margin-left: 50px;">
-                  Cancel
-                </button>
-        
-                <!-- Modal -->
-                <div class="modal fade" id="example" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Choose another appointment {{appointment.doctor.specialization}}</h5>
-                      </div>
-                      <div class="modal-body">
-                        <form action="/user/appointmentview/{{appointment.id}}" method="POST">
-                          {% csrf_token %}
-                          <select name="appointment" id="panel" class="form-control custom-select">
-                          {% for timeSlot in appointment.doctor.time_slots %}
-                              <option value="{{timeSlot|date:"c"}}">{{timeSlot}}</option>
-                          {% endfor %}
-                          </select>
-                          <button type="submit" id="book" class="mt-2 btn btn-outline-success " style="margin-left: 220px;" name="edit" >Replace</button>
-                          <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-top : 8px; margin-left: 10px;">Cancel</a>
-                      </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel appointment {{appointment.doctor.specialization}} ? </h5>
-                      </div>
-                      <div class="modal-body">
-                         An ammount of {{appointment.doctor.fees}} will be returned to you.
-                      </div>
-                      <div class="modal-footer">
-                        <form action="/user/appointmentview/{{appointment.id}}" method="POST" class="text-center">
-                          {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger btn-md mt-3" name="cancel">Yes</button>
-                            <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-top : 16px; margin-left: 10px;">Cancel</a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="example" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Choose another appointment
+                              {{appointment.doctor.specialization}}</h5>
                           </div>
-                        </form>
+                          <div class="modal-body">
+                            <form action="/user/appointmentview/{{appointment.id}}" method="POST">
+                              {% csrf_token %}
+                              <select name="appointment" id="panel" class="form-control custom-select">
+                                {% for timeSlot in appointment.doctor.time_slots %}
+                                <option value="{{timeSlot|date:" c"}}">{{timeSlot}}</option>
+                                {% endfor %}
+                              </select>
+                              <button type="submit" id="book" class="mt-2 btn btn-outline-success "
+                                style="margin-left: 220px;" name="edit">Replace</button>
+                              <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary btn-md"
+                                style="margin-top : 8px; margin-left: 10px;">Cancel</a>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                      aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel appointment
+                              {{appointment.doctor.specialization}} ? </h5>
+                          </div>
+                          <div class="modal-body">
+                            An ammount of {{appointment.doctor.fees}} will be returned to you.
+                          </div>
+                          <div class="modal-footer">
+                            <form action="/user/appointmentview/{{appointment.id}}" method="POST" class="text-center">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-outline-danger btn-md mt-3"
+                                name="cancel">Yes</button>
+                              <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary btn-md"
+                                style="margin-top : 16px; margin-left: 10px;">Cancel</a>
+                          </div>
+                          </form>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-               </div>
               </div>
             </div>
           </div>
-      {% else %}
-        <p>Appointment not found</p>
-      {% endif %}
+          {% else %}
+          <p>Appointment not found</p>
+          {% endif %}
+        </div>
       </div>
-    </div>
   </div>
-  
-   
-                
-               
-                  
-                   
-                
-            
-</main>
+
+
+
+
+
+
+
+
+  </main>
 
 </body>
 {%endblock%}

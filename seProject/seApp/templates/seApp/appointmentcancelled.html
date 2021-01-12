@@ -1,52 +1,41 @@
-{%  extends 'seApp/main.html' %}
+{% extends 'seApp/main.html' %}
 {%block content%}
-  <body>
-    <div class="container">
-  <header class="blog-header py-3">
-    <div class="row flex-nowrap justify-content-between align-items-center">
-      <div class="col-8 pt-1">
-       
-    </div>
-      
-    </div>
-  </header>
 
-  
-
-
-<main>
-
-  <div class="bg-light py-2 mt-5 ">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if appointment %}
-        <div class="col-12 col-md-12">
-            <div class="card p-5 shadow-md">
-              <div class="card-body">
-                <h3 class="text-center mb-5">Appointment {{appointment.doctor.specialization}}</h3>
-                <p class="card-text">Date: {{appointment.time_slot}}</p>
-                <p class="card-text"> Doctor: {{appointment.doctor}}</p>
-                <p class="card-text"> Specilization: {{appointment.doctor.specialization}}</p>
-                <p class="card-text"> Clinic: {{appointment.doctor.clinic}}</p>
-                <p class="card-text"> Address: {{appointment.doctor.clinic.address}}</p>
-                <p class="card-text"> Description: {{appointment.doctor.description}}</p>
-                <p class="card-text"> Returned Fees: {{appointment.doctor.fees}}</p>
-                <br>
-                <h6 class="text-center" style="color :red;"> This Appointment was {{appointment.status}}</h6>
-                 
+<body>
+  <div class="container">
+    <header class="blog-header py-3">
+      <div class="row flex-nowrap justify-content-between align-items-center">
+        <div class="col-8 pt-1">
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="bg-light py-2 mt-5 ">
+        <div class="container">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% if appointment %}
+            <div class="col-12 col-md-12">
+              <div class="card p-5 shadow-md">
+                <div class="card-body">
+                  <h3 class="text-center mb-5">Appointment {{appointment.doctor.specialization}}</h3>
+                  <p class="card-text">Date: {{appointment.time_slot}}</p>
+                  <p class="card-text"> Doctor: {{appointment.doctor}}</p>
+                  <p class="card-text"> Specilization: {{appointment.doctor.specialization}}</p>
+                  <p class="card-text"> Clinic: {{appointment.doctor.clinic}}</p>
+                  <p class="card-text"> Address: {{appointment.doctor.clinic.address}}</p>
+                  <p class="card-text"> Description: {{appointment.doctor.description}}</p>
+                  <p class="card-text"> Returned Fees: {{appointment.doctor.fees}}</p>
+                  <br>
+                  <h6 class="text-center" style="color :red;"> This Appointment was {{appointment.status}}</h6>
+                </div>
               </div>
             </div>
+            {% else %}
+            <p>Appointment not found</p>
+            {% endif %}
           </div>
-      {% else %}
-        <p>Appointment not found</p>
-      {% endif %}
+        </div>
       </div>
-    </div>
-  </div>
-               
-            
-</main>
-
-
+    </main>
 </body>
 {%endblock%}

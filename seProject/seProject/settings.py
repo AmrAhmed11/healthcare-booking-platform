@@ -129,3 +129,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
+
+# Mailing
+EMAIL_HOST = 'in-v3.mailjet.com'
+EMAIL_HOST_USER = '5b351b928232bc2fde131ed9919bd5db'
+EMAIL_HOST_PASSWORD = '2213ff84e65da72e93307a8a066e8cc7'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

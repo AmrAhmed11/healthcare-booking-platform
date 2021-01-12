@@ -5,7 +5,7 @@
     min-height: 600px;
   }
 </style>
-<main>
+<div class="col-12 col-md-12">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
@@ -49,11 +49,12 @@
           </div>
         {% endfor %}
       {% else %}
-        <p>No appoinments available</p>
+        <h5>No patients available</h5>
       {% endif %}
       </div>
     </div>
   </div>
 
 </main>
+</div>
 {%endblock%}
