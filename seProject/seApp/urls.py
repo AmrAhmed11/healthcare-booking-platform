@@ -22,8 +22,10 @@ urlpatterns = [
     path('test',views.test,name='test'),
 
 
-    path('doctor/appointment', views.appointmentManager, name='appointmentManager'),
+    path('doctor/appointment', views.appointmentGetManager, name='appointmentGetManager'),
     path('doctor/appointment/<int:app_id>', views.appointment, name='appointment'),
+    path('doctor/appointment/<int:app_id>/edit', views.postAppointment, name='postAppointment'),
+    path('doctor/appointment/<int:app_id>/delete', views.deleteAppointment, name='deleteAppointment'),
     path('doctor/patients/', views.doctorGetPatients, name='patients'),
     path('doctor/patients/transfer/<int:patient_id>', views.doctorTransferPatient, name='TransferPatients'),
     path('doctor/patients/prescription/<int:app_id>/create', views.doctorPostPrescription, name='PostPrescription'),
