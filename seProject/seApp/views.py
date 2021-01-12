@@ -532,7 +532,18 @@ def appointmentView(request, app_id):
                     if request.method == 'POST':
                         if 'submit' in request.POST:
                             form = ReviewForm(request.POST,instance=app)
-                            app.doctor.rating = request.POST['rate']
+                            tempRating = int(request.POST['rate'])
+                            if tempRating == 5:
+                                rating = app.doctor.rating + 0.2
+                            elif tempRating == 4:
+                                rating = app.doctor.rating + 0.1
+                            elif tempRating == 2:
+                                rating = app.doctor.rating - 0.1
+                            elif tempRating == 1:
+                                rating = app.doctor.rating - 0.2
+                            else:
+                                rating = app.doctor.rating
+                            app.doctor.rating = 5 if rating > 5  else rating
                             app.doctor.save()
 
                             if form.is_valid():
