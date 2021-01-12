@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+import json
 from .forms import *
 from django.utils.dateparse import parse_datetime
 from pytz import timezone
@@ -525,29 +527,20 @@ def viewDoctor(request, doctor_id):
             timeslots.append(timeslot)
     doctors.time_slots = timeslots
     doctors.save()
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            role = request.user.role
-            if(role == "patient"):
-                patient = Patient.objects.get(id=request.user.patient.id)
-                timeslots = doctors.time_slots
-                timeslot = timeslots[int(request.POST['appointment']) - 1]
-                doctors.time_slots.remove(timeslot)
-                appointment = Appointment(
-                    patient = patient,
-                    doctor = doctors,
-                    status = 'Pending',
-                    time_slot = timeslot,
-                    review = 'None',
-                    prescription = []
-                )
-                appointment.save()
-                doctors.save()
-                sendEmail('test',doctorEmail,'appointmentBook')
-            else:
-                return render(request, 'seApp/test.html')
-        else:
-            return render(request, 'seApp/login.html')
+    # if request.method == 'POST':
+    #     if request.user.is_authenticated:
+    #         role = request.user.role
+    #         if(role == "patient"):
+    #             patient = Patient.objects.get(id=request.user.patient.id)
+    #             timeslots = doctors.time_slots
+    #             timeslot = timeslots[int(request.POST['appointment']) - 1]
+    #             doctors.time_slots.remove(timeslot)
+    #             doctors.save()
+    #             sendEmail('test',doctorEmail,'appointmentBook')
+    #         else:
+    #             return render(request, 'seApp/test.html')
+    #     else:
+    #         return render(request, 'seApp/login.html')
     context = {'doctors':doctors,}
     return render(request, 'seApp/viewDoctor.html', context)
 
@@ -564,5 +557,41 @@ def UserProfile(request):
         return render(request, 'seApp/login.html')
 
 
+def paymentComplete(request, doctor_id):
+    body = json.loads(request.body)
+    print('BODY:', body)
+    
+    patient = Patient.objects.get(id=request.user.patient.id)
+    doctor = Doctor.objects.get(id=doctor_id)
 
-
+    if body['status'] == 'completed':
+        if body['user'] == '1':
+            appointment = Appointment(
+                patient = patient,
+                doctor = doctor,
+                status = 'Paid',
+                time_slot = body['timeSlot'],
+                review = 'None',
+                prescription = [],
+                patient_name = patient.user,
+            )
+            doctors.time_slots.remove(body['timeSlot'])
+            doctors.save()
+            sendEmail('test',doctorEmail,'appointmentBook')
+            appointment.save()
+            return JsonResponse('Payment Completed!', safe=False)
+        else:
+            appointment = Appointment(
+                patient = patient,
+                doctor = doctor,
+                status = 'Paid',
+                time_slot = body['timeSlot'],
+                review = 'None',
+                prescription = [],
+                patient_name = body['firstName'] + ' ' + body['lastName'],
+            ) 
+            doctors.time_slots.remove(body['timeSlot'])
+            doctors.save()
+            sendEmail('test',doctorEmail,'appointmentBook')
+            appointment.save()
+            return JsonResponse('Payment Completed!', safe=False)
