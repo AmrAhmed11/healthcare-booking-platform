@@ -43,7 +43,9 @@ urlpatterns = [
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
     path('doctor/profile', views.DoctorProfile, name="DoctorProfile"),
     path('doctor/collectedInfo', views.collectedInfoDoctor, name="collectedInfoDoctor"),
-    
+
+
+    path('admin/collectedInfo', views.collectedInfoAdmin, name="collectedInfoAdmin"),    
    
 
     path('staff/details/', views.staffGetDetails, name='staffGetDetails'),
