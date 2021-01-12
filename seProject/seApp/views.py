@@ -203,7 +203,6 @@ def StaffProfile(request):
 
 # COLLECT ADMIN INFO
 def collectedInfoAdmin(request):
-    users = User.objects.all()
     doctors = Doctor.objects.all()
     patients = Patient.objects.all()
     clinics = Clinic.objects.all()
@@ -211,7 +210,6 @@ def collectedInfoAdmin(request):
     payments = Payment.objects.all()
     apps = Appointment.objects.all()
     totalPaymentAmount = 0
-    noUsers = users.count()
     noPayments = payments.count()
     noDoctors = doctors.count()
     noPatients = patients.count()
@@ -229,14 +227,13 @@ def collectedInfoAdmin(request):
             noAppCancel += 1
         elif app.status == "Done":
             noAppDone += 1
-            reviews.append(app.review)
         else:
             noAppPaid += 1
     for payment in payments:
         totalPaymentAmount += payment.amount
-    context = {'noUsers':noUsers,'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancelled, 'noAppDone': noAppDone,'noAppPaid': noAppPaid,'noApps':noApps,'noClinics':noClinics,'noStaff':noStaff,'noDoctors':noDoctors,'noPayments':noPayments,'totalPaymentAmount':totalPaymentAmount,
+    context = {'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancelled, 'noAppDone': noAppDone,'noAppPaid': noAppPaid,'noApps':noApps,'noClinics':noClinics,'noStaff':noStaff,'noDoctors':noDoctors,'noPayments':noPayments,'totalPaymentAmount':totalPaymentAmount,
     'doctors':doctors,'patients':patients,'clinics':clinics,'staff':staff,'payments':payments,'apps':apps}
-    return render(request, 'seApp/collectedInfoDoctor.html', context)
+    return render(request, 'seApp/collectedInfoAdmin.html', context)
     
 
 
