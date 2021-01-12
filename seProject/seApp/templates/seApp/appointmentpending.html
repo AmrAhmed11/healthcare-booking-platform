@@ -93,39 +93,6 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Modal -->
-                  <div class="modal fade" id="example" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Choose another appointment</h5>
-                          <button type="button" class="close" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <form action="/user/appointmentview/{{appointment.id}}" method="POST">
-                            {% csrf_token %}
-                            <select name="appointment" id="panel" class="form-control custom-select">
-                              <option selected disabled>Choose Appointment</option>
-
-                              {% for timeSlot in appointment.doctor.time_slots %}
-                              <option value="time">{{timeSlot}}</option>
-                              {% endfor %}
-                            </select>
-                            <button type="submit" id="book" class="mt-2 btn btn-outline-success"
-                              style="margin-left:220px" name="edit">Replace</button>
-                            <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary "
-                              style="margin-left: 10px; margin-top: 8px;">Cancel</a>
-
-
-                          </form>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
