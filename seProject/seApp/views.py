@@ -8,15 +8,15 @@ import pytz
 from datetime import datetime
 from django.http import HttpResponse
 from .models import *
-from .forms import CreateUserForm, editProfileForm
+from .forms import CreateUserForm, editProfileForm, updateProfileForm
 from django.forms import inlineformset_factory
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import string
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
 from django.utils import timezone
 from .decorators import *
 from . filters import DoctorFilter
@@ -655,17 +655,17 @@ def paymentComplete(request, doctor_id):
             return JsonResponse('Payment Completed!', safe=False)
 
 
-def editProfile(request):
-    if request.method == 'POST':
-        form = editProfileForm(request.POST, instance=request.user)
-        if form.is_valid:
-            form.save()
-            return redirect('/user/profile')
+# def editProfile(request):
+#     if request.method == 'POST':
+#         form = editProfileForm(request.POST, instance=request.user)
+#         if form.is_valid:
+#             form.save()
+#             return redirect('/user/profile')
 
-    else:
-        form = editProfileForm(instance=request.user)
-        args = {'form':form}
-        return render(request, 'seApp/editProfile.html', args)
+#     else:
+#         form = editProfileForm(instance=request.user)
+#         args = {'form':form}
+#         return render(request, 'seApp/editProfile.html', args)
 
 def changePassword(request):
     if request.method == 'POST':
@@ -681,3 +681,15 @@ def changePassword(request):
         form = PasswordChangeForm(user=request.user)
         args = {'form':form}
         return render(request, 'seApp/changepassword.html', args)
+
+def updateProfile(request):
+    if request.method == 'POST':
+        form = updateProfileForm(request.POST, instance=request.user)
+        if form.is_valid:
+            form.save()
+            return redirect('/user/profile')
+    else:
+        form = updateProfileForm(instance=request.user)
+        
+    context = {'form':form}
+    return render(request, 'seApp/updateProfile.html', context)
