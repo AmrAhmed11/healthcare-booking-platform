@@ -94,6 +94,8 @@ def appointmentGetManager(request):
     context = {'app_list': app_list}
     return render(request, 'seApp/appointmentManager.html', context)
 
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['doctor'])
 def postAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
     app.time_slot = request.POST['newTimeSlot']
@@ -102,6 +104,8 @@ def postAppointment(request, app_id):
     sendEmail('test',patient,'doctorEdit')
     return redirect('seApp:appointment', app_id=app_id)
 
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['doctor'])
 def deleteAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
     app.status = 'Cancelled'
