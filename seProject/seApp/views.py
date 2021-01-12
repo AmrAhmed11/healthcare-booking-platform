@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+import json
 from .forms import *
 from django.utils.dateparse import parse_datetime
 from pytz import timezone
@@ -6,9 +8,10 @@ import pytz
 from datetime import datetime
 from django.http import HttpResponse
 from .models import *
-from .forms import CreateUserForm
+from .forms import CreateUserForm, editProfileForm, updateProfileForm
 from django.forms import inlineformset_factory
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import *
+from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -91,15 +94,25 @@ def appointmentGetManager(request):
     context = {'app_list': app_list}
     return render(request, 'seApp/appointmentManager.html', context)
 
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['doctor'])
 def postAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
     app.time_slot = request.POST['newTimeSlot']
     app.doctor.time_slots.remove(request.POST['newTimeSlot'])
+    app.save()
+    # patient = Appointment.patient
+    # sendEmail('test',patient,'doctorEdit')
     return redirect('seApp:appointment', app_id=app_id)
 
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['doctor'])
 def deleteAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
     app.status = 'Cancelled'
+    app.save()
+    # patient = Appointment.patient
+    # sendEmail('test',patient,'doctorCancel')
     return redirect('seApp:appointmentGetManager')
 
 @login_required(login_url='seApp:loginpage')
@@ -158,6 +171,7 @@ def doctorTransferPatient(request, patient_id):
         )
         appointment.doctor.time_slots.pop(0)
         appointment.save()
+        sendEmail('test',patient.user.email,'transferPatient')
         return redirect('seApp:patients')
     context = {'patient': patient, 'doctors': doctors}
     return render(request, 'seApp/patientsTransfer.html', context)
@@ -198,6 +212,44 @@ def StaffProfile(request):
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 
 
+
+# COLLECT ADMIN INFO
+def collectedInfoAdmin(request):
+    doctors = Doctor.objects.all()
+    patients = Patient.objects.all()
+    clinics = Clinic.objects.all()
+    staff = Staff.objects.all()
+    payments = Payment.objects.all()
+    apps = Appointment.objects.all()
+    totalPaymentAmount = 0
+    noPayments = payments.count()
+    noDoctors = doctors.count()
+    noPatients = patients.count()
+    noStaff = staff.count()
+    noClinics = clinics.count()
+    noAppPending = 0
+    noAppCancelled = 0
+    noAppDone = 0
+    noAppPaid = 0
+    noApps = apps.count()
+    for app in apps:
+        if app.status == "Pending":
+            noAppPending += 1
+        elif app.status == "Cancelled":
+            noAppCancel += 1
+        elif app.status == "Done":
+            noAppDone += 1
+        else:
+            noAppPaid += 1
+    for payment in payments:
+        totalPaymentAmount += payment.amount
+    context = {'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancelled, 'noAppDone': noAppDone,'noAppPaid': noAppPaid,'noApps':noApps,'noClinics':noClinics,'noStaff':noStaff,'noDoctors':noDoctors,'noPayments':noPayments,'totalPaymentAmount':totalPaymentAmount,
+    'doctors':doctors,'patients':patients,'clinics':clinics,'staff':staff,'payments':payments,'apps':apps}
+    return render(request, 'seApp/collectedInfoAdmin.html', context)
+    
+
+
+
 # COLLECT DOCTOR INFO
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
@@ -205,6 +257,7 @@ def collectedInfoDoctor(request):
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     apps = doctor.appointment_set.all()
     patient_list = []
+    reviews = []
     noPatients = 0
     noAppPending = 0
     noAppCancel = 0
@@ -217,12 +270,15 @@ def collectedInfoDoctor(request):
             noAppCancel += 1
         elif app.status == "Done":
             noAppDone += 1
+            reviews.append(app.review)
         else:
             noAppPaid += 1
         if app.patient not in patient_list:
             patient_list.append(app.patient)
             noPatients += 1
-    context = {'patient_list': patient_list , 'app_list':apps, 'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancel, 'noAppDone': noAppDone,'noAppPaid': noAppPaid}
+            
+    totalApps = noAppCancel+noAppDone+noAppPaid+noAppPending
+    context = {'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancel, 'noAppDone': noAppDone,'noAppPaid': noAppPaid,'rating':request.user.doctor.rating,'reviews':reviews,'totalApps':totalApps}
     return render(request, 'seApp/collectedInfoDoctor.html', context)
 
     
@@ -457,15 +513,15 @@ def appointmentView(request, app_id):
                             appointment.save()
                             timeslotadd = appointment.time_slot
                             appointment.doctor.time_slots.append(timeslotadd)
-                            timeslot =request.POST['appointment']
-                            timeslotParsed = parse_datetime(timeslot) 
+                            timeslotnew =request.POST['appointment']
+                            timeslotParsed = parse_datetime(timeslotnew) 
                             appointment.doctor.time_slots.remove(timeslotParsed)
                             appointment.doctor.save()
                             appointmentnew = Appointment(
                                 patient = appointment.patient,
                                 doctor = appointment.doctor,
                                 status = 'Pending',
-                                time_slot = timeslot,
+                                time_slot = timeslotnew,
                                 review = 'None',
                                 prescription = []
                             )
@@ -482,7 +538,18 @@ def appointmentView(request, app_id):
                     if request.method == 'POST':
                         if 'submit' in request.POST:
                             form = ReviewForm(request.POST,instance=app)
-                            app.doctor.rating = request.POST['rate']
+                            tempRating = int(request.POST['rate'])
+                            if tempRating == 5:
+                                rating = app.doctor.rating + 0.2
+                            elif tempRating == 4:
+                                rating = app.doctor.rating + 0.1
+                            elif tempRating == 2:
+                                rating = app.doctor.rating - 0.1
+                            elif tempRating == 1:
+                                rating = app.doctor.rating - 0.2
+                            else:
+                                rating = app.doctor.rating
+                            app.doctor.rating = 5 if rating > 5  else rating
                             app.doctor.save()
 
                             if form.is_valid():
@@ -497,60 +564,49 @@ def appointmentView(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])    
 def viewprescription(request, app_id ) :
-    if request.user.is_authenticated:
-        role = request.user.role
-        if(role == 'patient'):
-                appointment = Appointment.objects.get(id=app_id)
-
-                context = {'appointment': appointment}
-
-        else :
-                return redirect('/')
-
-    else:
-     return redirect('seApp:loginpage')
+        
+    appointment = Appointment.objects.get(id=app_id)
+    context = {'appointment': appointment}
 
     return render(request, 'seApp/viewprescription.html', context)      
 
    
 
 
-    
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['patient'])   
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
     doctorEmail = doctors.user.email
+    doctorAppointments = []
+    doctorAppointments =Appointment.objects.filter(doctor__id = doctor_id )
+    reviews = []
+    for app in doctorAppointments:
+        reviews.append(app.review)
     timeslots = []
     for timeslot in doctors.time_slots:
         if((timeslot - timezone.now()).total_seconds() > 0):
             timeslots.append(timeslot)
     doctors.time_slots = timeslots
     doctors.save()
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            role = request.user.role
-            if(role == "patient"):
-                patient = Patient.objects.get(id=request.user.patient.id)
-                timeslots = doctors.time_slots
-                timeslot = timeslots[int(request.POST['appointment']) - 1]
-                doctors.time_slots.remove(timeslot)
-                appointment = Appointment(
-                    patient = patient,
-                    doctor = doctors,
-                    status = 'Pending',
-                    time_slot = timeslot,
-                    review = 'None',
-                    prescription = []
-                )
-                appointment.save()
-                doctors.save()
-                sendEmail('test',doctorEmail,'appointmentBook')
-            else:
-                return render(request, 'seApp/test.html')
-        else:
-            return render(request, 'seApp/login.html')
-    context = {'doctors':doctors,}
+    # if request.method == 'POST':
+    #     if request.user.is_authenticated:
+    #         role = request.user.role
+    #         if(role == "patient"):
+    #             patient = Patient.objects.get(id=request.user.patient.id)
+    #             timeslots = doctors.time_slots
+    #             timeslot = timeslots[int(request.POST['appointment']) - 1]
+    #             doctors.time_slots.remove(timeslot)
+    #             doctors.save()
+    #             sendEmail('test',doctorEmail,'appointmentBook')
+    #         else:
+    #             return render(request, 'seApp/test.html')
+    #     else:
+    #         return render(request, 'seApp/login.html')
+    context = {'doctors':doctors,'reviews':reviews}
     return render(request, 'seApp/viewDoctor.html', context)
 
+@login_required(login_url='seApp:loginpage')
 def UserProfile(request):
     if request.user.is_authenticated:
         role = request.user.role
@@ -563,6 +619,100 @@ def UserProfile(request):
     else:
         return render(request, 'seApp/login.html')
 
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['patient']) 
+def paymentComplete(request, doctor_id):
+    body = json.loads(request.body)
+    print('BODY:', body)
+    
+    patient = Patient.objects.get(id=request.user.patient.id)
+    doctor = Doctor.objects.get(id=doctor_id)
+    doctorEmail = doctor.user.email
+
+    if body['status'] == 'completed':
+        if body['user'] == '1':
+            appointment = Appointment(
+                patient = patient,
+                doctor = doctor,
+                status = 'Paid',
+                time_slot = body['timeSlot'],
+                review = 'None',
+                prescription = [],
+                patient_name = patient.user,
+            )
+            timeslotParsed = parse_datetime(body['timeSlot']) 
+            doctor.time_slots.remove(timeslotParsed)
+            doctor.save()
+            sendEmail('test',doctorEmail,'appointmentBook')
+            appointment.save()
+            return JsonResponse('Payment Completed!', safe=False)
+        else:
+            appointment = Appointment(
+                patient = patient,
+                doctor = doctor,
+                status = 'Paid',
+                time_slot = body['timeSlot'],
+                review = 'None',
+                prescription = [],
+                patient_name = body['firstName'] + ' ' + body['lastName'],
+            ) 
+            timeslotParsed = parse_datetime(body['timeSlot']) 
+            doctor.time_slots.remove(timeslotParsed)
+            doctor.save()
+            sendEmail('test',doctorEmail,'appointmentBook')
+            appointment.save()
+            return JsonResponse('Payment Completed!', safe=False)
 
 
+# def editProfile(request):
+#     if request.method == 'POST':
+#         form = editProfileForm(request.POST, instance=request.user)
+#         if form.is_valid:
+#             form.save()
+#             return redirect('/user/profile')
 
+#     else:
+#         form = editProfileForm(instance=request.user)
+#         args = {'form':form}
+#         return render(request, 'seApp/editProfile.html', args)
+@login_required(login_url='seApp:loginpage')
+def changePassword(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+        update_session_auth_hash(request, form.user)
+        if form.is_valid:
+            form.save()
+            return redirect('/user/profile')
+        else:
+            return redirect('/user/change-password')
+
+    else:
+        form = PasswordChangeForm(user=request.user)
+        args = {'form':form}
+        return render(request, 'seApp/changepassword.html', args)
+
+@login_required(login_url='seApp:loginpage')
+def updateProfile(request):
+    if request.method == 'POST':
+        form = updateProfileForm(request.POST, instance=request.user)
+        if request.user.role == "patient":
+            medical_history =  medicalHistoryForm(request.POST, instance=request.user.patient)
+            context = {'form':form, 'medical_history':medical_history}
+            if form.is_valid and medical_history.is_valid:
+                form.save()
+                medical_history.save()
+                return redirect('/user/profile')
+
+        if request.user.role == "doctor":
+            context = {'form':form}
+            if form.is_valid:
+                form.save()
+                return redirect('/doctor/profile')
+    else:
+        form = updateProfileForm(instance=request.user)
+        if request.user.role == "patient":
+            medical_history =  medicalHistoryForm(instance=request.user.patient)
+            context = {'form':form, 'medical_history':medical_history}
+        if request.user.role == "doctor":
+            context = {'form':form}
+        return render(request, 'seApp/updateProfile.html', context)

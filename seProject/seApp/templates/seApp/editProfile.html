@@ -1,0 +1,14 @@
+{%  extends 'seApp/main.html' %}
+{%block content%}
+
+<body>
+    <div class="container mt-5">
+        <form action="/user/edit-profile" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Update Profile</button>
+        </form>
+    </div>
+</body>
+
+{% endblock %}

@@ -6,9 +6,22 @@
   
         <section class="py-5 text-center container ">
           <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-8 mx-auto mt-4 pt-2">
+            <div class="col-lg-12 mx-auto mt-4 pt-2">
               <h1 class="fw-light">Information Manager</h1>
+              <div class="card p-2 shadow-md mt-4 ">
+                <div class="card-body">
+                  <div class="text-center mb-2">
+                  <h4>Filters</h4></div>
+                <div class="mt-1">
+                  
+                <button type="button" class="btn btn-outline-primary m-1 " id="appointmentsbutton" onclick="filter('appointments','Appointments')">Hide Appointments</button>
+                    
+                     
+                  <button type="button" class="btn btn-outline-primary m-1" id="patientsbutton" onclick="filter('patients','Patients')">Hide Patients</button>
               
+              </div>
+          </div>
+      </div>
             </div>
           </div>
         </section>
@@ -18,15 +31,17 @@
         
   <div class="bg-light py-5 ">
     <div class="text-center">
-    <h4>Appointments</h4>
+    
     </div>
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if patient_list %}
+        {% if noPatients %}
         
-        <div class="col-12 col-md-12 col-lg-6">
+        <div class="col-12 col-md-12 col-lg-6" id="appointments">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Appointments</h4></div>
                 <canvas id="myChart" width="400" height="400"></canvas>
                 <script>
                 var ctx = document.getElementById('myChart').getContext('2d');
@@ -71,15 +86,47 @@
               </div>
             </div>
           </div>
+          
+          <div class="col-12 col-md-12 col-lg-6" id="patients">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Patients</h4></div>
+                <h5>Number of Patients: {{noPatients}}</h5>
+                <h5>Number of Appointments: {{totalApps}}</h5>
+                <h5>Rating: {{rating}}</h5>
+                <h5>Reviews: </h5>
+                <ul>
+                {% for review in reviews %}
+                <li>{{review}}</li>
+                {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
         
       {% else %}
-        <p>No Appointments available</p>
+        <p>No Information available</p>
       {% endif %}
       </div>
     </div>
   </div>
 
 
+  <script>
+    function filter(id,property){
+        const div  = document.getElementById(id)
+        buttonId = `${id}button`
+        const button = document.getElementById(buttonId)
+        if(div.hidden == true){
+            div.hidden = false
+            button.innerHTML = `Hide ${property}`
+        } else {
+            div.hidden = true
+            button.innerHTML = `Show ${property}`
+        }
+    }
+</script>
 
 
 

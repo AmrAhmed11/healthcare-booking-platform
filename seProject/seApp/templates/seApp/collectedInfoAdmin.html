@@ -1,0 +1,350 @@
+{%  extends 'seApp/main.html' %}
+{%block content%}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<div class="col">
+    <main>
+  
+        <section class="py-5 text-center container ">
+          <div class="row py-lg-5">
+            <div class="col-lg-12 mt-4">
+              <h1 class="fw-light">Information Manager</h1>
+              <div class="col-12 col-md-12 col-lg-12 mt-5">
+            <div class="card p-2 shadow-md mt-4 ">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Filters</h4></div>
+              <div class="mt-1">
+                
+                    <button type="button" class="btn btn-outline-primary m-1 " id="appointmentStatisticsbutton" onclick="filter('appointmentStatistics','Appointments Statistics')">Hide Appointments Statistics</button>
+                    <button type="button" class="btn btn-outline-primary m-1" id="usersbutton" onclick="filter('users','Users')">Hide Users</button>
+                    <button type="button" class="btn btn-outline-primary m-1" id="totalAmountsbutton" onclick="filter('totalAmounts','Totals amounts')">Hide Totals amounts</button>
+                   
+            
+
+                  
+                  
+                    <button type="button" class="btn btn-outline-primary m-1" id="doctorsbutton" onclick="filter('doctors','Doctors')">Hide Doctors</button>
+                  <button type="button" class="btn btn-outline-primary m-1" id="patientsbutton" onclick="filter('patients','Patients')">Hide Patients</button>
+                   
+                
+                
+                <button type="button" class="btn btn-outline-primary m-1" id="staffbutton" onclick="filter('staff','Staff')">Hide Staff</button>
+                <button type="button" class="btn btn-outline-primary m-1" id="clinicbutton" onclick="filter('clinic','Clinic')">Hide Clinic</button>
+                <button type="button" class="btn btn-outline-primary m-1" id="appointmentbutton" onclick="filter('appointment','Appointments')">Hide Appointments</button>
+            
+            </div>
+        </div>
+    </div>
+
+            </div>
+            </div>
+          </div>
+        </section>
+
+
+        
+  <div class="bg-light py-5 ">
+    <div class="text-center">
+    
+    </div>
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% if noPatients or noDoctors or noStaff %}
+        
+        
+
+        <div class="col-12 col-md-12 col-lg-6" id="appointmentStatistics">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Appointments</h4></div>
+                <canvas id="apps" width="400" height="400"></canvas>
+                <script>
+                var ctx = document.getElementById('apps').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Pending', 'Done', 'Paid', 'Cancelled'],
+                        datasets: [{
+                            label: '# of Appointments',
+                            data: ["{{noAppPending}}" , "{{noAppDone}}", "{{noAppPaid}}", "{{noAppCancelled}}"],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+                </script>
+                
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-12 col-lg-6" id="users">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Users</h4></div>
+                <canvas id="usersChart" width="400" height="400"></canvas>
+                <script>
+                var ctx = document.getElementById('usersChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Doctors', 'Patients', 'Staff'],
+                        datasets: [{
+                            label: '# of Appointments',
+                            data: ["{{noDoctors}}" , "{{noPatients}}", "{{noStaff}}"],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+                </script>
+                
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-12 col-md-12 col-lg-12" id="totalAmounts">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Total amounts</h4></div>
+                <h5>Number of Patients: {{noPatients}}</h5>
+                <h5>Number of Doctors: {{noDoctors}}</h5>
+                <h5>Number of Staff: {{noStaff}}</h5>
+                <h5>Number of Clinics: {{noClinics}}</h5>
+                <h5>Number of Payments: {{noPayments}}</h5>
+                <h5>Number of Appointments: {{noApps}}</h5>
+                <h5>Total Paid Amount: ${{totalPaymentAmount}}</h5>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-12 col-md-12 col-lg-12" id="doctors">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Doctors</h4></div>
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Specialization</th>
+                          <th scope="col">Rating</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          {% for doctor in doctors %}
+                        <tr>
+                          <th scope="row">{{forloop.counter}}</th>
+                          <td>{{doctor.user.first_name}}</td>
+                          <td>{{doctor.specialization}}</td>
+                          <td>{{doctor.rating}}</td>
+                        </tr>
+                        {%endfor%}
+                      </tbody>
+                </table>
+    
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-12 col-lg-12" id="patients">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Patients</h4></div>
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Birth Date</th>
+                          <th scope="col">Gender</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          {% for patient in patients %}
+                        <tr>
+                          <th scope="row">{{forloop.counter}}</th>
+                          <td>{{patient.user.first_name}}</td>
+                          <td>{{patient.user.birth_date}}</td>
+                          <td>{{patient.user.gender}}</td>
+                        </tr>
+                        {%endfor%}
+                      </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-12 col-lg-12" id="staff"> 
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Staff</h4></div>
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Specialization</th>
+                          <th scope="col">Doctor</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          {% for singleStaff in staff %}
+                        <tr>
+                          <th scope="row">{{forloop.counter}}</th>
+                          <td>{{singleStaff.user.first_name}}</td>
+                          <td>{{singleStaff.specialization}}</td>
+                          <td>{{singleStaff.doctor.user.first_name}}</td>
+                        </tr>
+                        {%endfor%}
+                      </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-12 col-lg-12" id="clinic">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Clinic</h4></div>
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Rating</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          {% for clinic in clinics %}
+                        <tr>
+                          <th scope="row">{{forloop.counter}}</th>
+                          <td>{{clinic.name}}</td>
+                          <td>{{clinic.rating}}</td>
+                        </tr>
+                        {%endfor%}
+                      </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-12 col-lg-12" id="appointment">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Appointments</h4></div>
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Timeslot</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Review</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          {% for app in apps %}
+                        <tr>
+                          <th scope="row">{{forloop.counter}}</th>
+                          <td>{{app.time_slot}}</td>
+                          <td>{{app.status}}</td>
+                          <td>{{app.review}}</td>
+                        </tr>
+                        {%endfor%}
+                      </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+      {% else %}
+        <p>No Information available</p>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+    </main>
+
+
+
+
+<script>
+    function filter(id,property){
+        const div  = document.getElementById(id)
+        buttonId = `${id}button`
+        const button = document.getElementById(buttonId)
+        if(div.hidden == true){
+            div.hidden = false
+            button.innerHTML = `Hide ${property}`
+        } else {
+            div.hidden = true
+            button.innerHTML = `Show ${property}`
+        }
+    }
+</script>
+
+
+
+</div>
+{%endblock%}

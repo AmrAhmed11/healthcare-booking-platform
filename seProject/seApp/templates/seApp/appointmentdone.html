@@ -46,19 +46,20 @@
                             </h2>
                           </div>
                           <div class="modal-body">
+                            {% if appointment.review is None %}
                             <h4 class="modal-title" id="exampleModalLabel">Rate your Doctor </h4>
                             <form action="/user/appointmentview/{{app.id}}" method="POST" class="text-center">
                               {% csrf_token %}
-                              <input type="radio" name="rate" id="ch1" value="{{1}}">
+                              <input type="radio" name="rate" required id="ch1" value="{{1}}">
                               <label for="ch1" style="margin-right:30px; color: red; font-size: 30px;"> 1 </label>
-                              <input type="radio" name="rate" id="ch2" value="{{2}}">
+                              <input type="radio" name="rate" required id="ch2" value="{{2}}">
                               <label for="ch2" style="margin-right:30px; color: orangered; font-size: 30px;"> 2 </label>
-                              <input type="radio" name="rate" id="ch3" value="{{3}}">
+                              <input type="radio" name="rate" required id="ch3" value="{{3}}">
                               <label for="ch3" style="margin-right:30px; color: orange; font-size: 30px;"> 3 </label>
-                              <input type="radio" name="rate" id="ch4" value="{{4}}">
+                              <input type="radio" name="rate" required id="ch4" value="{{4}}">
                               <label for="ch4" style="margin-right:30px; color: rgb(124, 194, 18); font-size: 30px;"> 4
                               </label>
-                              <input type="radio" name="rate" id="ch5" value="{{5}}">
+                              <input type="radio" name="rate" required id="ch5" value="{{5}}">
                               <label for="ch5" style="margin-right:30px; color: green; font-size: 30px;"> 5 </label>
                               <br>
                               <br>
@@ -68,6 +69,9 @@
                               </div>
                               <button type="submit" class="btn btn-outline-primary btn-md mt-2" name="submit">Submit</button>
                             </form>
+                            {%else%}
+                            <h4>You have already rated this appointment</h4>
+                            {%endif%}
                           </div>
                           
                           

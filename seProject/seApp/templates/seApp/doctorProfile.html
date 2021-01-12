@@ -1,14 +1,12 @@
 <head>    
     <style>
-    body{
-        background: -webkit-linear-gradient(left, black, black);
-    }
     .emp-profile{
         padding: 3%;
         margin-top: 3%;
         margin-bottom: 3%;
         border-radius: 0.5rem;
         background: #fff;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
     .profile-head h5{
         color: #333;
@@ -44,91 +42,95 @@
 {%  extends 'seApp/main.html' %}
 {%block content%}
 <br>
-<body>
-    <div class="container emp-profile" style="width:40%;">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="profile-head">
-                                <h5>
-                                    {{doctor.user}}
-                                </h5>
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
-                            </li>
-                        </ul>
-                    </div>
+<body class="bg-light">
+    <div class="container emp-profile" style="width:50%;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-head">
+                            <h5>
+                                {{doctor.user}}'s Profile
+                            </h5>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="tab-content profile-tab" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Name</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{doctor.user}}</p>
-                                </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="profile-tab" id="myTabContent">
+                    <div class="ml-3" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Name</label>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Email</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{doctor.user.email}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Phone</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{doctor.user.phone}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Clinic</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{doctor.clinic}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Specialization</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{doctor.specialization}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Rating</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{doctor.rating}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Fees</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{doctor.fees}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Description</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{doctor.description}}</p>
-                                </div>
+                            <div class="col-md-6">
+                                <p>{{doctor.user}}</p>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Email</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{doctor.user.email}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Phone</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{doctor.user.phone}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Clinic</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{doctor.clinic}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Specialization</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{doctor.specialization}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Rating</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{doctor.rating}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Fees</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{doctor.fees}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Description</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{doctor.description}}</p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="/user/update-profile" class="btn btn-info float">Update Profile</a>
+                            <a href="/user/change-password" class="btn btn-info">Change Password</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

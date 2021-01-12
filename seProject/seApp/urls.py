@@ -43,7 +43,9 @@ urlpatterns = [
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
     path('doctor/profile', views.DoctorProfile, name="DoctorProfile"),
     path('doctor/collectedInfo', views.collectedInfoDoctor, name="collectedInfoDoctor"),
-    
+
+
+    path('admin/collectedInfo', views.collectedInfoAdmin, name="collectedInfoAdmin"),    
    
 
     path('staff/details/', views.staffGetDetails, name='staffGetDetails'),
@@ -60,4 +62,9 @@ urlpatterns = [
     path('register/',views.register,name="register"),
     path('user/view-doctor/<int:doctor_id>', views.viewDoctor, name='viewDoctor'),
     path('user/profile', views.UserProfile, name="UserProfile"),
+
+    path('complete/<int:doctor_id>', views.paymentComplete, name="complete"),
+    # path('user/edit-profile', views.editProfile, name="editProfile"),
+    path('user/change-password', views.changePassword, name="changePassword"),
+    path('user/update-profile', views.updateProfile, name="updateProfile"),
 ]
