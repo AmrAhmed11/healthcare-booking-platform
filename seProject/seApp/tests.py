@@ -1,6 +1,7 @@
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase
 from django.urls import resolve, reverse
 from .views import *
+from .models import *
 # Url tests 
 class TestUrls(SimpleTestCase):
 
@@ -99,36 +100,118 @@ class TestUrls(SimpleTestCase):
     def test_register_url(self):
         url=reverse('seApp:register')
         self.assertEquals(resolve(url).func, register)
+
+class test_urls_pk (TestCase):
         
-    def test_UserProfile_url(self):
-        url=reverse('seApp:UserProfile')
-        self.assertEquals(resolve(url).func, UserProfile)
-        
-    # def test_doctorTransferPatient_url(self):
-    #     url=reverse('seApp:doctorTransferPatient', kwargs={'patient_id':1})
-    #     assert resolve(url).view_name == 'seApp:doctorTransferPatient'
+    def test_doctorTransferPatient_url(self):
+        self.user=UserProfile.objects.create(
+            first_name='loay',
+            last_name='elshall',
+            email='elshall@gmail.com',
+            gender='Male',
+            username='Elshall',
+            role='patient'
+        )
+        self.patient=Patient.objects.create(user=self.user)
+        patient_id=self.patient.id
+        url=reverse('seApp:TransferPatients', args=[str(patient_id)])
+        self.assertEquals (resolve(url).func, doctorTransferPatient)
 
-    # def test_UserProfile_url(self):
-    #     c=Patient()
-    #     c.login(username='Doctor100',password='12345omar')
-    #     url=reverse('seApp:UserProfile', kwargs={'patient_id':user.objects.get(id)})
-    #     self.assertEquals(resolve(url).func, UserProfile)
+    def test_PostPrescription_url(self):
+        self.user=UserProfile.objects.create(
+            first_name='loay',
+            last_name='elshall',
+            email='elshall@gmail.com',
+            gender='Male',
+            username='Elshall',
+            role='patient'
+        )
+        self.user1=UserProfile.objects.create(
+            first_name='loay',
+            last_name='anwar',
+            email='anwar@gmail.com',
+            gender='Male',
+            username='anwar',
+            role='doctor'
+        )
+        self.patient=Patient.objects.create(user=self.user)
+        self.doctor1=Doctor.objects.create(user=self.user1)
+        self.appointment=Appointment.objects.create(
+            patient=self.patient,
+            doctor=self.doctor1
+        )
+        app_id=self.appointment.id
+        url=reverse('seApp:PostPrescription', args=[str(app_id)])
+        self.assertEquals(resolve(url).func, doctorPostPrescription)
 
-    # def test_UserProfile_url(self):
-    #     url=reverse('seApp:UserProfile')
-    #     self.assertEquals(resolve(url).func, UserProfile)
+    def test_DeletePrescription_url(self):
+        self.user=UserProfile.objects.create(
+            first_name='loay',
+            last_name='elshall',
+            email='elshall@gmail.com',
+            gender='Male',
+            username='Elshall',
+            role='patient'
+            )
+        self.user1=UserProfile.objects.create(
+            first_name='loay',
+            last_name='anwar',
+            email='anwar@gmail.com',
+            gender='Male',
+            username='anwar',
+            role='doctor'
+          )
+        self.patient=Patient.objects.create(user=self.user)
+        self.doctor1=Doctor.objects.create(user=self.user1)
+        self.appointment=Appointment.objects.create(
+            patient=self.patient,
+            doctor=self.doctor1
+            )
+        app_id=self.appointment.id
+        url=reverse('seApp:DeletePrescription', args=[str(app_id)])
+        self.assertEquals(resolve(url).func, doctorDeletePrescription)
 
-    # def test_UserProfile_url(self):
-    #     url=reverse('seApp:UserProfile')
-    #     self.assertEquals(resolve(url).func, UserProfile)
+    def test_viewprescription_url(self):
+        self.user=UserProfile.objects.create(
+            first_name='loay',
+            last_name='elshall',
+            email='elshall@gmail.com',
+            gender='Male',
+            username='Elshall',
+            role='patient'
+            )
+        self.user1=UserProfile.objects.create(
+            first_name='loay',
+            last_name='anwar',
+            email='anwar@gmail.com',
+            gender='Male',
+            username='anwar',
+            role='doctor'
+          )
+        self.patient=Patient.objects.create(user=self.user)
+        self.doctor1=Doctor.objects.create(user=self.user1)
+        self.appointment=Appointment.objects.create(
+            patient=self.patient,
+            doctor=self.doctor1
+            )
+        app_id=self.appointment.id
+        url=reverse('seApp:viewprescription', args=[str(app_id)])
+        self.assertEquals(resolve(url).func, viewprescription)
 
-    # def test_UserProfile_url(self):
-    #     url=reverse('seApp:UserProfile')
-    #     self.assertEquals(resolve(url).func, UserProfile)
+    def test_UserProfile_url(self):        
+        self.user1=UserProfile.objects.create(
+            first_name='loay',
+            last_name='anwar',
+            email='anwar@gmail.com',
+            gender='Male',
+            username='anwar',
+            role='doctor'
+          )
+        self.doctor1=Doctor.objects.create(user=self.user1)
+        doctor_id=self.doctor1.id
+        url=reverse('seApp:viewDoctor', args=[str(doctor_id)])
+        self.assertEquals(resolve(url).func, viewDoctor) 
 
-    # def test_UserProfile_url(self):
-    #     url=reverse('seApp:UserProfile')
-    #     self.assertEquals(resolve(url).func, UserProfile)    
 
 
 

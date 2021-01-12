@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>seApp</title>
+    <link rel="icon" href="{% static '/images/seLogoBlueRound.png' %}">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i%7CPoppins:300,400,500,600,700" rel="stylesheet">
@@ -47,7 +48,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="index.html"><img src="{% static '/images/logo.png' %}" alt="logo" class="img-responsive"></a>
+              <a class="navbar-brand" href="#main"><img src="{% static '/images/seLogoWhite.png' %}" alt="logo" class="img-responsive" style="max-width: 100px;"></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -68,8 +69,9 @@
 
 
        <!-- banner start here-->
-      <section class="banner banner-newyork">
+      <section class="banner banner-newyork" style="background-image: url('{% static '/images/landing-bg.jpg' %}');" id="main">
         <div class="banner-overlay">
+          <img src="{% static '/images/landing-bg.png' %}" alt="about iamge">
           <div class="banner-content-area">
             <div class="container">
               <div class="row">
@@ -119,7 +121,7 @@
                   <div class="col-md-6">
                       <div class="image">
                          
-                          <img src="{% static '/images/newyear/about.png' %}" alt="about iamge">
+                          <img src="{% static '/images/seLogoBlack.png' %}" alt="about iamge">
                       </div>
                   </div>
                   <div class="col-md-6">
@@ -144,110 +146,42 @@
       <section class="gallery gallery-two gallery-uhv padding-120">
         <div class="container">
           <div class="section-header text-center">
-            <h3>Some Photos</h3>
-            <p><em>Any deep words that make us sound cool.</em></p>
-          </div>
-
-          <div class="section-wrapper">
+            <h2>Our Features</h2>
             
+          </d iv>
 
-              <div class="gallery-item grid-item">
-                  <div class="gallery-thumb">
-                    <img src="{% static '/images/gallery-uhv/01.jpg' %}" alt="gallery image" class="img-responsive">
-                    <div class="overlay"></div>
-                    <a href="{% static '/images/gallery-uhv/01.jpg' %}" data-rel="lightcase:myCollection">
-                        <img src="{% static '/images/gallery/gallery-icon.png' %}" alt="gallery icon" class="img-responsive">
-                    </a>
-                  </div>
+          <div class="section-wrapper" style="margin-top: 100px;"> 
+            
+            <div class="row">
+              <div class="col-6 pull-right">
+                <h3>Review and rate 
+                  your <br> experience</h3>
+                
               </div>
-              <!-- gallery-item -->
-
-              <div class="gallery-item grid-item">
-                  <div class="gallery-thumb">
-                    <img src="{% static '/images/gallery-uhv/02.jpg' %}" alt="gallery image" class="img-responsive">
-                    <div class="overlay"></div>
-                    <a href="{% static '/images/gallery-uhv/02.jpg' %}" data-rel="lightcase:myCollection">
-                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
-                    </a>
-                  </div>
+              <div class="col-6 pull-left" >
+                <img src="{% static '/images/seLogoBlack.png' %}" alt="logo" class="img-responsive" style="max-width: 600px;">
               </div>
-              <!-- gallery-item -->
-
-              <div class="gallery-item grid-item">
-                  <div class="gallery-thumb">
-                    <img src="{% static '/images/gallery-uhv/03.jpg' %}" alt="gallery image" class="img-responsive">
-                    <div class="overlay"></div>
-                    <a href="{% static '/images/gallery-uhv/03.jpg' %}" data-rel="lightcase:myCollection">
-                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
-                    </a>
-                  </div>
+            </div>
+            <div class="row"  style="margin-top: 70px;">
+              <div class="col-6 pull-left">
+                <h3>Review and rate 
+                  your <br> experience</h3>
+                
               </div>
-              <!-- gallery-item -->
-
-              <div class="gallery-item grid-item">
-                  <div class="gallery-thumb">
-                    <img src="{% static '/images/gallery-uhv/04.jpg' %}" alt="gallery image" class="img-responsive">
-                    <div class="overlay"></div>
-                    <a href="{% static '/images/gallery-uhv/04.jpg' %}" data-rel="lightcase:myCollection">
-                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
-                    </a>
-                  </div>
+              <div class="col-6 pull-right">
+                <img src="{% static '/images/seLogoBlack.png' %}" alt="logo" class="img-responsive" style="max-width: 600px;">
               </div>
-              <!-- gallery-item -->
-
-              <div class="gallery-item grid-item">
-                  <div class="gallery-thumb">
-                    <img src="{% static '/images/gallery-uhv/05.jpg' %}" alt="gallery image" class="img-responsive">
-                    <div class="overlay"></div>
-                    <a href="{% static '/images/gallery-uhv/05.jpg' %}" data-rel="lightcase:myCollection">
-                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
-                    </a>
-                  </div>
+            </div>
+            <div class="row"  style="margin-top: 70px;">
+              <div class="col-6 pull-right">
+                <h3>Review and rate 
+                  your <br> experience</h3>
+                
               </div>
-              <!-- gallery-item -->
-
-              <div class="gallery-item grid-item">
-                  <div class="gallery-thumb">
-                    <img src="{% static '/images/gallery-uhv/06.jpg' %}" alt="gallery image" class="img-responsive">
-                    <div class="overlay"></div>
-                    <a href="{% static '/images/gallery-uhv/06.jpg' %}" data-rel="lightcase:myCollection">
-                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
-                    </a>
-                  </div>
+              <div class="col-6 pull-left">
+                <img src="{% static '/images/seLogoBlack.png' %}" alt="logo" class="img-responsive" style="max-width: 600px;">
               </div>
-
-              <div class="gallery-item grid-item">
-                  <div class="gallery-thumb">
-                    <img src="{% static '/images/gallery-uhv/07.jpg' %}" alt="gallery image" class="img-responsive">
-                    <div class="overlay"></div>
-                    <a href="{% static '/images/gallery-uhv/07.jpg' %}" data-rel="lightcase:myCollection">
-                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
-                    </a>
-                  </div>
-              </div>
-
-              <div class="gallery-item grid-item">
-                  <div class="gallery-thumb">
-                    <img src="{% static '/images/gallery-uhv/08.jpg' %}" alt="gallery image" class="img-responsive">
-                    <div class="overlay"></div>
-                    <a href="{% static '/images/gallery-uhv/08.jpg' %}" data-rel="lightcase:myCollection">
-                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
-                    </a>
-                  </div>
-              </div>
-
-              <div class="gallery-item grid-item">
-                  <div class="gallery-thumb">
-                    <img src="{% static '/images/gallery-uhv/09.jpg' %}" alt="gallery image" class="img-responsive">
-                    <div class="overlay"></div>
-                    <a href="{% static '/images/gallery-uhv/09.jpg' %}" data-rel="lightcase:myCollection">
-                        <img src="{% static '/images/gallery/gallery-icon.png'%}" alt="gallery icon" class="img-responsive">
-                    </a>
-                  </div>
-              </div>
-              <!-- gallery-item -->
-          <!-- gallery items -->
-          <a href="#" class="gallery-button default-button">lord more photos</a>
+            </div>
           </div>
         </div>
       </section>
@@ -261,11 +195,9 @@
               <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
               <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
               <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-              <li><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
-              <li><a href="#"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a></li>
-              <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+        
             </ul>
-            <p>Copyright &copy; 2021. Design and Development by Amr Ehab</a></p>
+            <p>Copyright &copy; 2021.</a></p>
           </div>
         </div>
       </footer>

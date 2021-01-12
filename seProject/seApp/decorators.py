@@ -6,13 +6,13 @@ def unauthenticted_user(view_func):
         if request.user.is_authenticated:
             role = request.user.role
             if (role == 'patient'):
-                return redirect('seApp:test')
+                return redirect('seApp:browse')
             elif(role == 'doctor'):
-                return redirect('seApp:test')
+                return redirect('seApp:servicesManager')
             elif(role == 'staff'):
-                return redirect('seApp:test')
+                return redirect('seApp:staffGetDetails')
             else:
-                return redirect('seApp:test')
+                return redirect('seApp:collectedInfoAdmin')
         else:
             return view_func(request,*args, **kwargs)
     return wrapper_func
