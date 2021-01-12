@@ -457,15 +457,15 @@ def appointmentView(request, app_id):
                             appointment.save()
                             timeslotadd = appointment.time_slot
                             appointment.doctor.time_slots.append(timeslotadd)
-                            timeslot =request.POST['appointment']
-                            timeslotParsed = parse_datetime(timeslot) 
+                            timeslotnew =request.POST['appointment']
+                            timeslotParsed = parse_datetime(timeslotnew) 
                             appointment.doctor.time_slots.remove(timeslotParsed)
                             appointment.doctor.save()
                             appointmentnew = Appointment(
                                 patient = appointment.patient,
                                 doctor = appointment.doctor,
                                 status = 'Pending',
-                                time_slot = timeslot,
+                                time_slot = timeslotnew,
                                 review = 'None',
                                 prescription = []
                             )
@@ -497,18 +497,9 @@ def appointmentView(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])    
 def viewprescription(request, app_id ) :
-    if request.user.is_authenticated:
-        role = request.user.role
-        if(role == 'patient'):
-                appointment = Appointment.objects.get(id=app_id)
-
-                context = {'appointment': appointment}
-
-        else :
-                return redirect('/')
-
-    else:
-     return redirect('seApp:loginpage')
+        
+    appointment = Appointment.objects.get(id=app_id)
+    context = {'appointment': appointment}
 
     return render(request, 'seApp/viewprescription.html', context)      
 

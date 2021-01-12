@@ -54,11 +54,11 @@
                           <div class="modal-body">
                             <form action="/user/appointmentview/{{appointment.id}}" method="POST">
                               {% csrf_token %}
-                              <select name="appointment" id="panel" class="form-control custom-select">
-                                {% for timeSlot in appointment.doctor.time_slots %}
-                                <option value="{{timeSlot|date:" c"}}">{{timeSlot}}</option>
-                                {% endfor %}
-                              </select>
+                               <select name="appointment" id="panel" class="form-control custom-select">
+                                 {% for timeSlot in appointment.doctor.time_slots %}
+                                    <option value="{{timeSlot|date:"c"}}">{{timeSlot}}</option>
+                                 {% endfor %}
+                               </select>
                               <button type="submit" id="book" class="mt-2 btn btn-outline-success "
                                 style="margin-left: 220px;" name="edit">Replace</button>
                               <a href="/user/appointmentview/{{appointment.id}}" class="btn btn-outline-primary btn-md"
