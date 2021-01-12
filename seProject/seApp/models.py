@@ -72,7 +72,7 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
     status = models.CharField(max_length = 200, null = True, choices = STATUS)
     time_slot = models.DateTimeField(null = True)
-    review = models.CharField(max_length = 1024)
+    review = models.CharField(max_length = 1024, null=True)
     prescription = ArrayField(models.CharField(max_length = 70, null = True) , size = 10, null = True)
     patient_name = models.CharField(max_length = 70, null=True)
 
