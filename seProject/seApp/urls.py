@@ -44,6 +44,7 @@ urlpatterns = [
 
     path('staff/details/', views.staffGetDetails, name='staffGetDetails'),
     path('staff/details/select', views.staffPostDetails, name='staffPostDetails'),
+    path('staff/profile', views.StaffProfile, name='StaffProfile'),
     path('user/appointment', views.appointmentUser, name='appointmentUser'),
     path('user/appointmentview/<int:app_id>', views.appointmentView, name='appointmentView'),
     path('user/appointmentview/viewprescription/<int:app_id>', views.viewprescription, name='viewprescription'),

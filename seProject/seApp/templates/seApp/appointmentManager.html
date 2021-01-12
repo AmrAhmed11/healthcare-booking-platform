@@ -5,7 +5,7 @@
     min-height: 500px;
   }
 </style>
-<main>
+<div class="col-12 col-md-12">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
@@ -13,7 +13,6 @@
       </div>
     </div>
   </section>
-
   <div class="bg-light py-5 ">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -27,12 +26,22 @@
                     <h5 class="text-center mb-5">Appointment {{app.id}}</h5>
                   </div>
                   <div class="col-4">
-                    <p class="card-text h6">Appointment date:</p>
-                    <p class="card-text h6">Appointment review:</p>
+                    <p class="card-text h6">Time Slot:</p>
+                    <p class="card-text h6">Review:</p>
+                    <p class="card-text h6">Status:</p>
                   </div>
                   <div class="col-8">
                     <p class="card-text">{{app.time_slot}}</p>
                     <p class="card-text">{{app.review}}</p>
+                    {% if app.status == 'Pending' %}
+                    <p class="card-text text-warning"> {{app.status}}</p>
+                    {% elif app.status == 'Cancelled'%}
+                    <p class="card-text text-danger"> {{app.status}}</p>
+                    {% elif app.status == 'Paid'%}
+                    <p class="card-text text-info"> {{app.status}}</p>
+                    {% else %}
+                    <p class="card-text text-success"> {{app.status}}</p>
+                    {% endif %}
                   </div>
                     <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
                 </div>
@@ -41,11 +50,10 @@
           </div>
         {% endfor %}
       {% else %}
-        <p>No appoinments available</p>
+        <h5>No Appoinments available</h5>
       {% endif %}
       </div>
     </div>
   </div>
-
-</main>
+</div>
 {%endblock%}
