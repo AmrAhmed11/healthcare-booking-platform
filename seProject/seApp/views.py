@@ -30,7 +30,14 @@ def loginpage (request):
         user = authenticate(request, username = username, password = password)
         if user is not None:
             login(request,user)
-            return redirect('seApp:test')
+            if user.role == "patient":
+                return redirect('seApp:browse')
+            elif user.role == "doctor":
+                return redirect('seApp:servicesManager')
+            elif user.role == "staff":
+                return redirect('seApp:staffGetDetails')
+            else:
+                return redirect('seApp:collectedInfoAdmin')
         else:
             messages.info(request,'Username or password is not correct')
             return render(request, 'seApp/login.html')
@@ -56,7 +63,7 @@ def register (request):
                                             password=form.cleaned_data['password1'],
                                             )
                 login(request, new_patient)
-                return redirect("seApp:test")
+                return redirect("seApp:UserProfile")
             elif(user.role == 'doctor'):
                 group=Group.objects.get(name='doctor')
                 user.groups.add(group)
@@ -64,7 +71,7 @@ def register (request):
                                             password=form.cleaned_data['password1'],
                                             )
                 login(request, new_doctor)
-                return redirect("seApp:test")
+                return redirect("seApp:servicesManager")
             elif(user.role == 'staff'):
                 group=Group.objects.get(name='staff')
                 user.groups.add(group)
@@ -72,7 +79,7 @@ def register (request):
                                                 password=form.cleaned_data['password1'],
                                                 )
                 login(request, new_staff_member)
-                return redirect("seApp:test")
+                return redirect("seApp:staffGetDetails")
 
     context ={ 'form' : form }
     return render(request, 'seApp/register.html',context)
@@ -98,11 +105,13 @@ def appointmentGetManager(request):
 @allowed_users(allowed_roles=['doctor'])
 def postAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
-    app.time_slot = request.POST['newTimeSlot']
-    app.doctor.time_slots.remove(request.POST['newTimeSlot'])
+    index = int(request.POST['newTimeSlot'])
+    app.time_slot = app.doctor.time_slots[index]
+    app.doctor.time_slots.pop(index)
     app.save()
-    # patient = Appointment.patient
-    # sendEmail('test',patient,'doctorEdit')
+    app.doctor.save()
+    patient = app.patient
+    sendEmail('test',patient,'doctorEdit')
     return redirect('seApp:appointment', app_id=app_id)
 
 @login_required(login_url='seApp:loginpage')
@@ -111,8 +120,8 @@ def deleteAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
     app.status = 'Cancelled'
     app.save()
-    # patient = Appointment.patient
-    # sendEmail('test',patient,'doctorCancel')
+    patient = app.patient
+    sendEmail('test',patient,'doctorCancel')
     return redirect('seApp:appointmentGetManager')
 
 @login_required(login_url='seApp:loginpage')
