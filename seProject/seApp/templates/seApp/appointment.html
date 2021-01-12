@@ -30,13 +30,11 @@
                     <p class="card-text text-success"> {{app.status}}</p>
                     {% endif %}
                   </div>
-                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#example"
+                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal"
                   style="margin-right:50px ;">
                   Edit
                 </button>
-                <!--<th><a href="cancel/{{appointment.id}}" class="btn btn-outline-danger btn-md" style="margin-left: 20px;">Cancel</a></th> -->
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal"
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelModal"
                   style="margin-left: 50px;">
                   Cancel
                 </button>
@@ -134,28 +132,26 @@
     </div>
   </div>
 </div>
-{%endblock%}
 
   <!-- Modal -->
-  <div class="modal fade" id="example" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Choose another appointment
-            {{app.doctor.specialization}}</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Choose another appointment date
         </div>
         <div class="modal-body">
-          <form action="/user/appointmentview/{{app.id}}" method="POST">
+          <form action="{% url 'seApp:postAppointment' app_id=app.id%}" method="POST">
             {% csrf_token %}
-            <select name="appointment" id="panel" class="form-control custom-select">
-              {% for timeSlot in appointment.doctor.time_slots %}
-              <option value="{{timeSlot|date:" c"}}">{{timeSlot}}</option>
+            <select name="newTimeSlot" id="panel" class="form-control custom-select">
+              {% for timeSlot in app.doctor.time_slots %}
+              <option value="{{timeSlot|date:"c"}}">{{timeSlot}}</option>
               {% endfor %}
             </select>
             <button type="submit" id="book" class="mt-2 btn btn-outline-success "
               style="margin-left: 220px;" name="edit">Replace</button>
-            <a href="/user/appointmentview/{{app.id}}" class="btn btn-outline-primary btn-md"
+            <a href="" class="btn btn-outline-primary btn-md"
               style="margin-top : 8px; margin-left: 10px;">Cancel</a>
           </form>
         </div>
@@ -163,7 +159,7 @@
     </div>
   </div>
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+  <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -175,14 +171,15 @@
           An ammount of {{app.doctor.fees}} will be returned to you.
         </div>
         <div class="modal-footer">
-          <form action="/user/appointmentview/{{app.id}}" method="POST" class="text-center">
+          <form action="{% url 'seApp:deleteAppointment' app_id=app.id%}" method="POST" class="text-center">
             {% csrf_token %}
             <button type="submit" class="btn btn-outline-danger btn-md mt-3"
               name="cancel">Yes</button>
-            <a href="/user/appointmentview/{{app.id}}" class="btn btn-outline-primary btn-md"
+            <a href="" class="btn btn-outline-primary btn-md"
               style="margin-top : 16px; margin-left: 10px;">Cancel</a>
         </div>
         </form>
       </div>
     </div>
   </div>
+{%endblock%}
