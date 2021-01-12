@@ -18,7 +18,7 @@
 
         {%if request.user.role == 'doctor'%}
         <li class="nav-item">
-          <a class="nav-link" href="{%url 'seApp:appointmentManager'%}">Appointments</a>
+          <a class="nav-link" href="{%url 'seApp:appointmentGetManager'%}">Appointments</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{%url 'seApp:patients'%}">Patients</a>
