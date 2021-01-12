@@ -97,11 +97,15 @@ def postAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
     app.time_slot = request.POST['newTimeSlot']
     app.doctor.time_slots.remove(request.POST['newTimeSlot'])
+    patient = Appointment.patient
+    sendEmail('test',patient,'doctorEdit')
     return redirect('seApp:appointment', app_id=app_id)
 
 def deleteAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
     app.status = 'Cancelled'
+    patient = Appointment.patient
+    sendEmail('test',patient,'doctorCancel')
     return redirect('seApp:appointmentGetManager')
 
 @login_required(login_url='seApp:loginpage')
@@ -160,6 +164,7 @@ def doctorTransferPatient(request, patient_id):
         )
         appointment.doctor.time_slots.pop(0)
         appointment.save()
+        sendEmail('test',patient.user.email,'transferPatient')
         return redirect('seApp:patients')
     context = {'patient': patient, 'doctors': doctors}
     return render(request, 'seApp/patientsTransfer.html', context)
