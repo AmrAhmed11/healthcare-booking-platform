@@ -385,7 +385,8 @@ def removeDoctor(request):
 # ///////////////////////////////////////////////////////////////////////////////////////////
 
 
-
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['patient'])
 def browse(request):
     doctors = Doctor.objects.all()
     myFilter = DoctorFilter(request.GET,queryset=doctors)
@@ -393,31 +394,26 @@ def browse(request):
     context = {'doctors':doctors , 'myFilter':myFilter}
     return render(request,'seApp/browse.html', context)
 
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['patient'])
 def appointmentUser(request):
- if request.user.is_authenticated:
-        role = request.user.role
-        if(role == 'patient'):
-             patient = Patient.objects.get(id=request.user.patient.id)
-             app_all= patient.appointment_set.all()
-             app_pending =patient.appointment_set.filter(status="Pending")
-             app_done = patient.appointment_set.filter(status="Done")
-             app_cancelled = patient.appointment_set.filter(status="Cancelled")
 
-             context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled,'app_all':app_all}
+    patient = Patient.objects.get(id=request.user.patient.id)
+    app_all= patient.appointment_set.all()
+    app_pending =patient.appointment_set.filter(status="Pending")
+    app_done = patient.appointment_set.filter(status="Done")
+    app_cancelled = patient.appointment_set.filter(status="Cancelled")
 
-             return render(request, 'seApp/appointmentUser.html', context)   
+    context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled,'app_all':app_all}
 
-        else :  
-             return redirect('/')   
+    return render(request, 'seApp/appointmentUser.html', context)   
+ 
 
- else:
-     return redirect('seApp:loginpage')
+ 
     
-
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['patient'])
 def appointmentView(request, app_id):
-    if request.user.is_authenticated:
-        role = request.user.role
-        if(role == 'patient'):
                 appointment = Appointment.objects.get(id=app_id)
 
                 form = ReviewForm()
@@ -482,16 +478,12 @@ def appointmentView(request, app_id):
                     return render(request, 'seApp/appointmentdone.html',context)
 
                 else:
-                  return render(request, 'seApp/appointmentcancelled.html', context)  
+                  return render(request, 'seApp/appointmentcancelled.html', context)
+                  
   
-
-        else :  
-             return redirect('/')   
-
-    else:
-     return redirect('seApp:loginpage')
     
-    
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['patient'])    
 def viewprescription(request, app_id ) :
     if request.user.is_authenticated:
         role = request.user.role
