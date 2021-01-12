@@ -98,9 +98,11 @@ def appointmentGetManager(request):
 @allowed_users(allowed_roles=['doctor'])
 def postAppointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
-    app.time_slot = request.POST['newTimeSlot']
-    app.doctor.time_slots.remove(request.POST['newTimeSlot'])
+    index = int(request.POST['newTimeSlot'])
+    app.time_slot = app.doctor.time_slots[index]
+    app.doctor.time_slots.pop(index)
     app.save()
+    app.doctor.save()
     # patient = Appointment.patient
     # sendEmail('test',patient,'doctorEdit')
     return redirect('seApp:appointment', app_id=app_id)

@@ -146,7 +146,7 @@
             {% csrf_token %}
             <select name="newTimeSlot" id="panel" class="form-control custom-select">
               {% for timeSlot in app.doctor.time_slots %}
-              <option value="{{timeSlot|date:"c"}}">{{timeSlot}}</option>
+              <option value="{{forloop.counter0}}">{{timeSlot}}</option>
               {% endfor %}
             </select>
             <button type="submit" id="book" class="mt-2 btn btn-outline-success "
