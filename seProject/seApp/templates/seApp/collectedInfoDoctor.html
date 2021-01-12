@@ -18,15 +18,17 @@
         
   <div class="bg-light py-5 ">
     <div class="text-center">
-    <h4>Appointments</h4>
+    
     </div>
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if patient_list %}
+        {% if noPatients %}
         
         <div class="col-12 col-md-12 col-lg-6">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Appointments</h4></div>
                 <canvas id="myChart" width="400" height="400"></canvas>
                 <script>
                 var ctx = document.getElementById('myChart').getContext('2d');
@@ -71,9 +73,27 @@
               </div>
             </div>
           </div>
+          
+          <div class="col-12 col-md-12 col-lg-6">
+            <div class="card p-2 shadow-md mt-4">
+              <div class="card-body">
+                <div class="text-center mb-2">
+                <h4>Patients</h4></div>
+                <h5>Number of Patients: {{noPatients}}</h5>
+                <h5>Number of Appointments: {{totalApps}}</h5>
+                <h5>Rating: {{rating}}</h5>
+                <h5>Reviews: </h5>
+                <ul>
+                {% for review in reviews %}
+                <li>{{review}}</li>
+                {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
         
       {% else %}
-        <p>No Appointments available</p>
+        <p>No Information available</p>
       {% endif %}
       </div>
     </div>

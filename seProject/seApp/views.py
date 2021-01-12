@@ -205,6 +205,44 @@ def StaffProfile(request):
 # ///////////////////////////////////////////////////////////////////////////////////////////
 # FUNCTIONS WRITTEN BY LOAY 
 
+
+# COLLECT ADMIN INFO
+def collectedInfoAdmin(request):
+    doctors = Doctor.objects.all()
+    patients = Patient.objects.all()
+    clinics = Clinic.objects.all()
+    staff = Staff.objects.all()
+    payments = Payment.objects.all()
+    apps = Appointment.objects.all()
+    totalPaymentAmount = 0
+    noPayments = payments.count()
+    noDoctors = doctors.count()
+    noPatients = patients.count()
+    noStaff = staff.count()
+    noClinics = clinics.count()
+    noAppPending = 0
+    noAppCancelled = 0
+    noAppDone = 0
+    noAppPaid = 0
+    noApps = apps.count()
+    for app in apps:
+        if app.status == "Pending":
+            noAppPending += 1
+        elif app.status == "Cancelled":
+            noAppCancel += 1
+        elif app.status == "Done":
+            noAppDone += 1
+        else:
+            noAppPaid += 1
+    for payment in payments:
+        totalPaymentAmount += payment.amount
+    context = {'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancelled, 'noAppDone': noAppDone,'noAppPaid': noAppPaid,'noApps':noApps,'noClinics':noClinics,'noStaff':noStaff,'noDoctors':noDoctors,'noPayments':noPayments,'totalPaymentAmount':totalPaymentAmount,
+    'doctors':doctors,'patients':patients,'clinics':clinics,'staff':staff,'payments':payments,'apps':apps}
+    return render(request, 'seApp/collectedInfoAdmin.html', context)
+    
+
+
+
 # COLLECT DOCTOR INFO
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
@@ -212,6 +250,7 @@ def collectedInfoDoctor(request):
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     apps = doctor.appointment_set.all()
     patient_list = []
+    reviews = []
     noPatients = 0
     noAppPending = 0
     noAppCancel = 0
@@ -224,12 +263,15 @@ def collectedInfoDoctor(request):
             noAppCancel += 1
         elif app.status == "Done":
             noAppDone += 1
+            reviews.append(app.review)
         else:
             noAppPaid += 1
         if app.patient not in patient_list:
             patient_list.append(app.patient)
             noPatients += 1
-    context = {'patient_list': patient_list , 'app_list':apps, 'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancel, 'noAppDone': noAppDone,'noAppPaid': noAppPaid}
+            
+    totalApps = noAppCancel+noAppDone+noAppPaid+noAppPending
+    context = {'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancel, 'noAppDone': noAppDone,'noAppPaid': noAppPaid,'rating':request.user.doctor.rating,'reviews':reviews,'totalApps':totalApps}
     return render(request, 'seApp/collectedInfoDoctor.html', context)
 
     
