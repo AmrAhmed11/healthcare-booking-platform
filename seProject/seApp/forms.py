@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import *
-from django.contrib.auth.forms import  UserCreationForm
+from django.contrib.auth.forms import  UserCreationForm, UserChangeForm
 from django import forms
 from django.db import transaction
 
@@ -38,3 +38,8 @@ class chooseAppointmentForm(ModelForm):
     class Meta:
         model = Doctor
         fields =['time_slots',]
+
+class editProfileForm(UserChangeForm):
+    class Meta:
+        model = UserProfile
+        fields = ['first_name', 'last_name', 'email', 'phone', 'password']

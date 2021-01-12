@@ -64,4 +64,6 @@ urlpatterns = [
     path('user/profile', views.UserProfile, name="UserProfile"),
 
     path('complete/<int:doctor_id>', views.paymentComplete, name="complete"),
+    path('user/edit-profile', views.editProfile, name="editProfile"),
+    path('user/change-password', views.changePassword, name="changePassword"),
 ]
