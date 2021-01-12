@@ -104,31 +104,31 @@ class TestUrls(SimpleTestCase):
         url=reverse('seApp:UserProfile')
         self.assertEquals(resolve(url).func, UserProfile)
         
-    def test_doctorTransferPatient_url(self):
-        url=reverse('seApp:doctorTransferPatient', kwargs={'patient_id':1})
-        assert resolve(url).view_name == 'seApp:doctorTransferPatient'
+    # def test_doctorTransferPatient_url(self):
+    #     url=reverse('seApp:doctorTransferPatient', kwargs={'patient_id':1})
+    #     assert resolve(url).view_name == 'seApp:doctorTransferPatient'
 
-    def test_UserProfile_url(self):
-        c=Patient()
-        c.login(username='Doctor100',password='12345omar')
-        url=reverse('seApp:UserProfile', kwargs={'patient_id':user.objects.get(id)})
-        self.assertEquals(resolve(url).func, UserProfile)
+    # def test_UserProfile_url(self):
+    #     c=Patient()
+    #     c.login(username='Doctor100',password='12345omar')
+    #     url=reverse('seApp:UserProfile', kwargs={'patient_id':user.objects.get(id)})
+    #     self.assertEquals(resolve(url).func, UserProfile)
 
-    def test_UserProfile_url(self):
-        url=reverse('seApp:UserProfile')
-        self.assertEquals(resolve(url).func, UserProfile)
+    # def test_UserProfile_url(self):
+    #     url=reverse('seApp:UserProfile')
+    #     self.assertEquals(resolve(url).func, UserProfile)
 
-    def test_UserProfile_url(self):
-        url=reverse('seApp:UserProfile')
-        self.assertEquals(resolve(url).func, UserProfile)
+    # def test_UserProfile_url(self):
+    #     url=reverse('seApp:UserProfile')
+    #     self.assertEquals(resolve(url).func, UserProfile)
 
-    def test_UserProfile_url(self):
-        url=reverse('seApp:UserProfile')
-        self.assertEquals(resolve(url).func, UserProfile)
+    # def test_UserProfile_url(self):
+    #     url=reverse('seApp:UserProfile')
+    #     self.assertEquals(resolve(url).func, UserProfile)
 
-    def test_UserProfile_url(self):
-        url=reverse('seApp:UserProfile')
-        self.assertEquals(resolve(url).func, UserProfile)    
+    # def test_UserProfile_url(self):
+    #     url=reverse('seApp:UserProfile')
+    #     self.assertEquals(resolve(url).func, UserProfile)    
 
 
 
