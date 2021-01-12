@@ -18,25 +18,19 @@
 
         {%if request.user.role == 'doctor'%}
         <li class="nav-item">
-          <a class="nav-link" href="{%url 'seApp:appointmentManager'%}">Appointments</a>
+          <a class="nav-link" href="{%url 'seApp:appointmentGetManager'%}">Appointments</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{%url 'seApp:patients'%}">Patients</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{%url 'seApp:patients'%}">Services</a>
+          <a class="nav-link" href="{%url 'seApp:servicesManager'%}">Services</a>
         </li>
         {%endif%}
 
-        {%if request.user.role == 'staff'%}
+        {%if request.user.role == 'staff' and request.staff.doctor != None %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Appointments</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Patients</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Services</a>
+          <a class="nav-link" href="{%url 'seApp:servicesManager'%}">Services</a>
         </li>
         {%endif%}
       </ul>
@@ -46,10 +40,10 @@
         <a class="nav-link float-right" href="{% url 'seApp:UserProfile' %}">Profile</a>
         {%endif%}
         {%if request.user.role == 'doctor'%}
-        <a class="nav-link float-right" href="#">Profile</a>
+        <a class="nav-link float-right" href="{% url 'seApp:DoctorProfile' %}">Profile</a>
         {%endif%}
         {%if request.user.role == 'staff'%}
-        <a class="nav-link float-right" href="#">Profile</a>
+        <a class="nav-link float-right" href="{% url 'seApp:StaffProfile' %}">Profile</a>
         {%endif%}
         <li class="nav-item float-right"><a class="nav-link" href="{% url 'seApp:logout'%}">Log Out</a></li>
       </ul>

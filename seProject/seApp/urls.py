@@ -22,8 +22,10 @@ urlpatterns = [
     path('test',views.test,name='test'),
 
 
-    path('doctor/appointment', views.appointmentManager, name='appointmentManager'),
+    path('doctor/appointment', views.appointmentGetManager, name='appointmentGetManager'),
     path('doctor/appointment/<int:app_id>', views.appointment, name='appointment'),
+    path('doctor/appointment/<int:app_id>/edit', views.postAppointment, name='postAppointment'),
+    path('doctor/appointment/<int:app_id>/delete', views.deleteAppointment, name='deleteAppointment'),
     path('doctor/patients/', views.doctorGetPatients, name='patients'),
     path('doctor/patients/transfer/<int:patient_id>', views.doctorTransferPatient, name='TransferPatients'),
     path('doctor/patients/prescription/<int:app_id>/create', views.doctorPostPrescription, name='PostPrescription'),
@@ -40,10 +42,13 @@ urlpatterns = [
     path('doctor/changeMedicalDetails', views.changeMedicalDetailsDoctor, name='changeMedicalDetailsDoctor'),
     path('doctor/changeFeeDoctor', views.changeFeeDoctor, name='changeFeeDoctor'),
     path('doctor/profile', views.DoctorProfile, name="DoctorProfile"),
+    path('doctor/collectedInfo', views.collectedInfoDoctor, name="collectedInfoDoctor"),
     
+   
 
     path('staff/details/', views.staffGetDetails, name='staffGetDetails'),
     path('staff/details/select', views.staffPostDetails, name='staffPostDetails'),
+    path('staff/profile', views.StaffProfile, name='StaffProfile'),
     path('user/appointment', views.appointmentUser, name='appointmentUser'),
     path('user/appointmentview/<int:app_id>', views.appointmentView, name='appointmentView'),
     path('user/appointmentview/viewprescription/<int:app_id>', views.viewprescription, name='viewprescription'),
