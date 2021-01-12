@@ -16,6 +16,7 @@ import string
 from django.contrib.auth.models import Group
 from django.utils import timezone
 from .decorators import *
+from .mail import *
 
 @unauthenticted_user
 def loginpage (request):
@@ -423,30 +424,31 @@ def appointmentView(request, app_id):
                 context = {'appointment': appointment ,'app': app, 'form': form}
                 if appointment.status == 'Pending':
                    if request.method == 'POST':
-                       if 'cancel' in request.POST:
+                        doctor = appointment.doctor.user.email
+                        if 'cancel' in request.POST:
                           appointment.status = "Cancelled"
                           appointment.save()
                           timeslots = appointment.time_slot
                           appointment.doctor.time_slots.append(timeslots)
                           appointment.doctor.save()
+                          sendEmail('test',doctor,'appointmentCancel')
                           return render(request, 'seApp/appointmentcancelled.html', context)  
 
-                       if 'edit' in request.POST:
-                           timeslots = []
-                           for timeslot in appointment.doctor.time_slots:
+                        if 'edit' in request.POST:
+                            timeslots = []
+                            for timeslot in appointment.doctor.time_slots:
                                if((timeslot - timezone.now()).total_seconds() > 0):
                                     timeslots.append(timeslot)
-                           appointment.doctor.time_slots = timeslots
-                           appointment.doctor.save() 
-
-                           appointment.status = "Cancelled"
-                           appointment.save()
-                           timeslotadd = appointment.time_slot
-                           appointment.doctor.time_slots.append(timeslotadd)
-                           timeslot =request.POST['appointment']
-                           #appointment.doctor.time_slots.remove(timeslot)
-                           appointment.doctor.save()
-                           appointmentnew = Appointment(
+                            appointment.doctor.time_slots = timeslots
+                            appointment.doctor.save() 
+                            appointment.status = "Cancelled"
+                            appointment.save()
+                            timeslotadd = appointment.time_slot
+                            appointment.doctor.time_slots.append(timeslotadd)
+                            timeslot =request.POST['appointment']
+                            #appointment.doctor.time_slots.remove(timeslot)
+                            appointment.doctor.save()
+                            appointmentnew = Appointment(
                                 patient = appointment.patient,
                                 doctor = appointment.doctor,
                                 status = 'Pending',
@@ -454,8 +456,9 @@ def appointmentView(request, app_id):
                                 review = 'None',
                                 prescription = []
                             )
-                           appointmentnew.save()
-                           return render(request, 'seApp/appointmentcancelled.html', context)  
+                            appointmentnew.save()
+                            sendEmail('test',doctor,'appointmentEdit')
+                            return render(request, 'seApp/appointmentcancelled.html', context)  
              
         
 
@@ -506,6 +509,7 @@ def viewprescription(request, app_id ) :
     
 def viewDoctor(request, doctor_id):
     doctors = Doctor.objects.get(id=doctor_id)
+    doctorEmail = doctors.user.email
     timeslots = []
     for timeslot in doctors.time_slots:
         if((timeslot - timezone.now()).total_seconds() > 0):
@@ -530,6 +534,7 @@ def viewDoctor(request, doctor_id):
                 )
                 appointment.save()
                 doctors.save()
+                sendEmail('test',doctorEmail,'appointmentBook')
             else:
                 return render(request, 'seApp/test.html')
         else:
