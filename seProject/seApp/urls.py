@@ -62,4 +62,6 @@ urlpatterns = [
     path('register/',views.register,name="register"),
     path('user/view-doctor/<int:doctor_id>', views.viewDoctor, name='viewDoctor'),
     path('user/profile', views.UserProfile, name="UserProfile"),
+
+    path('complete/<int:doctor_id>', views.paymentComplete, name="complete"),
 ]

@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+import json
 from .forms import *
 from django.utils.dateparse import parse_datetime
 from pytz import timezone
@@ -502,15 +504,15 @@ def appointmentView(request, app_id):
                             appointment.save()
                             timeslotadd = appointment.time_slot
                             appointment.doctor.time_slots.append(timeslotadd)
-                            timeslot =request.POST['appointment']
-                            timeslotParsed = parse_datetime(timeslot) 
+                            timeslotnew =request.POST['appointment']
+                            timeslotParsed = parse_datetime(timeslotnew) 
                             appointment.doctor.time_slots.remove(timeslotParsed)
                             appointment.doctor.save()
                             appointmentnew = Appointment(
                                 patient = appointment.patient,
                                 doctor = appointment.doctor,
                                 status = 'Pending',
-                                time_slot = timeslot,
+                                time_slot = timeslotnew,
                                 review = 'None',
                                 prescription = []
                             )
@@ -542,18 +544,9 @@ def appointmentView(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])    
 def viewprescription(request, app_id ) :
-    if request.user.is_authenticated:
-        role = request.user.role
-        if(role == 'patient'):
-                appointment = Appointment.objects.get(id=app_id)
-
-                context = {'appointment': appointment}
-
-        else :
-                return redirect('/')
-
-    else:
-     return redirect('seApp:loginpage')
+        
+    appointment = Appointment.objects.get(id=app_id)
+    context = {'appointment': appointment}
 
     return render(request, 'seApp/viewprescription.html', context)      
 
@@ -570,29 +563,20 @@ def viewDoctor(request, doctor_id):
             timeslots.append(timeslot)
     doctors.time_slots = timeslots
     doctors.save()
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            role = request.user.role
-            if(role == "patient"):
-                patient = Patient.objects.get(id=request.user.patient.id)
-                timeslots = doctors.time_slots
-                timeslot = timeslots[int(request.POST['appointment']) - 1]
-                doctors.time_slots.remove(timeslot)
-                appointment = Appointment(
-                    patient = patient,
-                    doctor = doctors,
-                    status = 'Pending',
-                    time_slot = timeslot,
-                    review = 'None',
-                    prescription = []
-                )
-                appointment.save()
-                doctors.save()
-                sendEmail('test',doctorEmail,'appointmentBook')
-            else:
-                return render(request, 'seApp/test.html')
-        else:
-            return render(request, 'seApp/login.html')
+    # if request.method == 'POST':
+    #     if request.user.is_authenticated:
+    #         role = request.user.role
+    #         if(role == "patient"):
+    #             patient = Patient.objects.get(id=request.user.patient.id)
+    #             timeslots = doctors.time_slots
+    #             timeslot = timeslots[int(request.POST['appointment']) - 1]
+    #             doctors.time_slots.remove(timeslot)
+    #             doctors.save()
+    #             sendEmail('test',doctorEmail,'appointmentBook')
+    #         else:
+    #             return render(request, 'seApp/test.html')
+    #     else:
+    #         return render(request, 'seApp/login.html')
     context = {'doctors':doctors,}
     return render(request, 'seApp/viewDoctor.html', context)
 
@@ -609,5 +593,44 @@ def UserProfile(request):
         return render(request, 'seApp/login.html')
 
 
+def paymentComplete(request, doctor_id):
+    body = json.loads(request.body)
+    print('BODY:', body)
+    
+    patient = Patient.objects.get(id=request.user.patient.id)
+    doctor = Doctor.objects.get(id=doctor_id)
+    doctorEmail = doctor.user.email
 
-
+    if body['status'] == 'completed':
+        if body['user'] == '1':
+            appointment = Appointment(
+                patient = patient,
+                doctor = doctor,
+                status = 'Paid',
+                time_slot = body['timeSlot'],
+                review = 'None',
+                prescription = [],
+                patient_name = patient.user,
+            )
+            timeslotParsed = parse_datetime(body['timeSlot']) 
+            doctor.time_slots.remove(timeslotParsed)
+            doctor.save()
+            sendEmail('test',doctorEmail,'appointmentBook')
+            appointment.save()
+            return JsonResponse('Payment Completed!', safe=False)
+        else:
+            appointment = Appointment(
+                patient = patient,
+                doctor = doctor,
+                status = 'Paid',
+                time_slot = body['timeSlot'],
+                review = 'None',
+                prescription = [],
+                patient_name = body['firstName'] + ' ' + body['lastName'],
+            ) 
+            timeslotParsed = parse_datetime(body['timeSlot']) 
+            doctor.time_slots.remove(timeslotParsed)
+            doctor.save()
+            sendEmail('test',doctorEmail,'appointmentBook')
+            appointment.save()
+            return JsonResponse('Payment Completed!', safe=False)
