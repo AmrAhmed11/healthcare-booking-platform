@@ -16,6 +16,7 @@ import string
 from django.contrib.auth.models import Group
 from django.utils import timezone
 from .decorators import *
+from . filters import DoctorFilter
 
 @unauthenticted_user
 def loginpage (request):
@@ -351,7 +352,9 @@ def removeDoctor(request):
 
 def browse(request):
     doctors = Doctor.objects.all()
-    context = {'doctors':doctors}
+    myFilter = DoctorFilter(request.GET,queryset=doctors)
+    doctors = myFilter.qs
+    context = {'doctors':doctors , 'myFilter':myFilter}
     return render(request,'seApp/browse.html', context)
 
 def appointmentUser(request):
@@ -409,7 +412,8 @@ def appointmentView(request, app_id):
                            timeslotadd = appointment.time_slot
                            appointment.doctor.time_slots.append(timeslotadd)
                            timeslot =request.POST['appointment']
-                           #appointment.doctor.time_slots.remove(timeslot)
+                           timeslotParsed = parse_datetime(timeslot) 
+                           appointment.doctor.time_slots.remove(timeslotParsed)
                            appointment.doctor.save()
                            appointmentnew = Appointment(
                                 patient = appointment.patient,
