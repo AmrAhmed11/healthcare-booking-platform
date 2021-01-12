@@ -16,6 +16,7 @@ import string
 from django.contrib.auth.models import Group
 from django.utils import timezone
 from .decorators import *
+from .mail import *
 
 @unauthenticted_user
 def loginpage (request):
@@ -400,6 +401,7 @@ def appointmentView(request, app_id):
                           timeslots = appointment.time_slot
                           appointment.doctor.time_slots.append(timeslots)
                           appointment.doctor.save()
+                          sendEmail('test','loay.elshall@icloud.com','appointmentCancel')
                           return render(request, 'seApp/appointmentcancelled.html', context)  
 
                        if 'edit' in request.POST:
