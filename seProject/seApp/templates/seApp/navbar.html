@@ -26,6 +26,12 @@
         <li class="nav-item">
           <a class="nav-link" href="{%url 'seApp:servicesManager'%}">Services</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{%url 'seApp:staffManager'%}">Staff</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{%url 'seApp:collectedInfoDoctor'%}">Collected Info</a>
+        </li>
         {%endif%}
 
         {%if request.user.role == 'staff' and request.staff.doctor != None %}

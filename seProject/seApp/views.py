@@ -179,6 +179,7 @@ def doctorTransferPatient(request, patient_id):
                 prescription = []
         )
         appointment.doctor.time_slots.pop(0)
+        appointment.doctor.save()
         appointment.save()
         sendEmail('test',patient.user.email,'transferPatient')
         return redirect('seApp:patients')
@@ -454,7 +455,9 @@ def addNewDoctor(request):
 def removeDoctor(request):
     doctor = request.POST['doctor']
     doctorObject = Doctor.objects.get(user=doctor)
-    doctorObject.clinic = ''
+    clinic = Clinic()
+    clinic.save()
+    doctorObject.clinic = clinic
     doctorObject.save()
     return redirect('seApp:staffManager')
 

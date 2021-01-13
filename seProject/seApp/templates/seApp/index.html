@@ -20,6 +20,14 @@
     <link rel="stylesheet" type="text/css" href="{% static '/assets/css/style.css' %}">
     <!-- Responsive -->
     <link rel="stylesheet" type="text/css" href="{% static '/assets/css/responsive.css' %}">
+
+    <style>
+      @media only screen and (min-width: 600px) {
+        .landingPics {
+          max-width: 500px  !important;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -30,8 +38,8 @@
           </div>
           <div class="mobile-menu">
             <ul class="m-menu"> 
-              <li><a href="#">Log in</a></li>
-              <li><a href="#">Register</a></li>
+              <li><a href="{% url 'seApp:loginpage' %}">Log in</a></li>
+              <li><a href="{% url 'seApp:register' %}">Register</a></li>
             </ul>
           </div>
         </div>
@@ -71,7 +79,7 @@
        <!-- banner start here-->
       <section class="banner banner-newyork" style="background-image: url('{% static '/images/landing-bg.jpg' %}');" id="main">
         <div class="banner-overlay">
-          <img src="{% static '/images/landing-bg.png' %}" alt="about iamge">
+          
           <div class="banner-content-area">
             <div class="container">
               <div class="row">
@@ -101,7 +109,7 @@
                       </div>
                     </div><!-content-right -->
                   <!-- </div> content-right bg -->
-                <!-- </div>  --> -->
+                <!-- </div>  --> 
               </div><!-- row -->
 
               
@@ -143,43 +151,86 @@
 
 
       <!-- gallery start here -->
-      <section class="gallery gallery-two gallery-uhv padding-120">
+      <section class="gallery gallery-two gallery-uhv padding-60" style="background-color:lightgrey;">
         <div class="container">
           <div class="section-header text-center">
-            <h2>Our Features</h2>
+            <h2 style="color:#0131FF; padding-top: 90px;">Our Features For Patients</h2>
             
           </d iv>
 
           <div class="section-wrapper" style="margin-top: 100px;"> 
             
             <div class="row">
-              <div class="col-6 pull-right">
-                <h3>Review and rate 
-                  your <br> experience</h3>
+              <div class="col-lg-7 col-12 pull-right " style="transform: translateY(50%); margin-bottom: 200px;">
+                <h3 class="pull-right">browse and Book <br> appointments with our  <br>top rated doctors with ease </h3>
+                
                 
               </div>
-              <div class="col-6 pull-left" >
-                <img src="{% static '/images/seLogoBlack.png' %}" alt="logo" class="img-responsive" style="max-width: 600px;">
+              <div class="col-lg-5 col-12 pull-left" >
+                <img src="{% static '/images/browsePatient.png' %}"  class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
-            <div class="row"  style="margin-top: 70px;">
-              <div class="col-6 pull-left">
-                <h3>Review and rate 
-                  your <br> experience</h3>
+           
+              <div class="row">
+                <div class="col-lg-7 col-12 pull-left" style="transform: translateY(50%);  margin-bottom: 200px;">
+                  <h3 class="pull-left">Review, rate 
+                    your <br> experience and view <br> your Prescriptions<br> all in one page</h3>
+                  
+                  
+                </div>
+                <div class="col-lg-5 col-12 pull-right" >
+                  <img src="{% static '/images/ratePatient.png' %}" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-7 col-12 pull-right" style="transform: translateY(50%);  margin-bottom: 200px;">
+                  <h3 class="pull-right">Easily update your<br> medical history for <br>accurate Prescriptions</h3>
+                  
+                  
+                </div>
+                <div class="col-lg-5 col-12 pull-left" >
+                  <img src="{% static '/images/profilePatient.png' %}" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                </div>
+              </div>
+          </div>
+        </div>
+      </section>
+      <section class="gallery gallery-two gallery-uhv padding-120">
+        <div class="container">
+          <div class="section-header text-center">
+            <h2 style="color:#0131FF;">Our Features For Doctors</h2>
+            
+          </d iv>
+
+          <div class="section-wrapper" style="margin-top: 100px;"> 
+            
+            <div class="row">
+              <div class="col-lg-7 col-12 pull-right" style="transform: translateY(50%);  margin-bottom: 200px;">
+                <h3 class="pull-right">manage all your<br> appointments from <br> one page </h3>
+                
                 
               </div>
-              <div class="col-6 pull-right">
-                <img src="{% static '/images/seLogoBlack.png' %}" alt="logo" class="img-responsive" style="max-width: 600px;">
+              <div class="col-lg-5 col-12 pull-left" >
+                <img src="{% static '/images/appointmentManager.png' %}" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
-            <div class="row"  style="margin-top: 70px;">
-              <div class="col-6 pull-right">
-                <h3>Review and rate 
-                  your <br> experience</h3>
+            
+            <div class="row" style="margin-top: 50px;">
+              <div class="col-lg-7 col-12 pull-left">
+                <h3 class="pull-left" style="transform: translateY(50%);  margin-bottom: 200px;">easily Manage your fees,<br> Medical details and <br> timeslots </h3>
                 
               </div>
-              <div class="col-6 pull-left">
-                <img src="{% static '/images/seLogoBlack.png' %}" alt="logo" class="img-responsive" style="max-width: 600px;">
+              <div class="col-lg-5 col-12 pull-right" >
+                <img src="{% static '/images/servicesManager.png' %}" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+              </div>
+            </div>
+            <div class="row" style="margin-top: 50px;">
+              <div class="col-lg-7 col-12 pull-right">
+                <h3 class="pull-right" style="transform: translateY(50%);  margin-bottom: 200px;">Access All your <br>patients with a click of <br> a button </h3>
+                
+              </div>
+              <div class="col-lg-5 col-12 pull-left" >
+                <img src="{% static '/images/patientDoctor.png' %}" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
           </div>

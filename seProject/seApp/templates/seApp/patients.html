@@ -26,23 +26,46 @@
                 <div class="row">
                   <div class="col-6 col-md-6">
                     <p class="card-text h6">Name:</p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Gender: </p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user.first_name}} {{patient.user.last_name}}</p>
+                    <p class="card-text">{{patient.user.gender}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Phone: </p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user.phone}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Email: </p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user.email}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Birthdate: </p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user.birth_date}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Medical history: </p>
                   </div>
                   <div class="col-6 col-md-6">
-                    <p class="card-text">{{patient.user.name}}</p>
-                    <p class="card-text">{{patient.user.gender}}</p>
-                    <p class="card-text">{{patient.user.phone}}</p>
-                    <p class="card-text">{{patient.user.email}}</p>
-                    <p class="card-text">{{patient.user.birth_date}}</p>
                     {% for medical_history in patient.medical_history %}
                       <p class="card-text">{{medical_history}}</p>
                     {% endfor %}
                   </div>
                 </div>
+              </div>
+              <div class="text-center">
                 <a class="btn btn-primary mt-2" href="/doctor/patients/transfer/{{patient.id}}">Transfer Patient</a>
               </div>
             </div>

@@ -5,7 +5,7 @@
     min-height: 600px;
   }
 </style>
-<main>
+<div class="col-12 col-md-12">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
@@ -13,7 +13,6 @@
       </div>
     </div>
   </section>
-
   <div class="bg-light py-5 ">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -25,18 +24,38 @@
                 <div class="row">
                   <div class="col-6 col-md-6">
                     <p class="card-text h6">Name:</p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Gender: </p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user.gender}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Phone: </p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user.phone}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Email: </p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user.email}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Birthdate: </p>
+                  </div>
+                  <div class="col-6 col-md-6">
+                    <p class="card-text">{{patient.user.birth_date}}</p>
+                  </div>
+                  <div class="col-6 col-md-6">
                     <p class="card-text h6">Medical history: </p>
                   </div>
                   <div class="col-6 col-md-6">
-                    <p class="card-text">{{patient.user.name}}</p>
-                    <p class="card-text">{{patient.user.gender}}</p>
-                    <p class="card-text">{{patient.user.phone}}</p>
-                    <p class="card-text">{{patient.user.email}}</p>
-                    <p class="card-text">{{patient.user.birth_date}}</p>
                     {% for medical_history in patient.medical_history %}
                       <p class="card-text">{{medical_history}}</p>
                     {% endfor %}
@@ -48,7 +67,7 @@
                     <div class="col-12">
                     <select class="form-control" name="newDoctor">
                         {% for doctor in doctors %}
-                            <option value="{{doctor.id}}">{{doctor.user.name}}</option>
+                            <option value="{{doctor.id}}">{{doctor.user}}</option>
                         {% endfor %}
                     </select>
                     </div>
@@ -67,6 +86,5 @@
       </div>
     </div>
   </div>
-
-</main>
+</div>
 {%endblock%}

@@ -25,14 +25,23 @@
                   <div class="col-12">
                     <h5 class="text-center mb-5">Appointment {{app.id}}</h5>
                   </div>
-                  <div class="col-4">
-                    <p class="card-text h6">Time Slot:</p>
-                    <p class="card-text h6">Review:</p>
-                    <p class="card-text h6">Status:</p>
-                  </div>
-                  <div class="col-8">
-                    <p class="card-text">{{app.time_slot}}</p>
-                    <p class="card-text">{{app.review}}</p>
+                  <div class="row">
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Date:</p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      <p class="card-text">{{app.time_slot}}</p>
+                    </div>
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Review:</p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      <p class="card-text">{{app.review}}</p>
+                    </div>
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Status:</p>
+                    </div>
+                    <div class="col-8 col-md-8">
                     {% if app.status == 'Pending' %}
                     <p class="card-text text-warning"> {{app.status}}</p>
                     {% elif app.status == 'Cancelled'%}
@@ -42,9 +51,13 @@
                     {% else %}
                     <p class="card-text text-success"> {{app.status}}</p>
                     {% endif %}
+                    </div>
                   </div>
-                    <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
+            
                 </div>
+                <div class="text-center mt-5">
+                  <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
+                  </div>
               </div>
             </div>
           </div>

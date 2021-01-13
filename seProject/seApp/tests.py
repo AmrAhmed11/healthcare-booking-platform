@@ -1,4 +1,4 @@
-from django.test import SimpleTestCase, TestCase
+from django.test import SimpleTestCase, TestCase, Client
 from django.urls import resolve, reverse
 from .views import *
 from .models import *
@@ -207,10 +207,89 @@ class test_urls_pk (TestCase):
             username='anwar',
             role='doctor'
           )
-        self.doctor1=Doctor.objects.create(user=self.user1)
+        self.doctor1 = Doctor.objects.create(user=self.user1)
         doctor_id=self.doctor1.id
         url=reverse('seApp:viewDoctor', args=[str(doctor_id)])
         self.assertEquals(resolve(url).func, viewDoctor) 
+#////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#Testing views
+class test_Views(TestCase):
+    def SetUp (self):
+        self.client=Client()
+
+#////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#Testing models
+
+class test_models(TestCase):
+    def setUp(self):
+        self.user=UserProfile.objects.create(
+            username='Ehab_111',
+            email='ehab@gmail.com',
+            first_name='Omar',
+            last_name='Ehab',
+            role='Patient'
+        )
+        self.user2=UserProfile.objects.create(
+            username='AmrAhmed',
+            email='amr@gmail.com',
+            first_name='Amr',
+            last_name='Ahmed',
+            role='Doctor'
+        )
+        self.user3=UserProfile.objects.create(
+            username='AliSayed',
+            email='Ali@gmail.com',
+            first_name='Ali',
+            last_name='Sayed',
+            role='Staff'
+        )
+        self.patient=Patient.objects.create(user=self.user)
+        self.doctor=Doctor.objects.create(user=self.user2)
+        self.staff=Staff.objects.create(user=self.user3, specialization='Nurse')
+        self.doctor.specialization='Pediatrician'
+        self.doctor.fees=200
+        self.patient.medical_history=['diabetes','heart surgery']
+        self.appointment=Appointment.objects.create(patient=self.patient,doctor=self.doctor,status='Pending')
+        self.clinic=Clinic.objects.create(owner_id=self.doctor.id,name='Healthy Life')
+        self.staff.doctor=self.doctor
+        self.payment=Payment.objects.create(appointment=self.appointment,key='fhkbkjd6546')
+
+    def test_userprofile_model (self):
+        self.assertEquals(self.user.role,'Patient')
+        self.assertEquals(self.user.username,'Ehab_111')
+        self.assertEquals(self.user.email, 'ehab@gmail.com')
+    
+    def test_Patient_model (self):
+        self.assertEquals(self.patient.medical_history, ['diabetes','heart surgery'])
+
+    def test_Doctor_model (self):
+        self.assertEquals(self.doctor.specialization,'Pediatrician')
+        self.assertEquals(self.doctor.user.first_name,'Amr')
+    
+    def test_Staff_model (self):
+        self.assertEquals(self.staff.specialization,'Nurse')
+        self.assertEquals(self.staff.user.username,'AliSayed')    
+
+    def test_Clinic_model (self):
+        self.assertEquals(self.clinic.name, 'Healthy Life')
+        self.assertAlmostEquals(self.clinic.owner_id, self.doctor.id)
+
+    def test_Appointment_model (self):
+        self.assertEquals(self.appointment.patient.user.first_name,'Omar')
+        self.assertAlmostEquals(self.appointment.doctor.fees, 200)
+        self.assertAlmostEquals(self.appointment.status, 'Pending')
+    
+    def test_Payment_model (self):
+        self.assertEquals(self.payment.key, 'fhkbkjd6546')
+        self.assertAlmostEquals(self.payment.appointment.id, self.appointment.id) 
+    
+
+
+
+
+
+
+        
 
 
 
