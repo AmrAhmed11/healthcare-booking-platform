@@ -217,24 +217,29 @@ class test_urls_pk (TestCase):
 class test_Views(TestCase):    
     def setUp(self):
         self.client=Client()
+        self.group_doctor = Group.objects.create(name='doctor')
+        self.group_staff = Group.objects.create(name='staff')
+        self.group_patient = Group.objects.create(name='patient')
+        self.group_admin = Group.objects.create(name='admin')
         self.user=UserProfile.objects.create(
             username='Ehab_111',
             email='ehab@gmail.com',
             first_name='Omar',
             last_name='Ehab',
-            role='Patient'
+            role='patient'
         )
         self.user.set_password('12345')
+        self.user.groups.add(self.group_patient)        
         self.user.save()
-
         self.user2=UserProfile.objects.create(
             username='AmrAhmed',
             email='amr@gmail.com',
             first_name='Amr',
             last_name='Ahmed',
-            role='Doctor'
+            role='doctor',
         )
         self.user2.set_password('12345')
+        self.user2.groups.add(self.group_doctor)
         self.user2.save()
 
         self.user3=UserProfile.objects.create(
@@ -245,6 +250,7 @@ class test_Views(TestCase):
             role='staff'
         )
         self.user3.set_password('12345')
+        self.user3.groups.add(self.group_staff)        
         self.user3.save()
 
         self.patient=Patient.objects.create(user=self.user)
@@ -285,7 +291,7 @@ class test_Views(TestCase):
         self.client.login(username='AmrAhmed',password='12345')
         response = self.client.get(reverse('seApp:appointmentGetManager'),follow = True)
         self.assertEquals(response.status_code,200)
-        self.assertTemplateUsed(response, 'seApp/appointmentManager.html/')
+        self.assertTemplateUsed(response, 'seApp/appointmentManager.html')
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Testing models
 
