@@ -248,15 +248,15 @@ def collectedInfoAdmin(request):
     noApps = apps.count()
     for app in apps:
         if app.status == "Pending":
-            noAppPending += 1
+            noAppPending =noAppPending + 1
         elif app.status == "Cancelled":
-            noAppCancel += 1
+            noAppCancel =noAppCancel + 1
         elif app.status == "Done":
-            noAppDone += 1
+            noAppDone =noAppDone + 1
         else:
             noAppPaid += 1
     for payment in payments:
-        totalPaymentAmount += payment.amount
+        totalPaymentAmount = totalPaymentAmount + payment.amount
     context = {'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancelled, 'noAppDone': noAppDone,'noAppPaid': noAppPaid,'noApps':noApps,'noClinics':noClinics,'noStaff':noStaff,'noDoctors':noDoctors,'noPayments':noPayments,'totalPaymentAmount':totalPaymentAmount,
     'doctors':doctors,'patients':patients,'clinics':clinics,'staff':staff,'payments':payments,'apps':apps}
     return render(request, 'seApp/collectedInfoAdmin.html', context)
@@ -357,7 +357,10 @@ def changeMedicalDetailsDoctor(request):
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def deleteTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
-    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    if(request.user.role=='staff'):
+        doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
+    else:
+        doctor = request.user.doctor
     timeslotParsed = parse_datetime(timeslot) 
     doctor.time_slots.remove(timeslotParsed)
     doctor.save()
@@ -372,7 +375,10 @@ def addTimeslotDoctor(request):
     #checking if time is in the past
     if((parse_datetime(timeslot) - datetime.now()).total_seconds() < 0):
         return redirect('seApp:servicesManager')
-    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    if(request.user.role=='staff'):
+        doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
+    else:
+        doctor = request.user.doctor
     if(doctor.time_slots == None):
         doctor.time_slots = []
     doctor.time_slots.append(timeslot)
@@ -421,8 +427,8 @@ def staffManager(request):
 @allowed_users(allowed_roles=['doctor'])
 def addNewStaff(request):
     staff = request.POST['staff']
-    doctor = Doctor.objects.get(id=request.user.doctor.id)
-    staffObject = Staff.objects.get(user_id=staff)
+    doctor = request.user.doctor
+    staffObject = Staff.objects.get(id=staff)
     staffObject.doctor = doctor
     staffObject.save()
     return redirect('seApp:staffManager')
@@ -433,7 +439,7 @@ def addNewStaff(request):
 @allowed_users(allowed_roles=['doctor'])
 def removeStaff(request):
     staff = request.POST['staff']
-    staffObject = Staff.objects.get(user=staff)
+    staffObject = Staff.objects.get(id=staff)
     staffObject.delete()
     return redirect('seApp:staffManager')
 
