@@ -2,6 +2,7 @@ from django.test import SimpleTestCase, TestCase, Client
 from django.urls import resolve, reverse
 from .views import *
 from .models import *
+from django.contrib.auth.models import *
 # Url tests 
 class TestUrls(SimpleTestCase):
 
@@ -213,9 +214,72 @@ class test_urls_pk (TestCase):
         self.assertEquals(resolve(url).func, viewDoctor) 
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Testing views
-class test_Views(TestCase):
-    def SetUp (self):
+class test_Views(TestCase):    
+    def setUp(self):
         self.client=Client()
+        self.user=UserProfile.objects.create(
+            username='Ehab_111',
+            email='ehab@gmail.com',
+            first_name='Omar',
+            last_name='Ehab',
+            role='Patient'
+        )
+        self.user.set_password('12345')
+        self.user.save()
+
+        self.user2=UserProfile.objects.create(
+            username='AmrAhmed',
+            email='amr@gmail.com',
+            first_name='Amr',
+            last_name='Ahmed',
+            role='Doctor'
+        )
+        self.user2.set_password('12345')
+        self.user2.save()
+
+        self.user3=UserProfile.objects.create(
+            username='AliSayed',
+            email='Ali@gmail.com',
+            first_name='Ali',
+            last_name='Sayed',
+            role='staff'
+        )
+        self.user3.set_password('12345')
+        self.user3.save()
+
+        self.patient=Patient.objects.create(user=self.user)
+        self.doctor=Doctor.objects.create(user=self.user2)
+        self.staff=Staff.objects.create(user=self.user3, specialization='Nurse')
+        self.doctor.specialization='Pediatrician'
+        self.doctor.fees=200
+        self.patient.medical_history=['diabetes','heart surgery']
+        self.appointment=Appointment.objects.create(patient=self.patient,doctor=self.doctor,status='Pending')
+        self.clinic=Clinic.objects.create(owner_id=self.doctor.id,name='Healthy Life')
+        self.staff.doctor=self.doctor
+        self.payment=Payment.objects.create(appointment=self.appointment,key='fhkbkjd6546')
+        self.url_home=reverse('seApp:home')
+        self.url_test=reverse('seApp:test')
+    def test_home_view(self):
+        response=self.client.get(self.url_home)
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response, 'seApp/index.html')
+    # def test_logout_view(self):
+    #     response=self.client.get(reverse('seApp:logout'))
+    #     self.client.logout()
+    #     self.assertEquals(response.status_code,302)
+    #     self.assertEquals(response.get('seApp:home'), '/')
+
+    # def test_appointment_view(self):
+    #     self.client.login(username='AmrAhmed',password='12345')
+    #     response=self.client.get(reverse('seApp:appointment', args=[str(self.appointment.id)]))
+    #     self.assertEquals(response.status_code,200)
+    #     self.assertTemplateUsed(response, 'seApp/appointment.html/')
+
+    def test_staffProfile(self):
+        self.client.login(username='AliSayed',password='12345')
+        response = self.client.get(reverse('seApp:StaffProfile'))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response, 'seApp/staffProfile.html')
 
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Testing models

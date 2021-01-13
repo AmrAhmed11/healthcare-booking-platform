@@ -1,7 +1,7 @@
 {% extends 'seApp/main.html' %}
 {%block content%}
 
-<body>
+<body class="bg-light">
   <div class="container">
     <header class="blog-header py-3">
       <div class="row flex-nowrap justify-content-between align-items-center">
@@ -17,7 +17,7 @@
             <div class="col-12 col-md-12">
               <div class="card p-5 shadow-md">
                 <div class="card-body">
-                  <h3 class="text-center mb-5">Appointment {{appointment.doctor.specialization}}</h3>
+                  <h3 class="text-center mb-5">{{appointment.doctor.specialization}}</h3>
                   <p class="card-text">Date: {{appointment.time_slot}}</p>
                   <p class="card-text">Patient: {{appointment.patient}}</p>
                   <p class="card-text"> Doctor: {{appointment.doctor.user}}</p>
