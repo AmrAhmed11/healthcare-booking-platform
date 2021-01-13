@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from .models import *
 from .forms import CreateUserForm, editProfileForm, updateProfileForm
 from django.forms import inlineformset_factory
-from django.contrib.auth.forms import *
+from django.contrib.auth.forms import  UserCreationForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -21,6 +21,7 @@ from django.utils import timezone
 from .decorators import *
 from . filters import DoctorFilter
 from .mail import *
+from django.contrib import messages
 
 @unauthenticted_user
 def loginpage (request):
@@ -311,6 +312,7 @@ def servicesManager(request):
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
     else:
         doctor = Doctor.objects.get(id=request.user.doctor.id)
+    print(doctor.time_slots)
     services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization, 'clinic':doctor.clinic }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
@@ -686,8 +688,8 @@ def paymentComplete(request, doctor_id):
             # timeslotParsed = parse_datetime(body['timeSlot']) 
             # doctor.time_slots.remove(timeslotParsed)
             # doctor.save()
-            doctors.time_slots.remove(timeslot)
-            doctors.save()
+            doctor.time_slots.remove(timeslot)
+            doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
             return JsonResponse('Payment Completed!', safe=False)
@@ -706,8 +708,8 @@ def paymentComplete(request, doctor_id):
             # timeslotParsed = parse_datetime(body['timeSlot']) 
             # doctor.time_slots.remove(timeslotParsed)
             # doctor.save()
-            doctors.time_slots.remove(timeslot)
-            doctors.save()
+            doctor.time_slots.remove(timeslot)
+            doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
             return JsonResponse('Payment Completed!', safe=False)
@@ -727,13 +729,14 @@ def paymentComplete(request, doctor_id):
 @login_required(login_url='seApp:loginpage')
 def changePassword(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(data=request.POST, user=request.user)
-        update_session_auth_hash(request, form.user)
-        if form.is_valid:
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
             form.save()
+            update_session_auth_hash(request, form.user)
             return redirect('/user/profile')
         else:
-            return redirect('/user/change-password')
+            messages.error(request, 'Incorrect password')
+            return redirect('/accounts/change_password')
 
     else:
         form = PasswordChangeForm(user=request.user)
