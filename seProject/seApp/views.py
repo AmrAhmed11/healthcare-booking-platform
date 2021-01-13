@@ -493,20 +493,14 @@ def browse(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentUser(request):
-
     patient = Patient.objects.get(id=request.user.patient.id)
     app_all= patient.appointment_set.all()
     app_pending =patient.appointment_set.filter(status="Pending")
     app_paid=patient.appointment_set.filter(status="Paid")
     app_done = patient.appointment_set.filter(status="Done")
     app_cancelled = patient.appointment_set.filter(status="Cancelled")
-
     context = {'app_pending': app_pending,'app_done': app_done,'app_cancelled': app_cancelled,'app_all':app_all,'app_paid':app_paid}
-
     return render(request, 'seApp/appointmentUser.html', context)   
- 
-
- 
     
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
@@ -670,17 +664,11 @@ def viewDoctor(request, doctor_id):
     return render(request, 'seApp/viewDoctor.html', context)
 
 @login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['patient']) 
 def UserProfile(request):
-    if request.user.is_authenticated:
-        role = request.user.role
-        if(role == "patient"):
-            patient = Patient.objects.get(id = request.user.patient.id)
-            context = {'patient':patient}
-            return render(request, 'seApp/userProfile.html', context)
-        else:
-            return render(request, 'seApp/test.html')
-    else:
-        return render(request, 'seApp/login.html')
+    patient = Patient.objects.get(id = request.user.patient.id)
+    context = {'patient':patient}
+    return render(request, 'seApp/userProfile.html', context)
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient']) 

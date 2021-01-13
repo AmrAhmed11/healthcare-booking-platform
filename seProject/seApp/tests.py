@@ -273,6 +273,8 @@ class test_Views(TestCase):
         self.appointment.save()
 
         
+        self.appointment2 = Appointment.objects.create(patient=self.patient,doctor=self.doctor,status='Paid')
+        self.appointment3 = Appointment.objects.create(patient=self.patient,doctor=self.doctor,status='Done')
         self.clinic=Clinic.objects.create(owner_id=self.doctor.id,name='Healthy Life')
         self.clinic.save()
 
@@ -483,7 +485,67 @@ class test_Views(TestCase):
         self.assertEquals(response.status_code,302)
         self.assertRedirects(response, '/doctor/staff', status_code=302, target_status_code=200, fetch_redirect_response=True)
      
+    def test_browse(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse('seApp:browse'))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response,  'seApp/browse.html')
 
+    def test_appointmentUser(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse('seApp:appointmentUser'))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response,'seApp/appointmentUser.html')
+    
+    def test_appointmentViewCancel(self):
+        self.client.login(username='Ehab_111',password='12345')
+        app_id=self.appointment2.id
+        response=self.client.post(reverse('seApp:appointmentView',args=[str(app_id)]),{'cancel':True})
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response,'seApp/appointmentcancelled.html')
+
+    # def test_appointmentViewEdit(self):
+    #     self.client.login(username='Ehab_111',password='12345')
+    #     app_id=self.appointment2.id
+    #     timeslot_removed = '2020-03-10 11:16:09.184106+01:00'
+    #     response=self.client.post(reverse('seApp:appointmentView',args=[str(app_id)]),{'edit':True,'appointment':timeslot_removed})
+    #     self.assertEquals(response.status_code,200)
+    #     self.assertTemplateUsed(response,'seApp/appointmentcancelled.html')
+
+    def test_appointmentViewPaid(self):
+        self.client.login(username='Ehab_111',password='12345')
+        app_id=self.appointment2.id
+        response=self.client.post(reverse('seApp:appointmentView',args=[str(app_id)]))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response,'seApp/appointmentpaid.html')
+
+    
+    def test_appointmentViewDone(self):
+        self.client.login(username='Ehab_111',password='12345')
+        app_id=self.appointment3.id
+        response=self.client.post(reverse('seApp:appointmentView',args=[str(app_id)]),{'submit':True,'rate': 5})
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response,'seApp/appointmentdone.html')
+    
+    def test_viewprescription(self):
+        self.client.login(username='Ehab_111',password='12345')
+        app_id=self.appointment3.id
+        response=self.client.post(reverse('seApp:viewprescription',args=[str(app_id)]))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response,'seApp/viewprescription.html')
+    
+    def test_viewDoctor(self):
+        self.client.login(username='Ehab_111',password='12345')
+        doctor=self.doctor.id
+        response=self.client.post(reverse('seApp:viewDoctor',args=[str(doctor)]))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response,'seApp/viewDoctor.html')
+
+    def UserProfile(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse('seApp:UserProfile'))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response,'seApp/userProfile.html')
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Testing models
 
