@@ -281,6 +281,11 @@ class test_Views(TestCase):
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response, 'seApp/staffProfile.html')
 
+    def test_appointmentGetManager(self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response = self.client.get(reverse('seApp:appointmentGetManager'),follow = True)
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response, 'seApp/appointmentManager.html/')
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Testing models
 
