@@ -180,15 +180,15 @@ def doctorTransferPatient(request, patient_id):
     if request.method == 'POST':
         doctor = Doctor.objects.get(id=request.POST['doctor'])
         timeslot = request.POST['timeslot']
+        index = int(timeslot) -1
         appointment = Appointment(
                 patient = patient,
                 doctor = doctor,
                 status = 'Pending',
-                time_slot =  timeslot,
+                time_slot =  doctor.time_slots[index],
                 review = 'None',
                 prescription = []
         ) 
-        index = int(timeslot) -1
         doctor.time_slots.pop(index)
         doctor.save()
         appointment.save()
@@ -220,8 +220,8 @@ def staffPostDetails(request):
     else:
         return redirect('seApp:servicesManager')     
 
-# @login_required(login_url='seApp:loginpage')
-# @allowed_users(allowed_roles=['staff'])
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['staff'])
 def StaffProfile(request):
     staff = Staff.objects.get(id=request.user.staff.id)
     context = {'staff': staff}
