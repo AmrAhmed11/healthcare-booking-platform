@@ -27,7 +27,15 @@
                   <p class="card-text"> Description: {{appointment.doctor.description}}</p>
                   <p class="card-text"> Returned Fees: {{appointment.doctor.fees}}</p>
                   <br>
+                  {% if appointment.status == 'Cancelled' %}
                   <h6 class="text-center" style="color :red;"> This Appointment was {{appointment.status}}</h6>
+                  {% endif %}
+
+                  {% if appointment.status == 'Pending' %}
+                  
+                  {% endif %}
+
+
                 </div>
               </div>
             </div>
