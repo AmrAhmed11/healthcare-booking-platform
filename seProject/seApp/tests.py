@@ -280,33 +280,29 @@ class test_Views(TestCase):
         self.staff.doctor=self.doctor
         self.staff.save()
 
-
-        self.payment=Payment.objects.create(appointment=self.appointment,key='fhkbkjd6546')
-        self.payment.save()
+        self.doctor.clinic=self.clinic
+        self.payment=Payment.objects.create(appointment=self.appointment,key='fhkbkjd6546',amount=209529)
         self.url_home=reverse('seApp:home')
         self.url_test=reverse('seApp:test')
-
-
+        self.doctor.save()
+        self.staff.save()
     def test_home_view(self):
         response=self.client.get(self.url_home)
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response, 'seApp/index.html')
-        
 
     def test_logout_view(self):
-        self.client.login(username='AmrAhmed',password='12345')        
+        self.client.login(username='AmrAhmed',password='12345')
         response=self.client.get(reverse('seApp:logout'))
         self.client.logout()
         self.assertEquals(response.status_code,302)
         self.assertRedirects(response, '/', status_code=302, target_status_code=200, fetch_redirect_response=True)
-
 
     def test_appointment_view(self):
         self.client.login(username='AmrAhmed',password='12345')
         response=self.client.get(reverse('seApp:appointment', args=[str(self.appointment.id)]))
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response, 'seApp/appointment.html')
-
 
     def test_staffProfile(self):
         self.client.login(username='AliSayed',password='12345')
@@ -407,6 +403,86 @@ class test_Views(TestCase):
         self.assertEquals(response.status_code,302)
         self.assertRedirects(response, '/doctor/services', status_code=302, target_status_code=200, fetch_redirect_response=True)
 
+    def test_collect_info (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.get(reverse('seApp:collectedInfoAdmin'))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response, 'seApp/collectedInfoAdmin.html')
+    
+    def test_collect_info_doctor (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.get(reverse('seApp:collectedInfoDoctor'))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response, 'seApp/collectedInfoDoctor.html')
+
+    def test_servicesManager (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.get(reverse('seApp:servicesManager'))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response, 'seApp/servicesManager.html')
+        
+    def test_createNewClinic (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:createNewClinic'),{'clinicName':'Health','clinicAddress':'3 fisal street'})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/doctor/services', status_code=302, target_status_code=200, fetch_redirect_response=True)
+    
+    def test_changeFeeDoctor (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:changeFeeDoctor'),{'fees':'1000'})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/doctor/services', status_code=302, target_status_code=200, fetch_redirect_response=True)
+
+    def test_changeMedicalDetailsDoctor (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:changeMedicalDetailsDoctor'),{'description':'graduatee of Cairo universities','specialization':'pediatrician','medicalId':'542598'})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/doctor/services', status_code=302, target_status_code=200, fetch_redirect_response=True)
+
+    def test_deleteTimeslotDoctor (self):
+        self.client.login(username='AliSayed',password='12345')
+        timeslot_removed = '2020-03-10 11:16:09.184106+01:00'
+        response=self.client.post(reverse('seApp:deleteTimeslotDoctor'),{'timeslot':timeslot_removed})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/doctor/services', status_code=302, target_status_code=200, fetch_redirect_response=True)
+    
+    def test_addTimeslotDoctor (self):
+        self.client.login(username='AliSayed',password='12345')
+        timeslot_removed = '2020-03-10T10:16:09'
+        response=self.client.post(reverse('seApp:addTimeslotDoctor'),{'timeslot':timeslot_removed})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/doctor/services', status_code=302, target_status_code=200, fetch_redirect_response=True)
+   
+    def test_staffManager (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.get(reverse('seApp:staffManager'))
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response,  'seApp/staffManager.html')
+
+    def test_addNewStaff (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:addNewStaff'),{'staff':self.staff.id})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/doctor/staff', status_code=302, target_status_code=200, fetch_redirect_response=True)
+    addNewDoctor
+    def test_removeStaff (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:removeStaff'),{'staff':self.staff.id})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/doctor/staff', status_code=302, target_status_code=200, fetch_redirect_response=True)
+
+    def test_addNewDoctor (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:addNewDoctor'),{'doctor':self.doctor.user.id,'clinic':self.clinic.id})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/doctor/staff', status_code=302, target_status_code=200, fetch_redirect_response=True)
+
+    def test_removeDoctor (self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:removeDoctor'),{'doctor':self.doctor.user.id})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/doctor/staff', status_code=302, target_status_code=200, fetch_redirect_response=True)
+     
 
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Testing models

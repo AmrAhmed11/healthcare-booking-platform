@@ -12,8 +12,12 @@
 
         {%if request.user.role == 'patient'%}
         <li class="nav-item">
+          <a class="nav-link" href="{%url 'seApp:browse'%}">Browse Doctors</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{%url 'seApp:appointmentUser'%}">Appointments</a>
         </li>
+        
         {%endif%}
 
         {%if request.user.role == 'doctor'%}
