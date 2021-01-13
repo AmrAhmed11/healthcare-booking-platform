@@ -456,7 +456,9 @@ def addNewDoctor(request):
 def removeDoctor(request):
     doctor = request.POST['doctor']
     doctorObject = Doctor.objects.get(user=doctor)
-    doctorObject.clinic = ''
+    clinic = Clinic()
+    clinic.save()
+    doctorObject.clinic = clinic
     doctorObject.save()
     return redirect('seApp:staffManager')
 
