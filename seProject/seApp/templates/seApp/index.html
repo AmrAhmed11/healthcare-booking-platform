@@ -20,6 +20,14 @@
     <link rel="stylesheet" type="text/css" href="{% static '/assets/css/style.css' %}">
     <!-- Responsive -->
     <link rel="stylesheet" type="text/css" href="{% static '/assets/css/responsive.css' %}">
+
+    <style>
+      @media only screen and (min-width: 600px) {
+        .landingPics {
+          max-width: 500px  !important;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -30,8 +38,8 @@
           </div>
           <div class="mobile-menu">
             <ul class="m-menu"> 
-              <li><a href="#">Log in</a></li>
-              <li><a href="#">Register</a></li>
+              <li><a href="{% url 'seApp:loginpage' %}">Log in</a></li>
+              <li><a href="{% url 'seApp:register' %}">Register</a></li>
             </ul>
           </div>
         </div>
@@ -153,35 +161,35 @@
           <div class="section-wrapper" style="margin-top: 100px;"> 
             
             <div class="row">
-              <div class="col-6 col-md-12 pull-right" style="transform: translateY(50%);">
+              <div class="col-lg-7 col-12 pull-right " style="transform: translateY(50%); margin-bottom: 200px;">
                 <h3 class="pull-right">browse and Book <br> appointments with our  <br>top rated doctors with ease </h3>
                 
                 
               </div>
-              <div class="col-6 col-md-12 pull-left"   style="margin-bottom: 100px;" >
-                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/browsePatient_jdg8pJoGwtibA.PNG" alt="logo" class="img-responsive" style="max-width: 500px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+              <div class="col-lg-5 col-12 pull-left" >
+                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/browsePatient_jdg8pJoGwtibA.PNG"  class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
            
               <div class="row">
-                <div class="col-6 pull-left" style="transform: translateY(50%);">
-                  <h3>Review, rate 
+                <div class="col-lg-7 col-12 pull-left" style="transform: translateY(50%);  margin-bottom: 200px;">
+                  <h3 class="pull-left">Review, rate 
                     your <br> experience and view <br> your Prescriptions<br> all in one page</h3>
                   
                   
                 </div>
-                <div class="col-6 pull-right" >
-                  <img src="https://ik.imagekit.io/l5sayia1xw/seApp/ratePatient_EVYWG836ltS1I.PNG" alt="logo" class="img-responsive" style="max-width: 500px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                <div class="col-lg-5 col-12 pull-right" >
+                  <img src="https://ik.imagekit.io/l5sayia1xw/seApp/ratePatient_EVYWG836ltS1I.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 </div>
               </div>
               <div class="row">
-                <div class="col-6 pull-right" style="transform: translateY(50%);">
-                  <h3>Easily update your<br> medical history for <br>accurate Prescriptions</h3>
+                <div class="col-lg-7 col-12 pull-right" style="transform: translateY(50%);  margin-bottom: 200px;">
+                  <h3 class="pull-right">Easily update your<br> medical history for <br>accurate Prescriptions</h3>
                   
                   
                 </div>
-                <div class="col-6 pull-left" >
-                  <img src="https://ik.imagekit.io/l5sayia1xw/seApp/profilePatient_yHbbyfdL1hyUK.PNG" alt="logo" class="img-responsive" style="max-width: 500px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                <div class="col-lg-5 col-12 pull-left" >
+                  <img src="https://ik.imagekit.io/l5sayia1xw/seApp/profilePatient_yHbbyfdL1hyUK.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 </div>
               </div>
           </div>
@@ -197,32 +205,32 @@
           <div class="section-wrapper" style="margin-top: 100px;"> 
             
             <div class="row">
-              <div class="col-6 pull-right" style="transform: translateY(50%);">
-                <h3 class="pull-left">manage all your<br> appointments from <br> one page </h3>
+              <div class="col-lg-7 col-12 pull-right" style="transform: translateY(50%);  margin-bottom: 200px;">
+                <h3 class="pull-right">manage all your<br> appointments from <br> one page </h3>
                 
                 
               </div>
-              <div class="col-6 pull-left" >
-                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/appointmentManager_LMd7EmuKq6na.PNG" alt="logo" class="img-responsive" style="max-width: 500px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+              <div class="col-lg-5 col-12 pull-left" >
+                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/appointmentManager_LMd7EmuKq6na.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
             
             <div class="row" style="margin-top: 50px;">
-              <div class="col-6 pull-left">
-                <h3 class="pull-left" style="transform: translateY(50%);">easily Manage your fees,<br> Medical details and <br> timeslots </h3>
+              <div class="col-lg-7 col-12 pull-left">
+                <h3 class="pull-left" style="transform: translateY(50%);  margin-bottom: 200px;">easily Manage your fees,<br> Medical details and <br> timeslots </h3>
                 
               </div>
-              <div class="col-6 pull-right" >
-                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/servicesManager_KT7-OnGxmQf6.PNG" alt="logo" class="img-responsive" style="max-width: 500px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+              <div class="col-lg-5 col-12 pull-right" >
+                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/servicesManager_KT7-OnGxmQf6.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
             <div class="row" style="margin-top: 50px;">
-              <div class="col-6 pull-right">
-                <h3 class="pull-left" style="transform: translateY(50%);">Access All your <br>patients with a click of <br> a button </h3>
+              <div class="col-lg-7 col-12 pull-right">
+                <h3 class="pull-right" style="transform: translateY(50%);  margin-bottom: 200px;">Access All your <br>patients with a click of <br> a button </h3>
                 
               </div>
-              <div class="col-6 pull-left" >
-                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/patientDoctor_TLB1IGXkwJRgk.PNG" alt="logo" class="img-responsive" style="max-width: 500px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+              <div class="col-lg-5 col-12 pull-left" >
+                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/patientDoctor_TLB1IGXkwJRgk.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
           </div>
