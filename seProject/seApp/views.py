@@ -168,6 +168,10 @@ def doctorGetPatients(request):
 def doctorTransferPatient(request, patient_id):
     patient = Patient.objects.get(id=patient_id)  
     doctors = Doctor.objects.all()
+    doctorsWithTimeSlots = []
+    for doctor in doctors:
+        if doctor.time_slots != None:
+            doctorsWithTimeSlots.append(doctor)
     if request.method == 'POST':
         timeslots = Doctor.objects.get(id=request.POST['newDoctor']).time_slots
         appointment = Appointment(
@@ -183,7 +187,7 @@ def doctorTransferPatient(request, patient_id):
         appointment.save()
         sendEmail('test',patient.user.email,'transferPatient')
         return redirect('seApp:patients')
-    context = {'patient': patient, 'doctors': doctors}
+    context = {'patient': patient, 'doctors': doctorsWithTimeSlots}
     return render(request, 'seApp/patientsTransfer.html', context)
 
 @login_required(login_url='seApp:loginpage')
