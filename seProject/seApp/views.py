@@ -500,7 +500,7 @@ def appointmentView(request, app_id):
                 form = ReviewForm(instance=app)
 
                 context = {'appointment': appointment ,'app': app, 'form': form}
-                if appointment.status == 'Pending':
+                if appointment.status == 'Paid':
                    if request.method == 'POST':
                         doctor = appointment.doctor.user.email
                         if 'cancel' in request.POST:
@@ -542,7 +542,7 @@ def appointmentView(request, app_id):
              
         
 
-                   return render(request, 'seApp/appointmentpending.html', context)
+                   return render(request, 'seApp/appointmentpaid.html', context)
 
                 if(appointment.status == 'Done'):
 
