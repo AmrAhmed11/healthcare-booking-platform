@@ -179,6 +179,7 @@ def doctorTransferPatient(request, patient_id):
                 prescription = []
         )
         appointment.doctor.time_slots.pop(0)
+        appointment.doctor.save()
         appointment.save()
         sendEmail('test',patient.user.email,'transferPatient')
         return redirect('seApp:patients')

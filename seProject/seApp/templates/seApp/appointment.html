@@ -12,14 +12,23 @@
                   <div class="col-12">
                     <h5 class="text-center mb-5">Appointment {{app.id}}</h5>
                   </div>
-                  <div class="col-4">
-                    <p class="card-text h6">Date:</p>
-                    <p class="card-text h6">Review:</p>
-                    <p class="card-text h6">Status:</p>
-                  </div>
-                  <div class="col-8">
-                    <p class="card-text">{{app.time_slot}}</p>
-                    <p class="card-text">{{app.review}}</p>
+                  <div class="row">
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Date:</p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      <p class="card-text">{{app.time_slot}}</p>
+                    </div>
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Review:</p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      <p class="card-text">{{app.review}}</p>
+                    </div>
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Status:</p>
+                    </div>
+                    <div class="col-8 col-md-8">
                     {% if app.status == 'Pending' %}
                     <p class="card-text text-warning"> {{app.status}}</p>
                     {% elif app.status == 'Cancelled'%}
@@ -29,7 +38,9 @@
                     {% else %}
                     <p class="card-text text-success"> {{app.status}}</p>
                     {% endif %}
+                    </div>
                   </div>
+                  {% if app.status != 'Cancelled'%}
                   <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal"
                   style="margin-right:50px ;">
                   Edit
@@ -38,6 +49,7 @@
                   style="margin-left: 50px;">
                   Cancel
                 </button>
+                {% endif %}
                 </div>
               </div>
             </div>
@@ -57,20 +69,41 @@
               <div class="card-body">
                 <h5 class="text-center mb-5">Patient Profile</h5>
                 <div class="row">
-                  <div class="col-6 col-md-6">
+                  <div class="col-4 col-md-4">
                     <p class="card-text h6">Name:</p>
+
+                  </div>
+                  <div class="col-8 col-md-8">
+                    <p class="card-text">{{patient.user}}</p>
+                  </div>
+                  <div class="col-4 col-md-4">
                     <p class="card-text h6">Gender: </p>
+                  </div>
+                  <div class="col-8 col-md-8">
+                    <p class="card-text">{{patient.user.gender}}</p>
+                  </div>
+                  <div class="col-4 col-md-4">
                     <p class="card-text h6">Phone: </p>
+                  </div>
+                  <div class="col-8 col-md-8">
+                    <p class="card-text">{{patient.user.phone}}</p>
+                  </div>
+                  <div class="col-4 col-md-4">
                     <p class="card-text h6">Email: </p>
+                  </div>
+                  <div class="col-8 col-md-8">
+                    <p class="card-text">{{patient.user.email}}</p>
+                  </div>
+                  <div class="col-4 col-md-4">
                     <p class="card-text h6">Birthdate: </p>
+                  </div>
+                  <div class="col-8 col-md-8">
+                    <p class="card-text">{{patient.user.birth_date}}</p>
+                  </div>
+                  <div class="col-4 col-md-4">
                     <p class="card-text h6">Medical history: </p>
                   </div>
-                  <div class="col-6 col-md-6">
-                    <p class="card-text">{{patient.user.name}}</p>
-                    <p class="card-text">{{patient.user.gender}}</p>
-                    <p class="card-text">{{patient.user.phone}}</p>
-                    <p class="card-text">{{patient.user.email}}</p>
-                    <p class="card-text">{{patient.user.birth_date}}</p>
+                  <div class="col-8 col-md-8">
                     {% for medical_history in patient.medical_history %}
                       <p class="card-text">{{medical_history}}</p>
                     {% endfor %}
