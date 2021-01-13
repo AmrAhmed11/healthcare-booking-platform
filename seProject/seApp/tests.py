@@ -466,7 +466,7 @@ class test_Views(TestCase):
         response=self.client.post(reverse('seApp:addNewStaff'),{'staff':self.staff.id})
         self.assertEquals(response.status_code,302)
         self.assertRedirects(response, '/doctor/staff', status_code=302, target_status_code=200, fetch_redirect_response=True)
-    addNewDoctor
+    
     def test_removeStaff (self):
         self.client.login(username='AmrAhmed',password='12345')
         response=self.client.post(reverse('seApp:removeStaff'),{'staff':self.staff.id})
@@ -540,6 +540,25 @@ class test_Views(TestCase):
         response=self.client.post(reverse('seApp:viewDoctor',args=[str(doctor)]))
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response,'seApp/viewDoctor.html')
+    
+    def test_emergency (self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse(('seApp:emergency'), args=[str(self.doctor.id)]))
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/user/appointment', status_code=302, target_status_code=200, fetch_redirect_response=True)
+    
+    def test_updateProfile (self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse('seApp:updateProfile'),{'first_name':'Ehab','last_name':'Ehabtany','email':'EhabEhab@gmail.com','phone':'011564897561','medical_history':['heart surgery','diabetes','corona']})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/user/profile', status_code=302, target_status_code=200, fetch_redirect_response=True)
+
+    def test_changePassword (self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse('seApp:change_password'), {'old_password':'12345','new_password1':'123456789EhaB','new_password2':'123456789EhaB'})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/user/profile', status_code=302, target_status_code=200, fetch_redirect_response=True)
+    
 
     def UserProfile(self):
         self.client.login(username='Ehab_111',password='12345')
