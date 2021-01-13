@@ -369,7 +369,7 @@ class test_Views(TestCase):
 
     def test_post_doctorTransferPatient(self):
         self.client.login(username='AmrAhmed',password='12345')
-        response=self.client.post(reverse('seApp:TransferPatients', args=[str(self.appointment.id)]), {'newDoctor':self.doctor.id})
+        response=self.client.post(reverse('seApp:TransferPatients', args=[str(self.appointment.id)]), {'doctor':self.doctor.id, 'timeslot':0})
         self.assertEquals(response.status_code,302)
         self.assertRedirects(response, '/doctor/patients/', status_code=302, target_status_code=200, fetch_redirect_response=True)    
         
