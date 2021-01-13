@@ -494,82 +494,102 @@ def appointmentUser(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentView(request, app_id):
-                appointment = Appointment.objects.get(id=app_id)
+    appointment = Appointment.objects.get(id=app_id)
 
-                form = ReviewForm()
-                app = Appointment.objects.get(id=app_id)
-                form = ReviewForm(instance=app)
+    form = ReviewForm()
+    app = Appointment.objects.get(id=app_id)
+    form = ReviewForm(instance=app)
 
-                context = {'appointment': appointment ,'app': app, 'form': form}
-                if appointment.status == 'Paid':
-                   if request.method == 'POST':
-                        doctor = appointment.doctor.user.email
-                        if 'cancel' in request.POST:
-                          appointment.status = "Cancelled"
-                          appointment.save()
-                          timeslots = appointment.time_slot
-                          appointment.doctor.time_slots.append(timeslots)
-                          appointment.doctor.save()
-                          sendEmail('test',doctor,'appointmentCancel')
-                          return render(request, 'seApp/appointmentcancelled.html', context)  
+    context = {'appointment': appointment ,'app': app, 'form': form}
+    if appointment.status == 'Paid':
+        if request.method == 'POST':
+            doctor = appointment.doctor.user.email
+            if 'cancel' in request.POST:
+                appointment.status = "Cancelled"
+                appointment.save()
+                timeslots = appointment.time_slot
+                appointment.doctor.time_slots.append(timeslots)
+                appointment.doctor.save()
+                sendEmail('test',doctor,'appointmentCancel')
+                return render(request, 'seApp/appointmentcancelled.html', context)  
 
-                        if 'edit' in request.POST:
-                            timeslots = []
-                            for timeslot in appointment.doctor.time_slots:
-                               if((timeslot - timezone.now()).total_seconds() > 0):
-                                    timeslots.append(timeslot)
-                            appointment.doctor.time_slots = timeslots
-                            appointment.doctor.save() 
+            if 'edit' in request.POST:
+                timeslots = []
+                for timeslot in appointment.doctor.time_slots:
+                    if((timeslot - timezone.now()).total_seconds() > 0):
+                        timeslots.append(timeslot)
+                appointment.doctor.time_slots = timeslots
+                appointment.doctor.save() 
+                appointment.status = "Cancelled"
+                appointment.save()
+                timeslotadd = appointment.time_slot
+                appointment.doctor.time_slots.append(timeslotadd)
+                timeslotnew =request.POST['appointment']
+                timeslotParsed = parse_datetime(timeslotnew) 
+                appointment.doctor.time_slots.remove(timeslotParsed)
+                appointment.doctor.save()
+                appointmentnew = Appointment(
+                    patient = appointment.patient,
+                    doctor = appointment.doctor,
+                    status = 'Pending',
+                    time_slot = timeslotnew,
+                    review = 'None',
+                    prescription = []
+                )
+                appointmentnew.save()
+                sendEmail('test',doctor,'appointmentEdit')
+                return render(request, 'seApp/appointmentcancelled.html', context)  
+    
+        return render(request, 'seApp/appointmentpaid.html', context)
 
-                            appointment.status = "Cancelled"
-                            appointment.save()
-                            timeslotadd = appointment.time_slot
-                            appointment.doctor.time_slots.append(timeslotadd)
-                            timeslotnew =request.POST['appointment']
-                            timeslotParsed = parse_datetime(timeslotnew) 
-                            appointment.doctor.time_slots.remove(timeslotParsed)
-                            appointment.doctor.save()
-                            appointmentnew = Appointment(
-                                patient = appointment.patient,
-                                doctor = appointment.doctor,
-                                status = 'Pending',
-                                time_slot = timeslotnew,
-                                review = 'None',
-                                prescription = []
-                            )
-                            appointmentnew.save()
-                            sendEmail('test',doctor,'appointmentEdit')
-                            return render(request, 'seApp/appointmentcancelled.html', context)  
-             
+    if appointment.status == 'Pending':
         
+        if request.method == 'POST':
+            body = json.loads(request.body) 
+            print('BODY:', body)
+            doctor = appointment.doctor.user.email
+            if 'cancel' in request.POST:
+                appointment.status = "Cancelled"
+                appointment.save()
+                timeslots = appointment.time_slot
+                appointment.doctor.time_slots.append(timeslots)
+                appointment.doctor.save()
+                sendEmail('test',doctor,'appointmentCancel')
+                return render(request, 'seApp/appointmentcancelled.html', context)  
 
-                   return render(request, 'seApp/appointmentpaid.html', context)
+            if body['status'] == 'completed':
+                appointment.status = 'Paid'
+                appointment.save()
+                sendEmail('test',doctor,'appointmentEdit')
+                return render(request, 'seApp/appointmentcancelled.html', context)  
+    
+        return render(request, 'seApp/appointmentcancelled.html', context)
+    
+    if(appointment.status == 'Done'):
 
-                if(appointment.status == 'Done'):
-
-                    if request.method == 'POST':
-                        if 'submit' in request.POST:
-                            form = ReviewForm(request.POST,instance=app)
-                            tempRating = int(request.POST['rate'])
-                            if tempRating == 5:
-                                rating = app.doctor.rating + 0.2
-                            elif tempRating == 4:
-                                rating = app.doctor.rating + 0.1
-                            elif tempRating == 2:
-                                rating = app.doctor.rating - 0.1
-                            elif tempRating == 1:
-                                rating = app.doctor.rating - 0.2
-                            else:
-                                rating = app.doctor.rating
-                            app.doctor.rating = 5 if rating > 5  else rating
-                            app.doctor.save()
-
-                            if form.is_valid():
-                                form.save()
-                    return render(request, 'seApp/appointmentdone.html',context)
-
+        if request.method == 'POST':
+            if 'submit' in request.POST:
+                form = ReviewForm(request.POST,instance=app)
+                tempRating = int(request.POST['rate'])
+                if tempRating == 5:
+                    rating = app.doctor.rating + 0.2
+                elif tempRating == 4:
+                    rating = app.doctor.rating + 0.1
+                elif tempRating == 2:
+                    rating = app.doctor.rating - 0.1
+                elif tempRating == 1:
+                    rating = app.doctor.rating - 0.2
                 else:
-                  return render(request, 'seApp/appointmentcancelled.html', context)
+                    rating = app.doctor.rating
+                app.doctor.rating = 5 if rating > 5  else rating
+                app.doctor.save()
+
+                if form.is_valid():
+                    form.save()
+        return render(request, 'seApp/appointmentdone.html',context)
+
+    else:
+        return render(request, 'seApp/appointmentcancelled.html', context)
                   
   
     
@@ -643,22 +663,28 @@ def paymentComplete(request, doctor_id):
 
     if body['status'] == 'completed':
         if body['user'] == '1':
+            timeslots = doctor.time_slots
+            timeslot = timeslots[int(body['timeSlot']) - 1]
             appointment = Appointment(
                 patient = patient,
                 doctor = doctor,
                 status = 'Paid',
-                time_slot = body['timeSlot'],
+                time_slot = timeslot,
                 review = 'None',
                 prescription = [],
                 patient_name = patient.user,
             )
-            timeslotParsed = parse_datetime(body['timeSlot']) 
-            doctor.time_slots.remove(timeslotParsed)
-            doctor.save()
+            # timeslotParsed = parse_datetime(body['timeSlot']) 
+            # doctor.time_slots.remove(timeslotParsed)
+            # doctor.save()
+            doctors.time_slots.remove(timeslot)
+            doctors.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
             return JsonResponse('Payment Completed!', safe=False)
         else:
+            timeslots = doctor.time_slots
+            timeslot = timeslots[int(body['timeSlot']) - 1]
             appointment = Appointment(
                 patient = patient,
                 doctor = doctor,
@@ -668,9 +694,11 @@ def paymentComplete(request, doctor_id):
                 prescription = [],
                 patient_name = body['firstName'] + ' ' + body['lastName'],
             ) 
-            timeslotParsed = parse_datetime(body['timeSlot']) 
-            doctor.time_slots.remove(timeslotParsed)
-            doctor.save()
+            # timeslotParsed = parse_datetime(body['timeSlot']) 
+            # doctor.time_slots.remove(timeslotParsed)
+            # doctor.save()
+            doctors.time_slots.remove(timeslot)
+            doctors.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
             return JsonResponse('Payment Completed!', safe=False)
