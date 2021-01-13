@@ -23,24 +23,25 @@
       </div>
     </div>
       
-    
+     
   <div class="py-5 ">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% for doctor in doctors %}
-        <div class="col-12 col-md-12 col-lg-6">
-            <div class="card p-2 shadow-md mt-4">
-              <div class="card-body">
-                <div class="text-center">
-                <h5 class="card-title">{{doctor.user}}</h5>
-                <p class="card-text">{{doctor.description}}</p>
-              </div>
-                <div class="text-center">
-                <a href="view-doctor/{{doctor.id}}" class="btn btn-primary text-center">View</a>
-              </div>
-              </div>
+        <div class ="card-deck"> 
+          {% for doctor in doctors %}
+          <div class="col-12 col-md-12 col-lg-6">
+              <div class="card p-2 shadow-md mt-4">
+                <div class="card-body">
+                  <div class="text-center">
+                    <h5 class="card-title">{{doctor.user}}</h5>
+                    <p class="card-text">{{doctor.description}}</p>
+                  </div>
+                  <div class="text-center">
+                    <a href="view-doctor/{{doctor.id}}" class="btn btn-primary text-center">View</a>
+                  </div>
                 </div>
               </div>
+                </div>
           
       {% endfor %}
     </div>
