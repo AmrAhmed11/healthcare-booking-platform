@@ -26,9 +26,9 @@
                     <h5 class="text-center mb-5">Appointment {{app.id}}</h5>
                   </div>
                   <div class="col-4">
-                    <p class="card-text h6">Time Slot:</p>
-                    <p class="card-text h6">Review:</p>
-                    <p class="card-text h6">Status:</p>
+                    <p class="card-text h6 mt-2">Time Slot:</p>
+                    <p class="card-text h6 mt-2">Review:</p>
+                    <p class="card-text h6 mt-2">Status:</p>
                   </div>
                   <div class="col-8">
                     <p class="card-text">{{app.time_slot}}</p>
@@ -43,8 +43,11 @@
                     <p class="card-text text-success"> {{app.status}}</p>
                     {% endif %}
                   </div>
-                    <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
+            
                 </div>
+                <div class="text-center mt-5">
+                  <a href="/doctor/appointment/{{app.id}}" class="btn btn-outline-primary btn-md">See details</a>
+                  </div>
               </div>
             </div>
           </div>

@@ -16,10 +16,10 @@
   
 
         {% if app_all %}
-        <div class="bg-light py-5 " style="margin: 20px;"></div>
+        <div class="bg-light py-5">
           <div class ="card-deck">
             {% for app in app_pending %} 
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6 col-lg-4 m-3">
                 <div class="card p-5 shadow-md">
                   <div class="card-body">
                     <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
@@ -36,7 +36,7 @@
             {% endfor %}
           
             {% for app in app_done %}  
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6 col-lg-4 m-3">
                 <div class="card p-5 shadow-md">
                   <div class="card-body">
                     <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
@@ -52,7 +52,7 @@
               </div>
             {% endfor %}
             {% for app in app_cancelled %} 
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6 col-lg-4 m-3">
                 <div class="card p-5 shadow-md">
                   <div class="card-body">
                     <h5 class="text-center mb-5">Appointment {{app.doctor.specialization}}</h5>
