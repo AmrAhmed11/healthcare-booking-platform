@@ -78,38 +78,47 @@
                   <div class="col-8 col-md-8">
                     <p class="card-text">{{patient.user}}</p>
                   </div>
-                  <div class="col-4 col-md-4">
-                    <p class="card-text h6">Gender: </p>
-                  </div>
-                  <div class="col-8 col-md-8">
-                    <p class="card-text">{{patient.user.gender}}</p>
-                  </div>
-                  <div class="col-4 col-md-4">
-                    <p class="card-text h6">Phone: </p>
-                  </div>
-                  <div class="col-8 col-md-8">
-                    <p class="card-text">{{patient.user.phone}}</p>
-                  </div>
-                  <div class="col-4 col-md-4">
-                    <p class="card-text h6">Email: </p>
-                  </div>
-                  <div class="col-8 col-md-8">
-                    <p class="card-text">{{patient.user.email}}</p>
-                  </div>
-                  <div class="col-4 col-md-4">
-                    <p class="card-text h6">Birthdate: </p>
-                  </div>
-                  <div class="col-8 col-md-8">
-                    <p class="card-text">{{patient.user.birth_date}}</p>
-                  </div>
-                  <div class="col-4 col-md-4">
-                    <p class="card-text h6">Medical history: </p>
-                  </div>
-                  <div class="col-8 col-md-8">
-                    {% for medical_history in patient.medical_history %}
-                    <p class="card-text">{{medical_history}}</p>
-                    {% endfor %}
-                  </div>
+                  {% if patient_account_name != app.patient_name %}
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Booked for:</p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      <p class="card-text">{{app.patient_name}}</p>
+                    </div>
+                  {% else %}
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Gender: </p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      <p class="card-text">{{patient.user.gender}}</p>
+                    </div>
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Phone: </p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      <p class="card-text">{{patient.user.phone}}</p>
+                    </div>
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Email: </p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      <p class="card-text">{{patient.user.email}}</p>
+                    </div>
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Birthdate: </p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      <p class="card-text">{{patient.user.birth_date}}</p>
+                    </div>
+                    <div class="col-4 col-md-4">
+                      <p class="card-text h6">Medical history: </p>
+                    </div>
+                    <div class="col-8 col-md-8">
+                      {% for medical_history in patient.medical_history %}
+                      <p class="card-text">{{medical_history}}</p>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
                 </div>
               </div>
             </div>

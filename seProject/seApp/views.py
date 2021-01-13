@@ -129,7 +129,8 @@ def deleteAppointment(request, app_id):
 @allowed_users(allowed_roles=['doctor'])
 def appointment(request, app_id):
     app = Appointment.objects.get(id=app_id)
-    context = {'app': app, 'doctor': app.doctor, 'patient': app.patient}
+    patient_account_name = app.patient.user.first_name + ' ' + app.patient.user.last_name
+    context = {'app': app, 'doctor': app.doctor, 'patient': app.patient, 'patient_account_name':patient_account_name}
     return render(request, 'seApp/appointment.html', context)
 
 @login_required(login_url='seApp:loginpage')
@@ -683,7 +684,7 @@ def paymentComplete(request, doctor_id):
                 time_slot = timeslot,
                 review = 'None',
                 prescription = [],
-                patient_name = patient.user,
+                patient_name = patient.user.first_name + ' ' + patient.user.last_name,
             )
             # timeslotParsed = parse_datetime(body['timeSlot']) 
             # doctor.time_slots.remove(timeslotParsed)
@@ -692,7 +693,7 @@ def paymentComplete(request, doctor_id):
             doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
-            return JsonResponse('Payment Completed!', safe=False)
+            return redirect('/user/appointment')
         else:
             timeslots = doctor.time_slots
             timeslot = timeslots[int(body['timeSlot']) - 1]
@@ -700,7 +701,7 @@ def paymentComplete(request, doctor_id):
                 patient = patient,
                 doctor = doctor,
                 status = 'Paid',
-                time_slot = body['timeSlot'],
+                time_slot = timeslot,
                 review = 'None',
                 prescription = [],
                 patient_name = body['firstName'] + ' ' + body['lastName'],
@@ -712,20 +713,8 @@ def paymentComplete(request, doctor_id):
             doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
-            return JsonResponse('Payment Completed!', safe=False)
+            return redirect('/user/appointment')
 
-
-# def editProfile(request):
-#     if request.method == 'POST':
-#         form = editProfileForm(request.POST, instance=request.user)
-#         if form.is_valid:
-#             form.save()
-#             return redirect('/user/profile')
-
-#     else:
-#         form = editProfileForm(instance=request.user)
-#         args = {'form':form}
-#         return render(request, 'seApp/editProfile.html', args)
 @login_required(login_url='seApp:loginpage')
 def changePassword(request):
     if request.method == 'POST':
