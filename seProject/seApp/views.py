@@ -597,6 +597,8 @@ def appointmentView(request, app_id):
                     rating = app.doctor.rating - 0.2
                 else:
                     rating = app.doctor.rating
+                if app.doctor.rating is None:
+                    app.doctor.rating = 5
                 app.doctor.rating = 5 if rating > 5  else rating
                 app.doctor.save()
                 #clinic rating
