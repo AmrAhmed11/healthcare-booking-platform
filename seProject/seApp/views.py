@@ -213,7 +213,6 @@ def staffGetDetails(request):
 @allowed_users(allowed_roles=['staff'])
 def staffPostDetails(request):
     staff = Staff.objects.get(id=request.user.staff.id)
-    print(request.user.staff.id)
     staff.specialization = request.POST['specialization']
     staff.save()
     if staff.doctor is None:
@@ -313,7 +312,6 @@ def servicesManager(request):
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
     else:
         doctor = Doctor.objects.get(id=request.user.doctor.id)
-    print(doctor.time_slots)
     services_list = {'fees':doctor.fees, 'timeslots':doctor.time_slots,'description':doctor.description, 'medical_id':doctor.medical_id, 'specialization':doctor.specialization, 'clinic':doctor.clinic }
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
@@ -565,7 +563,6 @@ def appointmentView(request, app_id):
         
         if request.method == 'POST':
             body = json.loads(request.body) 
-            print('BODY:', body)
             doctor = appointment.doctor.user.email
             if 'cancel' in request.POST:
                 appointment.status = "Cancelled"
@@ -687,7 +684,6 @@ def UserProfile(request):
 @allowed_users(allowed_roles=['patient']) 
 def paymentComplete(request, doctor_id):
     body = json.loads(request.body)
-    print('BODY:', body)
     
     patient = Patient.objects.get(id=request.user.patient.id)
     doctor = Doctor.objects.get(id=doctor_id)

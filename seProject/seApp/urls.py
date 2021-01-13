@@ -66,7 +66,7 @@ urlpatterns = [
     path('complete/<int:doctor_id>', views.paymentComplete, name="complete"),
     # path('user/edit-profile', views.editProfile, name="editProfile"),
 
-     path('accounts/', include('django.contrib.auth.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/change_password', views.changePassword, name="change_password"),
     path('user/update-profile', views.updateProfile, name="updateProfile"),
     path('emergency/<int:doctor_id>',views.emergency,name='emergency')
