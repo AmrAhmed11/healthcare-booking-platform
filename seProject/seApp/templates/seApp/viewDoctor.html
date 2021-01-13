@@ -260,7 +260,7 @@
                         onchange="myFunction4()">
                         <option selected disabled>Select an appointment</option>
                         {% for timeSlot in doctors.time_slots %}
-                        <option value="{{timeSlot|date:" c"}}">{{timeSlot}}</option>
+                        <option value="{{forloop.counter}}">{{timeSlot}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -323,8 +323,7 @@
                 <div class="modal-body">
                     <div class="mt-4" id="paypal-button-container"></div>
 
-                    <script
-                        src="https://www.paypal.com/sdk/js?client-id=AdXB7UVMAbX0VtJXXaCTX05aff78yMKwxFw0bbopNct1_BfDDHcQwxi-pV_uKbji6AkD4ZfU6KxaNgfi&currency=USD"></script>
+                    <script  src="https://www.paypal.com/sdk/js?client-id=AdXB7UVMAbX0VtJXXaCTX05aff78yMKwxFw0bbopNct1_BfDDHcQwxi-pV_uKbji6AkD4ZfU6KxaNgfi&currency=USD"></script>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

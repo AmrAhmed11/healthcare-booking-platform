@@ -83,10 +83,10 @@
                     {% for spec in specs %}
                       <div class="form-group doctors" id="{{spec}}Doctor" hidden>
                         <label for="newDoctor">Select Doctor</label>
-                        <select class="form-control doctordiv" name="doctor" onchange="doctorChange()">
+                        <select class="form-control doctordiv" name="doctor" id='{{spec}}' onchange="doctorChange('{{spec}}')">
                           <option selected disabled>Choose...</option>
                           {% for doctor in doctors %}
-                          {% if doctor.specialization == spec %}
+                          {% if doctor.specialization == spec and doctor.time_slots != None %}
                             <option value="{{doctor.id}}">{{doctor.user}}</option>
                           {% endif %}
                           {% endfor %}
@@ -97,13 +97,13 @@
                     {% endfor %}
 
                     {% for doctor in doctors %}
-                    {% if doctor.specialization != None and doctor.time_slots != None%}
-                      <div class="form-group timeslots" id="{{doctor}}Timeslot" hidden>
+                    {% if doctor.specialization != None and doctor.time_slots != None %}
+                      <div class="form-group timeslots" id="{{doctor.id}}Timeslot" hidden>
                         <label for="newDoctor">Select Timeslot</label>
-                        <select class="form-control" name="timeslot" onchange="specChange()" id="newDoctorSpec">
+                        <select class="form-control" name="timeslot" id="newDoctorSpec">
                           <option selected disabled>Choose...</option>
                             {% for timeslot in doctor.time_slots %}
-                              <option>{{timeslot}}</option>
+                              <option value="{{forloop.counter}}">{{timeslot}}</option>
                               {% endfor %}
                         </select> 
                         </div>
@@ -148,8 +148,8 @@
 
   }
 
-  function doctorChange(){
-    let doctor = document.querySelector('.doctordiv').value
+  function doctorChange(spec){
+    let doctor = document.getElementById(spec).value
     let divs = document.querySelectorAll('.timeslots')
     for (div of divs){
       div.hidden = true
