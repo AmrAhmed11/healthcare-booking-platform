@@ -62,20 +62,62 @@
                   </div>
                   <div class="col-12">
                     <p class="card-text h5 text-center">Select Doctor</p>
-                    <form action="/doctor/patients/transfer/{{patient.id}}" method="POST">
-                        {% csrf_token %}
-                    <div class="col-12">
-                    <select class="form-control" name="newDoctor">
-                        {% for doctor in doctors %}
-                            <option value="{{doctor.id}}">{{doctor.user}}</option>
-                        {% endfor %}
-                    </select>
-                    </div>
-                    <div class="col-12 mt-4">
-                        <button type="submit" class="btn btn-primary btn-block">Transfer</button>
-                    </div>
-                    </form>
+                   
+                   
                   </div>
+                  <div class="col-12">
+                  <form action="/doctor/patients/transfer/{{patient.id}}" method="POST">
+                    {% csrf_token %}
+
+                  <div class="col-12">
+                    <div class="form-group">
+                    <label for="newDoctor">Select Specilization</label>
+                    <select class="form-control" name="specialization" onchange="specChange()" id="newDoctorSpec">
+                      <option selected disabled>Choose...</option>
+                      {% for spec in specs %}
+                          <option>{{spec}}</option>
+                      {% endfor %}
+                    </select> 
+                    </div>
+
+                    {% for spec in specs %}
+                      <div class="form-group doctors" id="{{spec}}Doctor" hidden>
+                        <label for="newDoctor">Select Doctor</label>
+                        <select class="form-control doctordiv" name="doctor" onchange="doctorChange()">
+                          <option selected disabled>Choose...</option>
+                          {% for doctor in doctors %}
+                          {% if doctor.specialization == spec %}
+                            <option value="{{doctor.id}}">{{doctor.user}}</option>
+                          {% endif %}
+                          {% endfor %}
+                          
+                        </select> 
+                        </div>
+
+                    {% endfor %}
+
+                    {% for doctor in doctors %}
+                    {% if doctor.specialization != None and doctor.time_slots != None%}
+                      <div class="form-group timeslots" id="{{doctor}}Timeslot" hidden>
+                        <label for="newDoctor">Select Timeslot</label>
+                        <select class="form-control" name="timeslot" onchange="specChange()" id="newDoctorSpec">
+                          <option selected disabled>Choose...</option>
+                            {% for timeslot in doctor.time_slots %}
+                              <option>{{timeslot}}</option>
+                              {% endfor %}
+                        </select> 
+                        </div>
+                    {% endif%}
+                    {% endfor %}
+                   
+                    
+                    <div class="col-12 mt-4">
+                      <button type="submit" class="btn btn-primary btn-block">Transfer</button>
+                  </div>
+                  </form>
+                </div>
+
+
                 </div>
               </div>
             </div>
@@ -87,4 +129,32 @@
     </div>
   </div>
 </div>
+
+<script>
+  function specChange(){
+    let spec = document.getElementById('newDoctorSpec').value
+    let doctors = ""
+    let divs = document.querySelectorAll('.doctors')
+    let timeDivs = document.querySelectorAll('.timeslots')
+    for (div of timeDivs){
+      div.hidden = true
+    }
+    for (div of divs){
+      div.hidden = true
+    }
+    document.getElementById(`${spec}Doctor`).hidden = false
+    
+    
+
+  }
+
+  function doctorChange(){
+    let doctor = document.querySelector('.doctordiv').value
+    let divs = document.querySelectorAll('.timeslots')
+    for (div of divs){
+      div.hidden = true
+    }
+    document.getElementById(`${doctor}Timeslot`).hidden = false
+  }
+</script>
 {%endblock%}
