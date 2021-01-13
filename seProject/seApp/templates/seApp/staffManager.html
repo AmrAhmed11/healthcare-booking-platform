@@ -118,7 +118,7 @@
                   <form action="{% url 'seApp:removeStaff' %}" method="post">
                     {% csrf_token %}
                         
-                      <input type="hidden" name="staff" value="{{staff.user.id}}">                
+                      <input type="hidden" name="staff" value="{{staff.id}}">                
                       <button class="btn btn-outline-danger btn-md">Remove</button>
   
                       

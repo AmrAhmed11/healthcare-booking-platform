@@ -47,7 +47,7 @@
                             </h2>
                           </div>
                           <div class="modal-body">
-                            {% if appointment.review is None %}
+                            {% if appointment.review == 'None' %}
                             <h4 class="modal-title" id="exampleModalLabel">Rate your Doctor </h4>
                             <form action="/user/appointmentview/{{app.id}}" method="POST" class="text-center">
                               {% csrf_token %}

@@ -399,19 +399,20 @@ def staffManager(request):
     doctor_new_list = []
     clinicOwner = 0
     clinicId = 0
-    clinicTemp = request.user.doctor.clinic.id 
-    clinicId = clinicTemp
-    clinic = Clinic.objects.get(id=clinicTemp)
-    
-    if clinic.owner_id == request.user.id:
-        clinicOwner = 1
-        doctors = Doctor.objects.all()
-        for doctor in doctors:
-            if doctor.clinic == None:
-                
-                doctor_new_list.append(doctor)
-            elif doctor.clinic.id == clinicId:
-                doctor_list.append(doctor)
+    clinicTemp = 0
+    if request.user.doctor.clinic:
+        clinicTemp = request.user.doctor.clinic.id
+        clinicId = clinicTemp
+        clinic = Clinic.objects.get(id=clinicTemp)
+        if clinic.owner_id == request.user.id:
+            clinicOwner = 1
+            doctors = Doctor.objects.all()
+            for doctor in doctors:
+                if doctor.clinic == None:
+                    
+                    doctor_new_list.append(doctor)
+                elif doctor.clinic.id == clinicId:
+                    doctor_list.append(doctor)
                 
     
     
@@ -595,6 +596,19 @@ def appointmentView(request, app_id):
                     rating = app.doctor.rating
                 app.doctor.rating = 5 if rating > 5  else rating
                 app.doctor.save()
+                #clinic rating
+                totalRating = 0
+                noDoctors = 0
+                doctors = Doctor.objects.all()
+                clinic = app.doctor.clinic
+                for doctor in doctors:
+                    if doctor.clinic == clinic:
+                        totalRating = totalRating + doctor.rating
+                        noDoctors += 1
+                clinic.rating = (totalRating/noDoctors)
+                clinic.save()
+
+                    
 
                 if form.is_valid():
                     form.save()
