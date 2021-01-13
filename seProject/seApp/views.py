@@ -214,8 +214,8 @@ def staffPostDetails(request):
     else:
         return redirect('seApp:servicesManager')     
 
-# @login_required(login_url='seApp:loginpage')
-# @allowed_users(allowed_roles=['staff'])
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['staff'])
 def StaffProfile(request):
     staff = Staff.objects.get(id=request.user.staff.id)
     context = {'staff': staff}
