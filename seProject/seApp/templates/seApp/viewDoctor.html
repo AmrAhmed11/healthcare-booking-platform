@@ -247,7 +247,16 @@
         </div>
 
         <div class="text-center">
-            <button onclick="myFunction()" class="btn btn-info">Choose Appointment</button>
+            <div class="d-grid gap-2">
+                <button onclick="myFunction()" class="btn btn-info">Choose Appointment</button>
+                {% if doctors.time_slots %}
+                    <form method="POST" action="/emergency/{{doctors.id}}">
+                        {% csrf_token %}
+                        <br>
+                        <button type="submit" name="emergency" class="btn btn-info">Emergency</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
 
         <div class="mt-5 row justify-content-center">
@@ -412,6 +421,9 @@
 
 </body>
 <script>
+    function select(){
+        document.getElementById("Emergency").selectedIndex = "0"; 
+    }
     function myFunction() {
         document.getElementById("panel").style.display = "block";
     }

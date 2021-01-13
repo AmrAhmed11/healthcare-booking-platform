@@ -67,4 +67,5 @@ urlpatterns = [
     # path('user/edit-profile', views.editProfile, name="editProfile"),
     path('user/change-password', views.changePassword, name="changePassword"),
     path('user/update-profile', views.updateProfile, name="updateProfile"),
+    path('emergency/<int:doctor_id>',views.emergency,name='emergency')
 ]

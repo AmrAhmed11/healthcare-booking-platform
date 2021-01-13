@@ -765,3 +765,25 @@ def updateProfile(request):
         if request.user.role == "doctor":
             context = {'form':form}
         return render(request, 'seApp/updateProfile.html', context)
+
+def emergency(request,doctor_id):
+    if request.method == 'POST':
+        doctor = Doctor.objects.get(id = doctor_id)
+        timeslots = doctor.time_slots
+        timeslots.sort()
+        if timeslots:
+            timeslot = timeslots[0]
+            appointment = Appointment(
+                patient = request.user.patient,
+                doctor = doctor,
+                status = 'Pending',
+                time_slot = timeslot,
+                review = 'None',
+                prescription = [],
+                patient_name = request.user,
+            )
+            doctor.time_slots.remove(timeslot)
+            doctor.save()
+            appointment.save()
+            return redirect('/user/appointment')
+
