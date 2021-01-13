@@ -324,8 +324,7 @@ def createNewClinic(request):
 
 
 #  CHANGING DOCTOR FEES ACTION
-@login_required(login_url='seApp:loginpage')
-@allowed_users(allowed_roles=['staff', 'doctor'])
+
 def changeFeeDoctor(request):
     fee = request.POST['fees']
     doctor = Doctor.objects.get(id=request.user.doctor.id)
