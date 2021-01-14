@@ -307,6 +307,11 @@ class test_Views(TestCase):
         response=self.client.get(reverse('seApp:appointment', args=[str(self.appointment.id)]))
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response, 'seApp/appointment.html')
+        
+    def test_appointment_view_forbidden(self):
+        self.client.login(username='AliSayed',password='12345')
+        response=self.client.get(reverse('seApp:appointment', args=[str(self.appointment.id)]))
+        self.assertEquals(response.status_code,403)
 
     def test_staffProfile(self):
         self.client.login(username='AliSayed',password='12345')
