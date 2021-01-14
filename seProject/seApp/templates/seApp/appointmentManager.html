@@ -42,7 +42,9 @@
                       <p class="card-text h6">Status:</p>
                     </div>
                     <div class="col-8 col-md-8">
-                    {% if app.status == 'Pending' %}
+                    {% if app.status == 'Done' %}
+                    <p class="card-text text-success"> {{app.status}}</p>
+                    {% elif app.status == 'Pending' %}
                     <p class="card-text text-warning"> {{app.status}}</p>
                     {% elif app.status == 'Cancelled'%}
                     <p class="card-text text-danger"> {{app.status}}</p>

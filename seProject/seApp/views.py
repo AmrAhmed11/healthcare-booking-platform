@@ -112,8 +112,18 @@ def postAppointment(request, app_id):
     app.save()
     app.doctor.save()
     patient = app.patient
-    sendEmail('test',patient,'doctorEdit')
+    # sendEmail('test',patient,'doctorEdit')
     return redirect('seApp:appointment', app_id=app_id)
+
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['doctor'])
+def doneAppointment(request, app_id):
+    app = Appointment.objects.get(id=app_id)
+    app.status = 'Done'
+    app.save()
+    patient = app.patient
+    # sendEmail('test',patient,'doctorCancel')
+    return redirect('seApp:appointmentGetManager')
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
@@ -122,7 +132,7 @@ def deleteAppointment(request, app_id):
     app.status = 'Cancelled'
     app.save()
     patient = app.patient
-    sendEmail('test',patient,'doctorCancel')
+    # sendEmail('test',patient,'doctorCancel')
     return redirect('seApp:appointmentGetManager')
 
 @login_required(login_url='seApp:loginpage')

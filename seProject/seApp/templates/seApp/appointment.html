@@ -30,7 +30,9 @@
                     <p class="card-text h6">Status:</p>
                   </div>
                   <div class="col-8 col-md-8">
-                    {% if app.status == 'Pending' %}
+                    {% if app.status == 'Done' %}
+                    <p class="card-text text-success"> {{app.status}}</p>
+                    {% elif app.status == 'Pending' %}
                     <p class="card-text text-warning"> {{app.status}}</p>
                     {% elif app.status == 'Cancelled'%}
                     <p class="card-text text-danger"> {{app.status}}</p>
@@ -40,7 +42,12 @@
                     <p class="card-text text-success"> {{app.status}}</p>
                     {% endif %}
                   </div>
-                  {% if app.status != 'Cancelled'%}
+                  {% if app.status == 'Paid' or app.status == 'Pending'%}
+                  <div class="col-4 col-md-4 text-center">
+                    <button type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#doneModal">
+                      Done
+                    </button>
+                  </div>
                   <div class="col-4 col-md-4 text-center">
                     <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#editModal">
                       Edit
@@ -127,6 +134,7 @@
         </div>
       </div>
     </div>
+    {% if app.status == 'Done'%}
     <div class="bg-light py-2 ">
       <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -175,10 +183,29 @@
         </div>
       </div>
     </div>
+    {% endif %}
   </div>
 </div>
 
   <!-- Modal -->
+  <div class="modal fade" id="doneModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to mark the appointment as <strong class="text-success">Done</strong></h5>
+        </div>
+        <div class="modal-footer">
+          <form action="{% url 'seApp:doneAppointment' app_id=app.id%}" method="POST" class="text-center">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-success btn-md mt-3" name="cancel">Yes</button>
+            <a href="" class="btn btn-outline-primary btn-md" style="margin-top : 16px; margin-left: 10px;">Cancel</a>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->  
   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -210,9 +237,6 @@
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel appointment
             {{app.doctor.specialization}} ? </h5>
-        </div>
-        <div class="modal-body">
-          An ammount of {{app.doctor.fees}} will be returned to you.
         </div>
         <div class="modal-footer">
           <form action="{% url 'seApp:deleteAppointment' app_id=app.id%}" method="POST" class="text-center">

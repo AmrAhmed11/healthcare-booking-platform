@@ -26,6 +26,7 @@ urlpatterns = [
     path('doctor/appointment/<int:app_id>', views.appointment, name='appointment'),
     path('doctor/appointment/<int:app_id>/edit', views.postAppointment, name='postAppointment'),
     path('doctor/appointment/<int:app_id>/delete', views.deleteAppointment, name='deleteAppointment'),
+    path('doctor/appointment/<int:app_id>/done', views.doneAppointment, name='doneAppointment'),
     path('doctor/patients/', views.doctorGetPatients, name='patients'),
     path('doctor/patients/transfer/<int:patient_id>', views.doctorTransferPatient, name='TransferPatients'),
     path('doctor/patients/prescription/<int:app_id>/create', views.doctorPostPrescription, name='PostPrescription'),
