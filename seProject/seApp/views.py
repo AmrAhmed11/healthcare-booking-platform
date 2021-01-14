@@ -114,6 +114,7 @@ def postAppointment(request, app_id):
     app.doctor.save()
     patient = app.patient
     # sendEmail('test',patient,'doctorEdit')
+    messages.success(request, 'Appointment Date Changed Successfully.')
     return redirect('seApp:appointment', app_id=app_id)
 
 @login_required(login_url='seApp:loginpage')
@@ -124,6 +125,7 @@ def doneAppointment(request, app_id):
     app.save()
     patient = app.patient
     # sendEmail('test',patient,'doctorCancel')
+    messages.success(request, 'Appointment Status Changed Successfully.')
     return redirect('seApp:appointmentGetManager')
 
 @login_required(login_url='seApp:loginpage')
@@ -134,6 +136,7 @@ def deleteAppointment(request, app_id):
     app.save()
     patient = app.patient
     # sendEmail('test',patient,'doctorCancel')
+    messages.success(request, 'Appointment Cancelled Successfully.')
     return redirect('seApp:appointmentGetManager')
 
 @login_required(login_url='seApp:loginpage')
@@ -153,6 +156,7 @@ def doctorPostPrescription(request, app_id):
         app.prescription = []
     app.prescription.append(newMedication)
     app.save()
+    messages.success(request, 'Prescription Added Successfully.')
     return redirect('seApp:appointment', app_id=app_id)
 
 @login_required(login_url='seApp:loginpage')
@@ -162,6 +166,7 @@ def doctorDeletePrescription(request, app_id):
     deletedMedication = request.POST['deletedMedication']
     app.prescription.remove(deletedMedication)
     app.save()
+    messages.success(request, 'Prescription Deleted Successfully.')
     return redirect('seApp:appointment', app_id=app_id)
 
 @login_required(login_url='seApp:loginpage')
@@ -205,6 +210,7 @@ def doctorTransferPatient(request, patient_id):
         doctor.save()
         appointment.save()
         sendEmail('test',patient.user.email,'transferPatient')
+        messages.success(request, 'Patient Transferred Successfully.')
         return redirect('seApp:patients')
     context = {'patient': patient, 'doctors': doctorsWithTimeSlots,'specs':specs}
     return render(request, 'seApp/patientsTransfer.html', context)
@@ -228,6 +234,7 @@ def staffPostDetails(request):
     staff.specialization = request.POST['specialization']
     staff.save()
     if staff.doctor is None:
+        messages.warning(request, 'Please tell your doctor to add you.')    
         return redirect('seApp:staffGetDetails',)   
     else:
         return redirect('seApp:servicesManager')     
@@ -345,6 +352,7 @@ def createNewClinic(request):
     doctor.clinic = clinic
     clinic.save()
     doctor.save()
+    messages.success(request, 'Clinic Created Successfully.')
     return redirect('seApp:servicesManager')
 
 
@@ -356,6 +364,7 @@ def changeFeeDoctor(request):
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     doctor.fees = fee
     doctor.save()
+    messages.success(request, 'Fees Changed Successfully.')
     return redirect('seApp:servicesManager')
 
 
@@ -371,6 +380,7 @@ def changeMedicalDetailsDoctor(request):
     doctor.specialization = specialization
     doctor.medical_id = medicalId
     doctor.save()
+    messages.success(request, 'Medical Details Changed Successfully.')
     return redirect('seApp:servicesManager')
 
 # DELETE TIMESLOTS FOR DOCTOR ACTION
@@ -385,6 +395,7 @@ def deleteTimeslotDoctor(request):
     timeslotParsed = parse_datetime(timeslot) 
     doctor.time_slots.remove(timeslotParsed)
     doctor.save()
+    messages.success(request, 'Time Slot Deleted Successfully.')
     return redirect('seApp:servicesManager')
 
 
@@ -395,6 +406,7 @@ def addTimeslotDoctor(request):
     timeslot = request.POST['timeslot']
     #checking if time is in the past
     if((parse_datetime(timeslot) - datetime.now()).total_seconds() < 0):
+        messages.error(request, 'Can\'t add time slot in a past date.')
         return redirect('seApp:servicesManager')
     if(request.user.role=='staff'):
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
@@ -404,6 +416,7 @@ def addTimeslotDoctor(request):
         doctor.time_slots = []
     doctor.time_slots.append(timeslot)
     doctor.save()
+    messages.success(request, 'Time slot added successfully.')
     return redirect('seApp:servicesManager')
 
 
@@ -453,6 +466,7 @@ def addNewStaff(request):
     staffObject = Staff.objects.get(id=staff)
     staffObject.doctor = doctor
     staffObject.save()
+    messages.success(request, 'Staff Added Successfully.')
     return redirect('seApp:staffManager')
 
 
@@ -463,6 +477,7 @@ def removeStaff(request):
     staff = request.POST['staff']
     staffObject = Staff.objects.get(id=staff)
     staffObject.delete()
+    messages.success(request, 'Staff Removed Successfully.')
     return redirect('seApp:staffManager')
 
 
@@ -478,6 +493,7 @@ def addNewDoctor(request):
     doctorObject = Doctor.objects.get(user_id=doctor)
     doctorObject.clinic = clinicObj
     doctorObject.save()
+    messages.success(request, 'Doctor Added Successfully.')
     return redirect('seApp:staffManager')
 
 
@@ -491,6 +507,7 @@ def removeDoctor(request):
     clinic.save()
     doctorObject.clinic = clinic
     doctorObject.save()
+    messages.success(request, 'Doctor Removed Successfully.')
     return redirect('seApp:staffManager')
 
 # ///////////////////////////////////////////////////////////////////////////////////////////
@@ -718,6 +735,7 @@ def paymentComplete(request, doctor_id):
             doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
+            messages.success(request, 'Payment Successful.')
             return redirect('/user/appointment')
         else:
             timeslots = doctor.time_slots
@@ -738,6 +756,7 @@ def paymentComplete(request, doctor_id):
             doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
             appointment.save()
+            messages.success(request, 'Payment Successful.')
             return redirect('/user/appointment')
 
 @login_required(login_url='seApp:loginpage')
@@ -748,8 +767,10 @@ def changePassword(request):
             form.save()
             update_session_auth_hash(request, form.user)
             if request.user.role == 'patient':
+                messages.success(request, 'Profile Edited Successfully.')
                 return redirect('/user/profile')
             else:
+                messages.success(request, 'Profile Edited Successfully.')
                 return redirect('/doctor/profile')
         else:
             messages.error(request, 'Incorrect password')
@@ -770,12 +791,14 @@ def updateProfile(request):
             if form.is_valid and medical_history.is_valid:
                 form.save()
                 medical_history.save()
+                messages.success(request, 'Profile Edited Successfully.')
                 return redirect('/user/profile')
 
         if request.user.role == "doctor":
             context = {'form':form}
             if form.is_valid:
                 form.save()
+                messages.success(request, 'Profile Edited Successfully.')
                 return redirect('/doctor/profile')
     else:
         form = updateProfileForm(instance=request.user)
@@ -805,5 +828,6 @@ def emergency(request,doctor_id):
             doctor.time_slots.remove(timeslot)
             doctor.save()
             appointment.save()
+            messages.success(request, 'Emergency Appointment Booked Successfully.')
             return redirect('/user/appointment')
 

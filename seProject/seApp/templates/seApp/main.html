@@ -22,9 +22,21 @@
 
 <body>
   <div class="container-fluid p-0">
-    <div class="row"  >
+    <div class="row">
       {%include 'seApp/navbar.html'%}
     </div>
+    <div class="row mx-5 mb-0" style= "margin-top:120px">
+      <div class="col-12 col-md-12">
+      {% if messages  %}
+          {% for message in messages %}
+          <div class="alert alert-{{message.tags}} h6" role="alert">
+            {{message}}
+          </div>
+          {% endfor %}
+      {% endif %}
+      </div>
+    </div>
+
     <div class="row" id="content">
       
       {%block content%}
