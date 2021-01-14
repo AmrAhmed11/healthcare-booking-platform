@@ -3,6 +3,8 @@ from django.urls import resolve, reverse
 from .views import *
 from .models import *
 from django.contrib.auth.models import *
+
+
 # Url tests 
 class TestUrls(SimpleTestCase):
 
@@ -212,6 +214,7 @@ class test_urls_pk (TestCase):
         doctor_id=self.doctor1.id
         url=reverse('seApp:viewDoctor', args=[str(doctor_id)])
         self.assertEquals(resolve(url).func, viewDoctor) 
+
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #Testing views
 class test_Views(TestCase):    
@@ -253,6 +256,16 @@ class test_Views(TestCase):
         self.user3.groups.add(self.group_staff)        
         self.user3.save()
 
+        self.user4=UserProfile.objects.create(
+            username='AdminUser',
+            email='Admin@gmail.com',
+            first_name='Admin',
+            last_name='User',
+        )
+        self.user4.set_password('12345')
+        self.user4.groups.add(self.group_admin)        
+        self.user4.save()
+
         self.patient=Patient.objects.create(user=self.user)
         self.doctor=Doctor.objects.create(user=self.user2)
         self.staff=Staff.objects.create(user=self.user3, specialization='nurse')
@@ -290,6 +303,91 @@ class test_Views(TestCase):
         self.url_test=reverse('seApp:test')
         self.doctor.save()
         self.staff.save()
+
+# 404 Not Found test cases
+    def test_postAppointment_notFound(self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:postAppointment', args=[str(10000)]), {'newTimeSlot':'0'})
+        self.assertEquals(response.status_code,404)  
+
+    def test_doneAppointment_notFound(self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:doneAppointment', args=[str(10000)]), {'newTimeSlot':'0'})
+        self.assertEquals(response.status_code,404) 
+
+    def test_deleteAppointment_notFound(self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.post(reverse('seApp:deleteAppointment', args=[str(10000)]), {'newTimeSlot':'0'})
+        self.assertEquals(response.status_code,404)   
+
+    def test_get_doctorTransferPatient_notFound(self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.get(reverse('seApp:TransferPatients',  args=[str(12345)]))
+        self.assertEquals(response.status_code,404) 
+
+    def test_appointment_view_notFound(self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response=self.client.get(reverse('seApp:appointment', args=[str(123423)]))
+        self.assertEquals(response.status_code,404)
+
+    def test_viewprescription_notFound(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse('seApp:viewprescription',args=[str(11222333)]))
+        self.assertEquals(response.status_code,404)  
+
+    def test_viewDoctor_notFound(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse('seApp:viewDoctor',args=[str(12341)]))
+        self.assertEquals(response.status_code,404)    
+
+    def test_emergency_notFound(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse(('seApp:emergency'), args=[str(111111)]))
+        self.assertEquals(response.status_code,404)      
+
+# 403 Forbidden test cases 
+    def test_appointmentGetManager_forbidden(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response = self.client.get(reverse('seApp:appointmentGetManager'))
+        self.assertEquals(response.status_code,403)        
+
+    def test_collect_info_forbidden(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.get(reverse('seApp:collectedInfoAdmin'))
+        self.assertEquals(response.status_code,403)
+
+    def test_servicesManager_forbidden(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.get(reverse('seApp:servicesManager'))
+        self.assertEquals(response.status_code,403)   
+
+    def test_changeFeeDoctor_forbidden(self):
+        self.client.login(username='Ehab_111',password='12345')
+        response=self.client.post(reverse('seApp:changeFeeDoctor'),{'fees':'1000'})
+        self.assertEquals(response.status_code,403)    
+        
+    def test_browse_forbidden(self):
+        self.client.login(username='AliSayed',password='12345')
+        response=self.client.post(reverse('seApp:browse'))
+        self.assertEquals(response.status_code,403)      
+
+    def test_appointmentViewPaid_forbidden(self):
+        self.client.login(username='AliSayed',password='12345')
+        app_id=self.appointment2.id
+        response=self.client.post(reverse('seApp:appointmentView',args=[str(app_id)]))
+        self.assertEquals(response.status_code,403) 
+
+    def test_appointment_view_forbidden(self):
+        self.client.login(username='AliSayed',password='12345')
+        response=self.client.get(reverse('seApp:appointment', args=[str(self.appointment.id)]))
+        self.assertEquals(response.status_code,403)
+
+    def test_staffProfile_forbidden(self):
+        self.client.login(username='AmrAhmed',password='12345')
+        response = self.client.get(reverse('seApp:StaffProfile'))
+        self.assertEquals(response.status_code,403)
+
+# 200 Successful test cases
     def test_home_view(self):
         response=self.client.get(self.url_home)
         self.assertEquals(response.status_code,200)
@@ -307,18 +405,12 @@ class test_Views(TestCase):
         response=self.client.get(reverse('seApp:appointment', args=[str(self.appointment.id)]))
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response, 'seApp/appointment.html')
-        
-    def test_appointment_view_forbidden(self):
-        self.client.login(username='AliSayed',password='12345')
-        response=self.client.get(reverse('seApp:appointment', args=[str(self.appointment.id)]))
-        self.assertEquals(response.status_code,403)
 
     def test_staffProfile(self):
         self.client.login(username='AliSayed',password='12345')
         response = self.client.get(reverse('seApp:StaffProfile'))
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response, 'seApp/staffProfile.html')
-
 
     def test_appointmentGetManager(self):
         self.client.login(username='AmrAhmed',password='12345')
@@ -413,7 +505,7 @@ class test_Views(TestCase):
         self.assertRedirects(response, '/doctor/services', status_code=302, target_status_code=200, fetch_redirect_response=True)
 
     def test_collect_info (self):
-        self.client.login(username='AmrAhmed',password='12345')
+        self.client.login(username='AdminUser',password='12345')
         response=self.client.get(reverse('seApp:collectedInfoAdmin'))
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response, 'seApp/collectedInfoAdmin.html')
@@ -629,8 +721,7 @@ class test_models(TestCase):
     def test_Payment_model (self):
         self.assertEquals(self.payment.key, 'fhkbkjd6546')
         self.assertAlmostEquals(self.payment.appointment.id, self.appointment.id) 
-    
-
+ 
 
 
 

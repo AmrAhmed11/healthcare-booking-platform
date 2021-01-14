@@ -50,7 +50,7 @@
                 <h5 class="text-center mb-5">Fees</h5>
                 <form action="{% url 'seApp:changeFeeDoctor' %}" method="post">
                   {% csrf_token %}
-                  <input type="text" value="{{services_list.fees}}" name="fees" class="form-control">
+                  <input type="text" value="{{services_list.fees}}" name="fees" required class="form-control">
                   <div class="text-center">
                   <button class="btn btn-outline-primary btn-md m-3">Change Fees</button>
                 </form>
