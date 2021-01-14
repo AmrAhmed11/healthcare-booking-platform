@@ -17,9 +17,9 @@
 
     {% if app_all %}
 
-    <div class="card-deck">
+    <div class="card-deck m-3">
       {% for app in app_pending %}
-      <div class="col-12 col-md-6 col-lg-4">
+      <div class="col-12 col-md-12 col-lg-4">
         <div class="card p-2 shadow-md">
           <div class="card-body">
             <h5 class="text-center mb-5">{{app.doctor.specialization}}</h5>
@@ -35,7 +35,7 @@
       </div>
       {% endfor %}
       {% for app in app_paid %}
-      <div class="col-12 col-md-6 col-lg-4">
+      <div class="col-12 col-md-12 col-lg-4">
         <div class="card p-2 shadow-md">
           <div class="card-body">
             <h5 class="text-center mb-5">{{app.doctor.specialization}}</h5>
@@ -52,7 +52,7 @@
       {% endfor %}
 
       {% for app in app_done %}
-      <div class="col-12 col-md-6 col-lg-4">
+      <div class="col-12 col-md-12 col-lg-4">
         <div class="card p-2 shadow-md">
           <div class="card-body">
             <h5 class="text-center mb-5">{{app.doctor.specialization}}</h5>
@@ -68,7 +68,7 @@
       </div>
       {% endfor %}
       {% for app in app_cancelled %}
-      <div class="col-12 col-md-6 col-lg-4">
+      <div class="col-12 col-md-12 col-lg-4">
         <div class="card p-2 shadow-md">
           <div class="card-body">
             <h5 class="text-center mb-5">{{app.doctor.specialization}}</h5>

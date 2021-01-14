@@ -185,7 +185,7 @@ def doctorTransferPatient(request, patient_id):
     for doctor in doctors:
         if doctor.specialization not in specs and doctor.specialization != None:
             specs.append(doctor.specialization)
-        if doctor.time_slots:
+        if doctor.time_slots and doctor.id != request.user.doctor.id:
             doctorsWithTimeSlots.append(doctor)
     if request.method == 'POST':
         doctor = Doctor.objects.get(id=request.POST['doctor'])
