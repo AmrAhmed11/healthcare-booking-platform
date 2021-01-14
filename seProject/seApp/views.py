@@ -745,7 +745,7 @@ def browse(request):
     myFilter = DoctorFilter(request.GET,queryset=doctors)
     doctors = myFilter.qs
     
-    context = {'doctors':doctorFiltered , 'myFilter':myFilter}
+    context = {'doctors':doctors , 'myFilter':myFilter}
     return render(request,'seApp/browse.html', context)
 
 @login_required(login_url='seApp:loginpage')
