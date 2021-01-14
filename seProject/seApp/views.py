@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 import json
 from .forms import *
@@ -98,6 +98,7 @@ def test(request):
 @allowed_users(allowed_roles=['doctor'])
 def appointmentGetManager(request):
     doctor = Doctor.objects.get(id=request.user.doctor.id)
+    # doctor = get_object_or_404(Doctor, id=request.user.doctor.id)
     app_list = doctor.appointment_set.all()
     context = {'app_list': app_list}
     return render(request, 'seApp/appointmentManager.html', context)
@@ -105,7 +106,7 @@ def appointmentGetManager(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def postAppointment(request, app_id):
-    app = Appointment.objects.get(id=app_id)
+    app = get_object_or_404(Appointment, pk=app_id)
     index = int(request.POST['newTimeSlot'])
     app.time_slot = app.doctor.time_slots[index]
     app.doctor.time_slots.pop(index)
@@ -118,7 +119,7 @@ def postAppointment(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doneAppointment(request, app_id):
-    app = Appointment.objects.get(id=app_id)
+    app = get_object_or_404(Appointment, pk=app_id)
     app.status = 'Done'
     app.save()
     patient = app.patient
@@ -128,7 +129,7 @@ def doneAppointment(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def deleteAppointment(request, app_id):
-    app = Appointment.objects.get(id=app_id)
+    app = get_object_or_404(Appointment, pk=app_id)
     app.status = 'Cancelled'
     app.save()
     patient = app.patient
@@ -138,7 +139,7 @@ def deleteAppointment(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def appointment(request, app_id):
-    app = Appointment.objects.get(id=app_id)
+    app = get_object_or_404(Appointment, pk=app_id)
     patient_account_name = app.patient.user.first_name + ' ' + app.patient.user.last_name
     context = {'app': app, 'doctor': app.doctor, 'patient': app.patient, 'patient_account_name':patient_account_name}
     return render(request, 'seApp/appointment.html', context)
@@ -146,7 +147,7 @@ def appointment(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doctorPostPrescription(request, app_id):
-    app = Appointment.objects.get(id=app_id)
+    app = get_object_or_404(Appointment, pk=app_id)
     newMedication = request.POST['newMedication']
     if(app.prescription == None):
         app.prescription = []
@@ -157,7 +158,7 @@ def doctorPostPrescription(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doctorDeletePrescription(request, app_id):
-    app = Appointment.objects.get(id=app_id)
+    app = get_object_or_404(Appointment, pk=app_id)
     deletedMedication = request.POST['deletedMedication']
     app.prescription.remove(deletedMedication)
     app.save()
@@ -177,8 +178,8 @@ def doctorGetPatients(request):
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
-def doctorTransferPatient(request, patient_id):
-    patient = Patient.objects.get(id=patient_id)  
+def doctorTransferPatient(request, patient_id): 
+    patient = get_object_or_404(Patient, pk=patient_id)  
     doctors = Doctor.objects.all()
     specs = []
     doctorsWithTimeSlots = []
@@ -244,6 +245,8 @@ def StaffProfile(request):
 
 
 # COLLECT ADMIN INFO
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=[])
 def collectedInfoAdmin(request):
     doctors = Doctor.objects.all()
     patients = Patient.objects.all()
@@ -345,7 +348,8 @@ def createNewClinic(request):
 
 
 #  CHANGING DOCTOR FEES ACTION
-
+@login_required(login_url='seApp:loginpage')
+@allowed_users(allowed_roles=['staff', 'doctor'])
 def changeFeeDoctor(request):
     fee = request.POST['fees']
     doctor = Doctor.objects.get(id=request.user.doctor.id)
@@ -515,10 +519,10 @@ def appointmentUser(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentView(request, app_id):
-    appointment = Appointment.objects.get(id=app_id)
+    appointment = get_object_or_404(Appointment, pk=app_id)
 
     form = ReviewForm()
-    app = Appointment.objects.get(id=app_id)
+    app = get_object_or_404(Appointment, pk=app_id)
     form = ReviewForm(instance=app)
 
     context = {'appointment': appointment ,'app': app, 'form': form}
@@ -632,7 +636,7 @@ def appointmentView(request, app_id):
 @allowed_users(allowed_roles=['patient'])    
 def viewprescription(request, app_id ) :
         
-    appointment = Appointment.objects.get(id=app_id)
+    appointment = get_object_or_404(Appointment, pk=app_id)
     context = {'appointment': appointment}
 
     return render(request, 'seApp/viewprescription.html', context)      
@@ -643,7 +647,7 @@ def viewprescription(request, app_id ) :
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])   
 def viewDoctor(request, doctor_id):
-    doctors = Doctor.objects.get(id=doctor_id)
+    doctors = get_object_or_404(Doctor, pk=doctor_id)
     doctorEmail = doctors.user.email
     doctorAppointments = []
     doctorAppointments =Appointment.objects.filter(doctor__id = doctor_id )
@@ -686,7 +690,7 @@ def paymentComplete(request, doctor_id):
     body = json.loads(request.body)
     
     patient = Patient.objects.get(id=request.user.patient.id)
-    doctor = Doctor.objects.get(id=doctor_id)
+    doctor = get_object_or_404(Doctor, pk=doctor_id)
     doctorEmail = doctor.user.email
 
     if body['status'] == 'completed':
@@ -776,7 +780,7 @@ def updateProfile(request):
 
 def emergency(request,doctor_id):
     if request.method == 'POST':
-        doctor = Doctor.objects.get(id = doctor_id)
+        doctor = get_object_or_404(Doctor, pk=doctor_id)
         timeslots = doctor.time_slots
         timeslots.sort()
         if timeslots:
