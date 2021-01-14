@@ -757,12 +757,6 @@ def browse(request):
 
     """      
     doctors = Doctor.objects.all()
-
-    doctorFiltered = []
-    for doctor in doctors:
-        if doctor.specialization != None and doctor.fees != None and doctor.medical_id != None:
-            doctorFiltered.append(doctor)
-    
     myFilter = DoctorFilter(request.GET,queryset=doctors)
     doctors = myFilter.qs
     

@@ -28,6 +28,7 @@
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           {% for doctor in doctors %}
+          {% if doctor.specialization != None and doctor.fees != None and doctor.medical_id != None %}
           <div class="col-12 col-md-12 col-lg-6">
               <div class="card p-2 shadow-md mt-4">
                 <div class="card-body">
@@ -41,8 +42,8 @@
                 </div>
               </div>
                 </div>
-          
-      {% endfor %}
+          {%endif%}
+        {% endfor %}
     </div>
   </div>
   </div>
