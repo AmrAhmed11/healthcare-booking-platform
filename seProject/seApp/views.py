@@ -164,7 +164,7 @@ def postAppointment(request, app_id):
     app.doctor.time_slots.pop(index)
     app.save()
     app.doctor.save()
-    patient = app.patient
+    patient = app.patient.user.email
     sendEmail('Appointment Date Changed',patient,'doctorEdit')
     messages.success(request, 'Appointment Date Changed Successfully.')
     return redirect('seApp:appointment', app_id=app_id)
@@ -183,7 +183,7 @@ def doneAppointment(request, app_id):
     app = get_object_or_404(Appointment, pk=app_id)
     app.status = 'Done'
     app.save()
-    patient = app.patient
+    patient = app.patient.user.email
     sendEmail('Appointment Done',patient,'doctorCancel')
     messages.success(request, 'Appointment Status Changed Successfully.')
     return redirect('seApp:appointmentGetManager')
@@ -203,7 +203,7 @@ def deleteAppointment(request, app_id):
     app = get_object_or_404(Appointment, pk=app_id)
     app.status = 'Cancelled'
     app.save()
-    patient = app.patient
+    patient = app.patient.user.email
     sendEmail('Appointment Cancelled',patient,'doctorCancel')
     messages.success(request, 'Appointment Cancelled Successfully.')
     return redirect('seApp:appointmentGetManager')
@@ -757,13 +757,16 @@ def browse(request):
 
     """      
     doctors = Doctor.objects.all()
+
     doctorFiltered = []
     for doctor in doctors:
         if doctor.specialization != None and doctor.fees != None and doctor.medical_id != None:
             doctorFiltered.append(doctor)
+    
     myFilter = DoctorFilter(request.GET,queryset=doctors)
     doctors = myFilter.qs
-    context = {'doctors':doctorFiltered , 'myFilter':myFilter}
+    
+    context = {'doctors':doctors , 'myFilter':myFilter}
     return render(request,'seApp/browse.html', context)
 
 @login_required(login_url='seApp:loginpage')
@@ -848,7 +851,7 @@ def appointmentView(request, app_id):
     if appointment.status == 'Pending':
         
         if request.method == 'POST':
-            body = json.loads(request.body) 
+            # body = json.loads(request.body) 
             doctor = appointment.doctor.user.email
             if 'cancel' in request.POST:
                 appointment.status = "Cancelled"
@@ -946,7 +949,8 @@ def viewDoctor(request, doctor_id):
     doctorAppointments =Appointment.objects.filter(doctor__id = doctor_id )
     reviews = []
     for app in doctorAppointments:
-        reviews.append(app.review)
+        if app.review != "None":
+            reviews.append(app.review)
     timeslots = []
     for timeslot in doctors.time_slots:
         if((timeslot - timezone.now()).total_seconds() > 0):
