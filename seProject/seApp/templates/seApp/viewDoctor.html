@@ -154,8 +154,12 @@
 {%block content%}
 
 <body class="bg-light">
-    <div class="col-lg-6 col-md-12 m-4">
+  
+    <div class="col-lg-12 col-md-12 m-4">
+        <div class="justify-content-center">
+            
     <div class="container emp-profile p-4">
+       
         <div class="row">
             <div class="col-md-12 p-3">
                 <div class="profile-head">
@@ -186,7 +190,7 @@
                 <div class="tab-content profile-tab ml-3" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="row justify-content-center">
-                            <div class="col-md-6" style="width:fit-content;">
+                            <div class="col-md-6">
                                 <label>Name</label>
                             </div>
                             <div class="col-md-6">
@@ -222,7 +226,7 @@
                                 <label>Fees</label>
                             </div>
                             <div class="col-md-6">
-                                <p>{{doctors.fees}} EGP</p>
+                                <p>{{doctors.fees}} USD</p>
                             </div>
                         </div>
                         <br>
@@ -316,6 +320,7 @@
             {% endif %}
         </div>
     </div>
+</div>
 </div>
 
 

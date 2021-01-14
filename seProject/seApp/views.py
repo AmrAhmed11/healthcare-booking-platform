@@ -186,7 +186,7 @@ def doctorTransferPatient(request, patient_id):
     for doctor in doctors:
         if doctor.specialization not in specs and doctor.specialization != None:
             specs.append(doctor.specialization)
-        if doctor.time_slots:
+        if doctor.time_slots and doctor.id != request.user.doctor.id:
             doctorsWithTimeSlots.append(doctor)
     if request.method == 'POST':
         doctor = Doctor.objects.get(id=request.POST['doctor'])
@@ -198,7 +198,8 @@ def doctorTransferPatient(request, patient_id):
                 status = 'Pending',
                 time_slot =  doctor.time_slots[index],
                 review = 'None',
-                prescription = []
+                prescription = [],
+                patient_name = patient,
         ) 
         doctor.time_slots.pop(index)
         doctor.save()
@@ -499,9 +500,13 @@ def removeDoctor(request):
 @allowed_users(allowed_roles=['patient'])
 def browse(request):
     doctors = Doctor.objects.all()
+    doctorFiltered = []
+    for doctor in doctors:
+        if doctor.specialization != None and doctor.fees != None and doctor.medical_id != None:
+            doctorFiltered.append(doctor)
     myFilter = DoctorFilter(request.GET,queryset=doctors)
     doctors = myFilter.qs
-    context = {'doctors':doctors , 'myFilter':myFilter}
+    context = {'doctors':doctorFiltered , 'myFilter':myFilter}
     return render(request,'seApp/browse.html', context)
 
 @login_required(login_url='seApp:loginpage')
@@ -742,7 +747,10 @@ def changePassword(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            return redirect('/user/profile')
+            if request.user.role == 'patient':
+                return redirect('/user/profile')
+            else:
+                return redirect('/doctor/profile')
         else:
             messages.error(request, 'Incorrect password')
             return redirect('/accounts/change_password')

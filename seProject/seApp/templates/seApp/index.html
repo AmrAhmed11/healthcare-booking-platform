@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>seApp | Homepage</title>
+    <title>seApp | Home</title>
     <link rel="icon" href="{% static '/images/seLogoBlueRound.png' %}">
 
     <!-- Google Fonts -->
@@ -20,7 +20,7 @@
     <link rel="stylesheet" type="text/css" href="{% static '/assets/css/style.css' %}">
     <!-- Responsive -->
     <link rel="stylesheet" type="text/css" href="{% static '/assets/css/responsive.css' %}">
-
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
     <style>
       @media only screen and (min-width: 600px) {
         .landingPics {
@@ -86,8 +86,8 @@
                 <div class="col-md-6 col-sm-12 col-xs-12">
                   <div class="seven-content-left">
                     <div class="content">
-                      <h2>Best Healthcare Platform</h2>
-                      <p>seApp</p>
+                      <h2 data-aos="fade-up" data-aos-duration="1000">Best Healthcare Platform</h2>
+                      <p data-aos="fade-up" data-aos-duration="1200">seApp</p>
                     </div>
                   </div><!-- content-left -->
                 </div>
@@ -127,7 +127,7 @@
           <div class="container">
               <div class="row">
                   <div class="col-md-6">
-                      <div class="image">
+                      <div class="image" data-aos="zoom-out" data-aos-duration="1500">
                          
                           <img src="{% static '/images/seLogoBlack.png' %}" alt="about iamge">
                       </div>
@@ -135,10 +135,10 @@
                   <div class="col-md-6">
                       <div class="content">
                           <div class="section-header">
-                              <h2 class="text-center">Join us right now</h2>
-                              <p class="text-center"><i >your best healthcare option</i></p>
+                              <h2 class="text-center" data-aos="fade-up" data-aos-duration="1000">Join us right now</h2>
+                              <p class="text-center" data-aos="fade-up" data-aos-duration="1500"><i >your best healthcare option</i></p>
                           </div>
-                          <ul class="about-button">                            
+                          <ul class="about-button" data-aos="fade-up" data-aos-duration="1500">                            
                             <li><a href="{% url 'seApp:register' %}" class="default-button">Join Now</a></li>
                           </ul>
                       </div>
@@ -154,7 +154,7 @@
       <section class="gallery gallery-two gallery-uhv padding-60" style="background-color:lightgrey;">
         <div class="container">
           <div class="section-header text-center">
-            <h2 style="color:#0131FF; padding-top: 90px;">Our Features For Patients</h2>
+            <h2 style="color:#0131FF; padding-top: 90px;" data-aos="fade-up" data-aos-duration="1000">Our Features For Patients</h2>
             
           </d iv>
 
@@ -162,34 +162,34 @@
             
             <div class="row">
               <div class="col-lg-7 col-12 pull-right " style="transform: translateY(50%); margin-bottom: 200px;">
-                <h3 class="pull-right">browse and Book <br> appointments with our  <br>top rated doctors with ease </h3>
+                <h3 data-aos="fade-left" data-aos-duration="800" class="pull-right">browse and Book <br> appointments with our  <br>top rated doctors with ease </h3>
                 
                 
               </div>
               <div class="col-lg-5 col-12 pull-left" >
-                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/browsePatient_jdg8pJoGwtibA.PNG"  class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                <img  data-aos="fade-right" data-aos-duration="800" src="https://ik.imagekit.io/l5sayia1xw/seApp/browsePatient_jdg8pJoGwtibA.PNG"  class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
            
               <div class="row">
                 <div class="col-lg-7 col-12 pull-left" style="transform: translateY(50%);  margin-bottom: 200px;">
-                  <h3 class="pull-left">Review, rate 
+                  <h3  data-aos="fade-right" data-aos-duration="1100" class="pull-left">Review, rate 
                     your <br> experience and view <br> your Prescriptions<br> all in one page</h3>
                   
                   
                 </div>
                 <div class="col-lg-5 col-12 pull-right" >
-                  <img src="https://ik.imagekit.io/l5sayia1xw/seApp/ratePatient_EVYWG836ltS1I.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                  <img  data-aos="fade-left" data-aos-duration="1100" src="https://ik.imagekit.io/l5sayia1xw/seApp/ratePatient_EVYWG836ltS1I.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 </div>
               </div>
               <div class="row">
                 <div class="col-lg-7 col-12 pull-right" style="transform: translateY(50%);  margin-bottom: 200px;">
-                  <h3 class="pull-right">Easily update your<br> medical history for <br>accurate Prescriptions</h3>
+                  <h3  data-aos="fade-left" data-aos-duration="1400" class="pull-right">Easily update your<br> medical history for <br>accurate Prescriptions</h3>
                   
                   
                 </div>
                 <div class="col-lg-5 col-12 pull-left" >
-                  <img src="https://ik.imagekit.io/l5sayia1xw/seApp/profilePatient_yHbbyfdL1hyUK.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                  <img  data-aos="fade-right" data-aos-duration="1400" src="https://ik.imagekit.io/l5sayia1xw/seApp/profilePatient_yHbbyfdL1hyUK.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 </div>
               </div>
           </div>
@@ -198,7 +198,7 @@
       <section class="gallery gallery-two gallery-uhv padding-120">
         <div class="container">
           <div class="section-header text-center">
-            <h2 style="color:#0131FF;">Our Features For Doctors</h2>
+            <h2 style="color:#0131FF;" data-aos="fade-up" data-aos-duration="1000">Our Features For Doctors</h2>
             
           </d iv>
 
@@ -206,31 +206,31 @@
             
             <div class="row">
               <div class="col-lg-7 col-12 pull-right" style="transform: translateY(50%);  margin-bottom: 200px;">
-                <h3 class="pull-right">manage all your<br> appointments from <br> one page </h3>
+                <h3  data-aos="fade-left" data-aos-duration="800" class="pull-right">manage all your<br> appointments from <br> one page </h3>
                 
                 
               </div>
-              <div class="col-lg-5 col-12 pull-left" >
+              <div class="col-lg-5 col-12 pull-left" data-aos="fade-right" data-aos-duration="800" >
                 <img src="https://ik.imagekit.io/l5sayia1xw/seApp/appointmentManager_LMd7EmuKq6na.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
             
             <div class="row" style="margin-top: 50px;">
-              <div class="col-lg-7 col-12 pull-left">
-                <h3 class="pull-left" style="transform: translateY(50%);  margin-bottom: 200px;">easily Manage your fees,<br> Medical details and <br> timeslots </h3>
+              <div  data-aos="fade-right" data-aos-duration="1200" class="col-lg-7 col-12 pull-left">
+                <h3  class="pull-left" style="transform: translateY(50%);  margin-bottom: 200px;">easily Manage your fees,<br> Medical details and <br> timeslots </h3>
                 
               </div>
               <div class="col-lg-5 col-12 pull-right" >
-                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/servicesManager_KT7-OnGxmQf6.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                <img  data-aos="fade-left" data-aos-duration="1200" src="https://ik.imagekit.io/l5sayia1xw/seApp/servicesManager_KT7-OnGxmQf6.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
             <div class="row" style="margin-top: 50px;">
-              <div class="col-lg-7 col-12 pull-right">
+              <div  data-aos="fade-left" data-aos-duration="1400" class="col-lg-7 col-12 pull-right">
                 <h3 class="pull-right" style="transform: translateY(50%);  margin-bottom: 200px;">Access All your <br>patients with a click of <br> a button </h3>
                 
               </div>
               <div class="col-lg-5 col-12 pull-left" >
-                <img src="https://ik.imagekit.io/l5sayia1xw/seApp/patientDoctor_TLB1IGXkwJRgk.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                <img  data-aos="fade-right" data-aos-duration="1400" src="https://ik.imagekit.io/l5sayia1xw/seApp/patientDoctor_TLB1IGXkwJRgk.PNG" class="img-responsive landingPics" style="max-width: 350px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
               </div>
             </div>
           </div>
@@ -238,17 +238,15 @@
       </section>
 
       <!-- Footer Start here -->
-      <footer class="footer-six">
-        <div class="overlay">
+      <footer class="footer-six" >
+        <div class="overlay" style="background-color: black;">
           <div class="container">
             <h2>seApp</h2>
             <ul class="event-social">
-              <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-              <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-              <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-        
+              <li><a href="https://github.com/AmrAhmed11/Software-Engineering-Project/tree/master/seProject" style="background-color: ivory;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="22" height="22"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a></li>
+              
             </ul>
-            <p>Copyright &copy; 2021.</a></p>
+            <p>Copyrights &copy; 2021.</a></p>
           </div>
         </div>
       </footer>
@@ -299,6 +297,9 @@
 
     <!-- Custom -->
     <script src="{% static '/assets/js/custom.js' %}"></script>
-
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
   </body>
 </html>
