@@ -25,6 +25,17 @@ from django.contrib import messages
 
 @unauthenticted_user
 def loginpage (request):
+""" Login Handler.
+
+Performers authentication on login attempt and redirects every user
+to the next page based on the role
+
+:param incoming request
+:return: login.html render
+         redirect to browse route
+         redirect to seApp:servicesManager route
+         redirect to seApp:collectedInfoAdmin route
+"""
     if request.method=='POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -44,14 +55,31 @@ def loginpage (request):
             return render(request, 'seApp/login.html')
     return render(request, 'seApp/login.html')
 
+
 @login_required(login_url='seApp:loginpage')
 def logout_path (request):
+""" Logout Handler.
+
+Destroys user session on logout request
+
+:param incoming request
+:return: seApp:home
+"""
     logout(request)
     return redirect ('seApp:home')
 
 #patient_registration
 @unauthenticted_user
 def register (request):
+""" Registraion Handler.
+
+Creates a new user based in the input date in the registraion
+
+:param incoming request
+:return: seApp:UserProfile route
+         seApp:servicesManager route
+         seApp:staffGetDetails route
+"""    
     form =  CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -87,18 +115,29 @@ def register (request):
 
 @unauthenticted_user
 def index(request):
+""" Home Page Render.
+
+Renders home page upon request
+
+:param incoming request
+:return: seApp/index.html
+
+"""       
     return render(request, 'seApp/index.html')
 
-@login_required(login_url='seApp:loginpage')
-@allowed_users(allowed_roles=['doctor'])
-def test(request):
-    return render(request, 'seApp/test.html')
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def appointmentGetManager(request):
+""" GET all appointments.
+
+Gets all authenticated doctor appointments
+
+:param incoming request
+:return: seApp/appointmentManager.html
+
+"""       
     doctor = Doctor.objects.get(id=request.user.doctor.id)
-    # doctor = get_object_or_404(Doctor, id=request.user.doctor.id)
     app_list = doctor.appointment_set.all()
     context = {'app_list': app_list}
     return render(request, 'seApp/appointmentManager.html', context)
@@ -106,6 +145,15 @@ def appointmentGetManager(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def postAppointment(request, app_id):
+""" Appointment Date.
+
+Changes appoinment date from a selected appointment date sent by
+a POST request
+
+:param incoming request
+:return: eApp:appointment route
+
+"""       
     app = get_object_or_404(Appointment, pk=app_id)
     index = int(request.POST['newTimeSlot'])
     app.time_slot = app.doctor.time_slots[index]
@@ -113,35 +161,61 @@ def postAppointment(request, app_id):
     app.save()
     app.doctor.save()
     patient = app.patient
-    # sendEmail('test',patient,'doctorEdit')
+    sendEmail('test',patient,'doctorEdit')
     messages.success(request, 'Appointment Date Changed Successfully.')
     return redirect('seApp:appointment', app_id=app_id)
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doneAppointment(request, app_id):
+""" Appointment State done.
+
+Changes appoinment state to Done from POST request
+
+:param incoming request
+:return: appointmentGetManager route
+
+"""           
     app = get_object_or_404(Appointment, pk=app_id)
     app.status = 'Done'
     app.save()
     patient = app.patient
-    # sendEmail('test',patient,'doctorCancel')
+    sendEmail('Appointment Done',patient,'doctorCancel')
     messages.success(request, 'Appointment Status Changed Successfully.')
     return redirect('seApp:appointmentGetManager')
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def deleteAppointment(request, app_id):
+""" Appointment State cancelled.
+
+Changes appoinment state to Cancelled from POST request
+
+:param incoming request
+       appointment id
+:return: appointmentGetManager route
+
+"""     
     app = get_object_or_404(Appointment, pk=app_id)
     app.status = 'Cancelled'
     app.save()
     patient = app.patient
-    # sendEmail('test',patient,'doctorCancel')
+    sendEmail('Appointment Cancelled',patient,'doctorCancel')
     messages.success(request, 'Appointment Cancelled Successfully.')
     return redirect('seApp:appointmentGetManager')
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def appointment(request, app_id):
+""" Appointment Details.
+
+Returns all appointments details from a selected 
+
+:param incoming request
+       appointment id
+:return: appointment.html
+
+""" 
     app = get_object_or_404(Appointment, pk=app_id)
     patient_account_name = app.patient.user.first_name + ' ' + app.patient.user.last_name
     context = {'app': app, 'doctor': app.doctor, 'patient': app.patient, 'patient_account_name':patient_account_name}
@@ -150,6 +224,15 @@ def appointment(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doctorPostPrescription(request, app_id):
+""" Add Prescription.
+
+Adds a new medication to the appointment prescription list upon a POST requset
+
+:param incoming request
+       appointment id
+:return: seApp:appointment route
+
+"""     
     app = get_object_or_404(Appointment, pk=app_id)
     newMedication = request.POST['newMedication']
     if(app.prescription == None):
@@ -162,6 +245,15 @@ def doctorPostPrescription(request, app_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doctorDeletePrescription(request, app_id):
+""" Delete Prescription.
+
+Deletes a selected medication to the appointment prescription list upon a POST requset
+
+:param incoming request
+       appointment id
+:return: seApp:appointment route
+
+"""         
     app = get_object_or_404(Appointment, pk=app_id)
     deletedMedication = request.POST['deletedMedication']
     app.prescription.remove(deletedMedication)
@@ -171,7 +263,15 @@ def doctorDeletePrescription(request, app_id):
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
-def doctorGetPatients(request):    
+def doctorGetPatients(request):
+""" All Patients.
+
+Returns Authenticated user patients from the appointments list
+
+:param incoming request
+:return: patients.html
+
+"""                
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     app_list = doctor.appointment_set.all()
     patient_list = []
@@ -184,6 +284,16 @@ def doctorGetPatients(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doctorTransferPatient(request, patient_id): 
+""" Transfer Patient.
+
+Creates a new appontment between a selected patient and doctor Upon a POST requset
+and returns a selected patient data Upon a GET request
+
+:param incoming request
+       patient_id
+:return: patientsTransfer.html
+
+"""             
     patient = get_object_or_404(Patient, pk=patient_id)  
     doctors = Doctor.objects.all()
     specs = []
@@ -218,6 +328,14 @@ def doctorTransferPatient(request, patient_id):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def DoctorProfile(request):
+""" Doctor Profile.
+
+Returns all doctor personal data
+
+:param incoming request
+:return: doctorProfile.html
+
+"""              
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     context = {'doctor': doctor}
     return render(request, 'seApp/doctorProfile.html', context)
