@@ -330,7 +330,7 @@ and returns a selected patient data Upon a GET request
 def DoctorProfile(request):
 """ Doctor Profile.
 
-Returns all doctor personal data
+Returns authenticated doctor personal data
 
 :param incoming request
 :return: doctorProfile.html
@@ -343,11 +343,27 @@ Returns all doctor personal data
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff'])
 def staffGetDetails(request):   
+""" Staff Select Speclization.
+
+Renders staff speclization selection page
+
+:param incoming request
+:return: staffSpecialization.html
+
+"""         
     return render(request, 'seApp/staffSpecialization.html')
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff'])
 def staffPostDetails(request):
+""" Staff POST Select Speclization.
+
+Sets the authenticated member speclization upon a POST request
+
+:param incoming request
+:return: seApp:servicesManager
+
+"""       
     staff = Staff.objects.get(id=request.user.staff.id)
     staff.specialization = request.POST['specialization']
     staff.save()
@@ -360,6 +376,14 @@ def staffPostDetails(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff'])
 def StaffProfile(request):
+""" Staff Profile.
+
+Returns authenticated authenticated personal data
+
+:param incoming request
+:return: staffProfile.html
+
+"""           
     staff = Staff.objects.get(id=request.user.staff.id)
     context = {'staff': staff}
     return render(request, 'seApp/staffProfile.html', context)
@@ -634,6 +658,14 @@ def removeDoctor(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def browse(request):
+""" Browse Doctors.
+
+Returns all registered doctors and offers filtering 
+
+:param incoming request
+:return: browse.html
+
+"""      
     doctors = Doctor.objects.all()
     doctorFiltered = []
     for doctor in doctors:
@@ -647,6 +679,14 @@ def browse(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentUser(request):
+""" Browse Doctors.
+
+Returns all registered doctors and offers filtering 
+
+:param incoming request
+:return: browse.html
+
+"""      
     patient = Patient.objects.get(id=request.user.patient.id)
     app_all= patient.appointment_set.all()
     app_pending =patient.appointment_set.filter(status="Pending")
@@ -774,19 +814,34 @@ def appointmentView(request, app_id):
     
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])    
-def viewprescription(request, app_id ) :
-        
+def viewprescription(request, app_id) :
+""" View Prescription.
+
+Returns all medication in a certain appointment prescription list
+
+:param incoming request
+       app_id
+:return: viewprescription.html
+
+"""          
     appointment = get_object_or_404(Appointment, pk=app_id)
     context = {'appointment': appointment}
-
     return render(request, 'seApp/viewprescription.html', context)      
 
    
 
-
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])   
 def viewDoctor(request, doctor_id):
+""" View Doctor.
+
+Returns a selected doctor details upon GET request
+
+:param incoming request
+       doctor_id
+:return: viewDoctor.html
+
+"""         
     doctors = get_object_or_404(Doctor, pk=doctor_id)
     doctorEmail = doctors.user.email
     doctorAppointments = []
@@ -800,26 +855,20 @@ def viewDoctor(request, doctor_id):
             timeslots.append(timeslot)
     doctors.time_slots = timeslots
     doctors.save()
-    # if request.method == 'POST':
-    #     if request.user.is_authenticated:
-    #         role = request.user.role
-    #         if(role == "patient"):
-    #             patient = Patient.objects.get(id=request.user.patient.id)
-    #             timeslots = doctors.time_slots
-    #             timeslot = timeslots[int(request.POST['appointment']) - 1]
-    #             doctors.time_slots.remove(timeslot)
-    #             doctors.save()
-    #             sendEmail('test',doctorEmail,'appointmentBook')
-    #         else:
-    #             return render(request, 'seApp/test.html')
-    #     else:
-    #         return render(request, 'seApp/login.html')
     context = {'doctors':doctors,'reviews':reviews}
     return render(request, 'seApp/viewDoctor.html', context)
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient']) 
 def UserProfile(request):
+""" User Profile.
+
+Returns authenticated patient personal data
+
+:param incoming request
+:return: userProfile.html
+
+"""            
     patient = Patient.objects.get(id = request.user.patient.id)
     context = {'patient':patient}
     return render(request, 'seApp/userProfile.html', context)
@@ -827,6 +876,14 @@ def UserProfile(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient']) 
 def paymentComplete(request, doctor_id):
+""" Payments.
+
+Checks valid payments through Paypal gateway
+
+:param incoming request
+       doctor_id
+
+"""      
     body = json.loads(request.body)
     
     patient = Patient.objects.get(id=request.user.patient.id)
@@ -846,9 +903,6 @@ def paymentComplete(request, doctor_id):
                 prescription = [],
                 patient_name = patient.user.first_name + ' ' + patient.user.last_name,
             )
-            # timeslotParsed = parse_datetime(body['timeSlot']) 
-            # doctor.time_slots.remove(timeslotParsed)
-            # doctor.save()
             doctor.time_slots.remove(timeslot)
             doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
@@ -867,9 +921,6 @@ def paymentComplete(request, doctor_id):
                 prescription = [],
                 patient_name = body['firstName'] + ' ' + body['lastName'],
             ) 
-            # timeslotParsed = parse_datetime(body['timeSlot']) 
-            # doctor.time_slots.remove(timeslotParsed)
-            # doctor.save()
             doctor.time_slots.remove(timeslot)
             doctor.save()
             sendEmail('test',doctorEmail,'appointmentBook')
@@ -879,6 +930,15 @@ def paymentComplete(request, doctor_id):
 
 @login_required(login_url='seApp:loginpage')
 def changePassword(request):
+""" Change Passowrd.
+
+Takes a new password from the user and checks if the old password is valid 
+it changes the user request
+
+:param incoming request
+:return: changePassword.html
+
+"""     
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
@@ -901,6 +961,15 @@ def changePassword(request):
 
 @login_required(login_url='seApp:loginpage')
 def updateProfile(request):
+""" Update Profile Info.
+
+Takes a new info upon a POST request from the authenticated user (doctor or patient) and update the
+personal info
+
+:param incoming request
+:return: updateProfile.html
+
+"""        
     if request.method == 'POST':
         form = updateProfileForm(request.POST, instance=request.user)
         if request.user.role == "patient":
@@ -928,6 +997,16 @@ def updateProfile(request):
         return render(request, 'seApp/updateProfile.html', context)
 
 def emergency(request,doctor_id):
+""" Emergancy.
+
+Creates an appointment between the authenticated user and a selected doctor 
+and selects the closest time slot availble
+
+:param incoming request
+       doctor_id
+:return: viewappointment.html
+
+"""         
     if request.method == 'POST':
         doctor = get_object_or_404(Doctor, pk=doctor_id)
         timeslots = doctor.time_slots
