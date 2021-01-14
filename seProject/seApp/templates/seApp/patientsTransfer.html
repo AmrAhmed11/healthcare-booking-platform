@@ -72,8 +72,8 @@
                   <div class="col-12">
                     <div class="form-group">
                     <label for="newDoctor">Select Specilization</label>
-                    <select class="form-control" name="specialization" onchange="specChange()" id="newDoctorSpec">
-                      <option selected disabled>Choose...</option>
+                    <select class="form-control" name="specialization" onchange="specChange()" id="newDoctorSpec" required>
+                      <option selected disabled value="">Choose...</option>
                       {% for spec in specs %}
                           <option>{{spec}}</option>
                       {% endfor %}
@@ -83,8 +83,8 @@
                     {% for spec in specs %}
                       <div class="form-group doctors" id="{{spec}}Doctor" hidden>
                         <label for="newDoctor">Select Doctor</label>
-                        <select class="form-control doctordiv" name="doctor" id='{{spec}}' onchange="doctorChange('{{spec}}')">
-                          <option selected disabled>Choose...</option>
+                        <select class="form-control doctordiv" name="doctor" id='{{spec}}' onchange="doctorChange('{{spec}}')" required>
+                          <option selected disabled value="">Choose...</option>
                           {% for doctor in doctors %}
                           {% if doctor.specialization == spec and doctor.time_slots != None %}
                             <option value="{{doctor.id}}">{{doctor.user}}</option>
@@ -100,8 +100,8 @@
                     {% if doctor.specialization != None and doctor.time_slots != None %}
                       <div class="form-group timeslots" id="{{doctor.id}}Timeslot" hidden>
                         <label for="newDoctor">Select Timeslot</label>
-                        <select class="form-control" name="timeslot" id="newDoctorSpec">
-                          <option selected disabled>Choose...</option>
+                        <select class="form-control" name="timeslot" id="newDoctorSpec" required>
+                          <option selected disabled value="">Choose...</option>
                             {% for timeslot in doctor.time_slots %}
                               <option value="{{forloop.counter}}">{{timeslot}}</option>
                               {% endfor %}

@@ -10,7 +10,8 @@
             </div>
               <form action="{% url 'seApp:staffPostDetails'%}" method="POST">
                 {% csrf_token %}
-                  <select name="specialization" class="form-control mb-5">
+                  <select name="specialization" class="form-control mb-5" required>
+                      <option disabled selected value="">Choose...</option>
                       <option value="lab_specialist">Lab Specialist</option>
                       <option value="nurse">Nurse</option>
                   </select>

@@ -50,7 +50,7 @@
                 <h5 class="text-center mb-5">Fees</h5>
                 <form action="{% url 'seApp:changeFeeDoctor' %}" method="post">
                   {% csrf_token %}
-                  <input type="text" value="{{services_list.fees}}" name="fees" required class="form-control">
+                  <input type="number" value="{{services_list.fees}}" name="fees" required class="form-control" min="0">
                   <div class="text-center">
                   <button class="btn btn-outline-primary btn-md m-3">Change Fees</button>
                 </form>
@@ -91,8 +91,8 @@
                   
                   <div class="form-group m-2">
                     <label for="newSpecialization">Choose Specialization</label>
-                    <select class="form-control" name="specialization" id="newSpecialization">
-                        <option selected disabled>Choose...</option>
+                    <select class="form-control" name="specialization" id="newSpecialization" required>
+                        <option selected disabled value="">Choose...</option>
                         <option>Podiatrist</option>
                         <option>General Practitioner</option>
                         <option>Pediatrician</option>

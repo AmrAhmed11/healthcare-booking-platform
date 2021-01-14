@@ -1,35 +1,35 @@
-{%  extends 'seApp/main.html' %}
+{% extends 'seApp/main.html' %}
 {%block content%}
 <div class="col">
-<main>
-  
-  <section class="py-5 text-center container ">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto mt-4 pt-2">
-        <h1 class="fw-light">Staff Manager</h1>
-        
+  <main>
+
+    <section class="py-5 text-center container ">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto mt-4 pt-2">
+          <h1 class="fw-light">Staff Manager</h1>
+
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
 
 
-  {% if clinicOwner == 1 %}
- 
-
-  
+    {% if clinicOwner == 1 %}
 
 
 
-  <div class="bg-light py-5 ">
-    <div class="text-center">
-    <h4>Doctors</h4>
-    </div>
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if doctor_list %}
-        {% for doctor in doctor_list %}
-        <div class="col-12 col-md-12 col-lg-6">
+
+
+
+    <div class="bg-light py-5 ">
+      <div class="text-center">
+        <h4>Doctors</h4>
+      </div>
+      <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          {% if doctor_list %}
+          {% for doctor in doctor_list %}
+          <div class="col-12 col-md-12 col-lg-6">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <h5 class="text-center mb-5">{{doctor.user.first_name}} {{doctor.user.last_name}} </h5>
@@ -42,69 +42,67 @@
                 <div class="text-center">
                   <form action="{% url 'seApp:removeDoctor' %}" method="post">
                     {% csrf_token %}
-                        
-                      <input type="hidden" name="doctor" value="{{doctor.user.id}}">                
-                      <button class="btn btn-outline-danger btn-md">Remove</button>
-  
-                      
-                        </form>
+
+                    <input type="hidden" name="doctor" value="{{doctor.user.id}}">
+                    <button class="btn btn-outline-danger btn-md">Remove</button>
+
+
+                  </form>
                 </div>
               </div>
             </div>
           </div>
-        {% endfor %}
-      {% else %}
-        <p>No Doctors available</p>
-      {% endif %}
+          {% endfor %}
+          {% else %}
+          <p>No Doctors available</p>
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
-  <div class="bg-light py-5 ">
-    <div class="container">
-      
-        <div class="col-12">
-            <div class="card p-2 shadow-md">
-              <div class="card-body">
-                <h5 class="text-center mb-5">Add Doctor</h5>
-                <form action="{% url 'seApp:addNewDoctor' %}" method="post">
-                  {% csrf_token %}
-                      <div class="form-group">
-                          <label for="doctor">Choose Doctor</label>
-                         <select class="form-control" name="doctor" id="doctor">
-                           <option disabled selected>Choose...</option>
-                           {% for doctorNew in doctor_new_list %}
-                           <option value="{{doctorNew.user.id}}">{{doctorNew.user.email}}</option>
-                           {% endfor %}
-                         </select>
-                      </div>
-                      <div class="text-center mt-2 ">
-                      
-                                    <input type="hidden" name="clinic" value="{{clinicId}}">
-                                    <button class="btn btn-outline-primary btn-md">Add Staff</button>
+    <div class="bg-light py-5 ">
+      <div class="container">
 
-                          </div>
-                      </form>
-              </div>
+        <div class="col-12">
+          <div class="card p-2 shadow-md">
+            <div class="card-body">
+              <h5 class="text-center mb-5">Add Doctor</h5>
+              <form action="{% url 'seApp:addNewDoctor' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="doctor">Choose Doctor</label>
+                  <select class="form-control" name="doctor" id="doctor" required>
+                    <option disabled selected value="">Choose...</option>
+                    {% for doctorNew in doctor_new_list %}
+                    <option value="{{doctorNew.user.id}}">{{doctorNew.user.email}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="text-center mt-2 ">
+                  <input type="hidden" name="clinic" value="{{clinicId}}">
+                  <button class="btn btn-outline-primary btn-md">Add Doctor</button>
+                </div>
+              </form>
             </div>
           </div>
-       
-    
-    </div>
-  </div>
+        </div>
 
-  {% endif %}
 
-  
-  <div class="bg-light py-5 ">
-    <div class="text-center">
-    <h4>Nurses and Lab Specialists</h4>
+      </div>
     </div>
-    
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if staff_list %}
-        {% for staff in staff_list %}
-        <div class="col-12 col-md-12 col-lg-6">
+
+    {% endif %}
+
+
+    <div class="bg-light py-5 ">
+      <div class="text-center">
+        <h4>Nurses and Lab Specialists</h4>
+      </div>
+
+      <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          {% if staff_list %}
+          {% for staff in staff_list %}
+          <div class="col-12 col-md-12 col-lg-6">
             <div class="card p-2 shadow-md mt-4">
               <div class="card-body">
                 <h5 class="text-center mb-5">{{staff.user.first_name}} {{staff.user.last_name}} </h5>
@@ -117,58 +115,58 @@
                 <div class="text-center">
                   <form action="{% url 'seApp:removeStaff' %}" method="post">
                     {% csrf_token %}
-                        
-                      <input type="hidden" name="staff" value="{{staff.id}}">                
-                      <button class="btn btn-outline-danger btn-md">Remove</button>
+
+                    <input type="hidden" name="staff" value="{{staff.id}}">
+                    <button class="btn btn-outline-danger btn-md">Remove</button>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-        {% endfor %}
-      {% else %}
-      <div class="col-12 col-md-12 text-center mt-4">
-        <h5 class="text-info">No Staff available</h5>
-      </div>  
-      {% endif %}
+          {% endfor %}
+          {% else %}
+          <div class="col-12 col-md-12 text-center mt-4">
+            <h5 class="text-info">No Staff available</h5>
+          </div>
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="bg-light py-5 ">
-    
-    <div class="container">
-      
+    <div class="bg-light py-5 ">
+
+      <div class="container">
+
         <div class="col-12">
-            <div class="card p-2 shadow-md">
-              <div class="card-body">
-                <h5 class="text-center mb-5">Add Staff</h5>
-                <form action="{% url 'seApp:addNewStaff' %}" method="post">
-                  {% csrf_token %}
-                      <div class="form-group">
-                          <label for="staff">Choose staff</label>
-                         <select class="form-control" name="staff" id="staff">
-                           <option disabled selected>Choose...</option>
-                           {% for staffNew in staffToBeAdded_list %}
-                           <option value="{{staffNew.user.id}}">{{staffNew.user.email}}</option>
-                           {% endfor %}
-                         </select>
-                      </div>
-                      <div class="text-center mt-2 ">
-                      
-                                    
-                                    <button class="btn btn-outline-primary btn-md">Add Staff</button>
+          <div class="card p-2 shadow-md">
+            <div class="card-body">
+              <h5 class="text-center mb-5">Add Staff</h5>
+              <form action="{% url 'seApp:addNewStaff' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="staff">Choose staff</label>
+                  <select class="form-control" name="staff" id="staff" required>
+                    <option disabled selected value="">Choose...</option>
+                    {% for staffNew in staffToBeAdded_list %}
+                    <option value="{{staffNew.user.id}}">{{staffNew.user.email}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="text-center mt-2 ">
 
-                          </div>
-                      </form>
-              </div>
+
+                  <button class="btn btn-outline-primary btn-md">Add Staff</button>
+
+                </div>
+              </form>
             </div>
           </div>
-       
-    
-    </div>
-  </div>
+        </div>
 
-</main>
+
+      </div>
+    </div>
+
+  </main>
 </div>
 {%endblock%}

@@ -25,17 +25,17 @@ from django.contrib import messages
 
 @unauthenticted_user
 def loginpage (request):
-""" Login Handler.
+    """ Login Handler.
 
-Performers authentication on login attempt and redirects every user
-to the next page based on the role
+    Performers authentication on login attempt and redirects every user
+    to the next page based on the role
 
-:param incoming request
-:return: login.html render
-         redirect to browse route
-         redirect to seApp:servicesManager route
-         redirect to seApp:collectedInfoAdmin route
-"""
+    :param incoming request
+    :return: login.html render
+        redirect to browse route
+        redirect to seApp:servicesManager route
+        redirect to seApp:collectedInfoAdmin route
+    """
     if request.method=='POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -58,28 +58,28 @@ to the next page based on the role
 
 @login_required(login_url='seApp:loginpage')
 def logout_path (request):
-""" Logout Handler.
+    """ Logout Handler.
 
-Destroys user session on logout request
+    Destroys user session on logout request
 
-:param incoming request
-:return: seApp:home
-"""
+    :param incoming request
+    :return: seApp:home
+    """
     logout(request)
     return redirect ('seApp:home')
 
 #patient_registration
 @unauthenticted_user
 def register (request):
-""" Registraion Handler.
+    """ Registraion Handler.
 
-Creates a new user based in the input date in the registraion
+    Creates a new user based in the input date in the registraion
 
-:param incoming request
-:return: seApp:UserProfile route
-         seApp:servicesManager route
-         seApp:staffGetDetails route
-"""    
+    :param incoming request
+    :return: seApp:UserProfile route
+            seApp:servicesManager route
+            seApp:staffGetDetails route
+    """    
     form =  CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -115,28 +115,28 @@ Creates a new user based in the input date in the registraion
 
 @unauthenticted_user
 def index(request):
-""" Home Page Render.
+    """ Home Page Render.
 
-Renders home page upon request
+    Renders home page upon request
 
-:param incoming request
-:return: seApp/index.html
+    :param incoming request
+    :return: seApp/index.html
 
-"""       
+    """       
     return render(request, 'seApp/index.html')
 
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def appointmentGetManager(request):
-""" GET all appointments.
+    """ GET all appointments.
 
-Gets all authenticated doctor appointments
+    Gets all authenticated doctor appointments
 
-:param incoming request
-:return: seApp/appointmentManager.html
+    :param incoming request
+    :return: seApp/appointmentManager.html
 
-"""       
+    """       
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     app_list = doctor.appointment_set.all()
     context = {'app_list': app_list}
@@ -145,15 +145,15 @@ Gets all authenticated doctor appointments
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def postAppointment(request, app_id):
-""" Appointment Date.
+    """ Appointment Date.
 
-Changes appoinment date from a selected appointment date sent by
-a POST request
+    Changes appoinment date from a selected appointment date sent by
+    a POST request
 
-:param incoming request
-:return: eApp:appointment route
+    :param incoming request
+    :return: eApp:appointment route
 
-"""       
+    """       
     app = get_object_or_404(Appointment, pk=app_id)
     index = int(request.POST['newTimeSlot'])
     app.time_slot = app.doctor.time_slots[index]
@@ -168,14 +168,14 @@ a POST request
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doneAppointment(request, app_id):
-""" Appointment State done.
+    """ Appointment State done.
 
-Changes appoinment state to Done from POST request
+    Changes appoinment state to Done from POST request
 
-:param incoming request
-:return: appointmentGetManager route
+    :param incoming request
+    :return: appointmentGetManager route
 
-"""           
+    """           
     app = get_object_or_404(Appointment, pk=app_id)
     app.status = 'Done'
     app.save()
@@ -187,15 +187,15 @@ Changes appoinment state to Done from POST request
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def deleteAppointment(request, app_id):
-""" Appointment State cancelled.
+    """ Appointment State cancelled.
 
-Changes appoinment state to Cancelled from POST request
+    Changes appoinment state to Cancelled from POST request
 
-:param incoming request
-       appointment id
-:return: appointmentGetManager route
+    :param incoming request
+        appointment id
+    :return: appointmentGetManager route
 
-"""     
+    """     
     app = get_object_or_404(Appointment, pk=app_id)
     app.status = 'Cancelled'
     app.save()
@@ -207,15 +207,15 @@ Changes appoinment state to Cancelled from POST request
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def appointment(request, app_id):
-""" Appointment Details.
+    """ Appointment Details.
 
-Returns all appointments details from a selected 
+    Returns all appointments details from a selected 
 
-:param incoming request
-       appointment id
-:return: appointment.html
+    :param incoming request
+        appointment id
+    :return: appointment.html
 
-""" 
+    """ 
     app = get_object_or_404(Appointment, pk=app_id)
     patient_account_name = app.patient.user.first_name + ' ' + app.patient.user.last_name
     context = {'app': app, 'doctor': app.doctor, 'patient': app.patient, 'patient_account_name':patient_account_name}
@@ -224,15 +224,15 @@ Returns all appointments details from a selected
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doctorPostPrescription(request, app_id):
-""" Add Prescription.
+    """ Add Prescription.
 
-Adds a new medication to the appointment prescription list upon a POST requset
+    Adds a new medication to the appointment prescription list upon a POST requset
 
-:param incoming request
-       appointment id
-:return: seApp:appointment route
+    :param incoming request
+        appointment id
+    :return: seApp:appointment route
 
-"""     
+    """     
     app = get_object_or_404(Appointment, pk=app_id)
     newMedication = request.POST['newMedication']
     if(app.prescription == None):
@@ -245,15 +245,15 @@ Adds a new medication to the appointment prescription list upon a POST requset
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doctorDeletePrescription(request, app_id):
-""" Delete Prescription.
+    """ Delete Prescription.
 
-Deletes a selected medication to the appointment prescription list upon a POST requset
+    Deletes a selected medication to the appointment prescription list upon a POST requset
 
-:param incoming request
-       appointment id
-:return: seApp:appointment route
+    :param incoming request
+        appointment id
+    :return: seApp:appointment route
 
-"""         
+    """         
     app = get_object_or_404(Appointment, pk=app_id)
     deletedMedication = request.POST['deletedMedication']
     app.prescription.remove(deletedMedication)
@@ -264,14 +264,14 @@ Deletes a selected medication to the appointment prescription list upon a POST r
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doctorGetPatients(request):
-""" All Patients.
+    """ All Patients.
 
-Returns Authenticated user patients from the appointments list
+    Returns Authenticated user patients from the appointments list
 
-:param incoming request
-:return: patients.html
+    :param incoming request
+    :return: patients.html
 
-"""                
+    """                
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     app_list = doctor.appointment_set.all()
     patient_list = []
@@ -284,16 +284,16 @@ Returns Authenticated user patients from the appointments list
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def doctorTransferPatient(request, patient_id): 
-""" Transfer Patient.
+    """ Transfer Patient.
 
-Creates a new appontment between a selected patient and doctor Upon a POST requset
-and returns a selected patient data Upon a GET request
+    Creates a new appontment between a selected patient and doctor Upon a POST requset
+    and returns a selected patient data Upon a GET request
 
-:param incoming request
-       patient_id
-:return: patientsTransfer.html
+    :param incoming request
+        patient_id
+    :return: patientsTransfer.html
 
-"""             
+    """             
     patient = get_object_or_404(Patient, pk=patient_id)  
     doctors = Doctor.objects.all()
     specs = []
@@ -328,14 +328,14 @@ and returns a selected patient data Upon a GET request
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def DoctorProfile(request):
-""" Doctor Profile.
+    """ Doctor Profile.
 
-Returns authenticated doctor personal data
+    Returns authenticated doctor personal data
 
-:param incoming request
-:return: doctorProfile.html
+    :param incoming request
+    :return: doctorProfile.html
 
-"""              
+    """              
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     context = {'doctor': doctor}
     return render(request, 'seApp/doctorProfile.html', context)
@@ -343,27 +343,27 @@ Returns authenticated doctor personal data
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff'])
 def staffGetDetails(request):   
-""" Staff Select Speclization.
+    """ Staff Select Speclization.
 
-Renders staff speclization selection page
+    Renders staff speclization selection page
 
-:param incoming request
-:return: staffSpecialization.html
+    :param incoming request
+    :return: staffSpecialization.html
 
-"""         
+    """         
     return render(request, 'seApp/staffSpecialization.html')
 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff'])
 def staffPostDetails(request):
-""" Staff POST Select Speclization.
+    """ Staff POST Select Speclization.
 
-Sets the authenticated member speclization upon a POST request
+    Sets the authenticated member speclization upon a POST request
 
-:param incoming request
-:return: seApp:servicesManager
+    :param incoming request
+    :return: seApp:servicesManager
 
-"""       
+    """       
     staff = Staff.objects.get(id=request.user.staff.id)
     staff.specialization = request.POST['specialization']
     staff.save()
@@ -376,14 +376,14 @@ Sets the authenticated member speclization upon a POST request
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff'])
 def StaffProfile(request):
-""" Staff Profile.
+    """ Staff Profile.
 
-Returns authenticated authenticated personal data
+    Returns authenticated authenticated personal data
 
-:param incoming request
-:return: staffProfile.html
+    :param incoming request
+    :return: staffProfile.html
 
-"""           
+    """           
     staff = Staff.objects.get(id=request.user.staff.id)
     context = {'staff': staff}
     return render(request, 'seApp/staffProfile.html', context)
@@ -392,13 +392,13 @@ Returns authenticated authenticated personal data
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=[])
 def collectedInfoAdmin(request):
-""" Admin Information Collection.
+    """ Admin Information Collection.
 
-Collects statistical data about the system and renders admin information page
+    Collects statistical data about the system and renders admin information page
 
-:param incoming request
-:return: seApp:CollectedInfoAdmin
-"""
+    :param incoming request
+    :return: seApp:CollectedInfoAdmin
+    """
     doctors = Doctor.objects.all()
     patients = Patient.objects.all()
     clinics = Clinic.objects.all()
@@ -435,13 +435,13 @@ Collects statistical data about the system and renders admin information page
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def collectedInfoDoctor(request):
-""" Doctor Information Collection.
+    """ Doctor Information Collection.
 
-Collects statistical data about the system and renders admin information page
+    Collects statistical data about the system and renders admin information page
 
-:param incoming request
-:return: seApp:collectedInfoDoctor
-"""
+    :param incoming request
+    :return: seApp:collectedInfoDoctor
+    """
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     apps = doctor.appointment_set.all()
     patient_list = []
@@ -473,13 +473,13 @@ Collects statistical data about the system and renders admin information page
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def servicesManager(request):
-""" Doctor Services Manager.
+    """ Doctor Services Manager.
 
-Returns doctor services details
+    Returns doctor services details
 
-:param incoming request
-:return: seApp:servicesManager
-"""
+    :param incoming request
+    :return: seApp:servicesManager
+    """
     if request.user.role == 'staff':
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
     else:
@@ -492,13 +492,13 @@ Returns doctor services details
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def createNewClinic(request):
-""" Create New Clinic.
+    """ Create New Clinic.
 
-Creates a new clinic and returns a success message after creation 
+    Creates a new clinic and returns a success message after creation 
 
-:param incoming request
-:return: seApp:servicesManager
-"""
+    :param incoming request
+    :return: seApp:servicesManager
+    """
     clinicName = request.POST['clinicName']
     clinicAddress = request.POST['clinicAddress']
     clinic = Clinic()
@@ -517,13 +517,13 @@ Creates a new clinic and returns a success message after creation
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def changeFeeDoctor(request):
-""" Doctor Change Fee Action.
+    """ Doctor Change Fee Action.
 
-Change doctor fee and return a success message upon saving
+    Change doctor fee and return a success message upon saving
 
-:param incoming request
-:return: seApp:servicesManager
-"""
+    :param incoming request
+    :return: seApp:servicesManager
+    """
     fee = request.POST['fees']
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     doctor.fees = fee
@@ -535,13 +535,13 @@ Change doctor fee and return a success message upon saving
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def changeMedicalDetailsDoctor(request):
-""" Change Doctor`s Medical Details.
+    """ Change Doctor`s Medical Details.
 
-Change doctor medical details and return a success message upon saving
+    Change doctor medical details and return a success message upon saving
 
-:param incoming request
-:return: seApp:servicesManager
-"""
+    :param incoming request
+    :return: seApp:servicesManager
+    """
     description = request.POST['description']
     specialization = request.POST['specialization']
     medicalId = request.POST['medicalId']
@@ -557,13 +557,13 @@ Change doctor medical details and return a success message upon saving
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def deleteTimeslotDoctor(request):
-""" Doctor Timeslot Deletion.
+    """ Doctor Timeslot Deletion.
 
-Deletes a timeslot chosen by doctor
+    Deletes a timeslot chosen by doctor
 
-:param incoming request
-:return: seApp:servicesManager
-"""
+    :param incoming request
+    :return: seApp:servicesManager
+    """
     timeslot = request.POST['timeslot']
     if(request.user.role=='staff'):
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
@@ -579,13 +579,13 @@ Deletes a timeslot chosen by doctor
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def addTimeslotDoctor(request):
-""" Doctor Timeslot adding.
+    """ Doctor Timeslot adding.
 
-Adds a certain timeslot chosen by the doctor and returns a success message upon saving
+    Adds a certain timeslot chosen by the doctor and returns a success message upon saving
 
-:param incoming request
-:return: seApp:servicesManager
-"""
+    :param incoming request
+    :return: seApp:servicesManager
+    """
     timeslot = request.POST['timeslot']
     #checking if time is in the past
     if((parse_datetime(timeslot) - datetime.now()).total_seconds() < 0):
@@ -606,13 +606,13 @@ Adds a certain timeslot chosen by the doctor and returns a success message upon 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def staffManager(request):
-""" Doctor Staff Manager.
+    """ Doctor Staff Manager.
 
-Collects staff info and returns staff manager 
+    Collects staff info and returns staff manager 
 
-:param incoming request
-:return: seApp:staffManager
-"""
+    :param incoming request
+    :return: seApp:staffManager
+    """
     staff_list = Staff.objects.filter(doctor=request.user.doctor.id)
     user_list = Staff.objects.all()
     staffToBeAdded_list = []
@@ -649,13 +649,13 @@ Collects staff info and returns staff manager
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def addNewStaff(request):
-""" Doctor Add New Staff.
+    """ Doctor Add New Staff.
 
-Adds a staff to a certain doctor and return a success message upon success
+    Adds a staff to a certain doctor and return a success message upon success
 
-:param incoming request
-:return: seApp:staffManager
-"""
+    :param incoming request
+    :return: seApp:staffManager
+    """
     staff = request.POST['staff']
     doctor = request.user.doctor
     staffObject = Staff.objects.get(id=staff)
@@ -668,13 +668,13 @@ Adds a staff to a certain doctor and return a success message upon success
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def removeStaff(request):
-""" Doctor Remove Staff.
+    """ Doctor Remove Staff.
 
-Deletes staff from a certain doctor and return a success message upon success
+    Deletes staff from a certain doctor and return a success message upon success
 
-:param incoming request
-:return: seApp:staffManager
-"""
+    :param incoming request
+    :return: seApp:staffManager
+    """
     staff = request.POST['staff']
     staffObject = Staff.objects.get(id=staff)
     staffObject.delete()
@@ -685,13 +685,13 @@ Deletes staff from a certain doctor and return a success message upon success
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def addNewDoctor(request):
-""" Add New Doctor to a Clinic.
+    """ Add New Doctor to a Clinic.
 
-Add a certain doctor chosen by the clinic owner to this clinic and return a success message upon saving
+    Add a certain doctor chosen by the clinic owner to this clinic and return a success message upon saving
 
-:param incoming request
-:return: seApp:staffManager
-"""
+    :param incoming request
+    :return: seApp:staffManager
+    """
     doctor = request.POST['doctor']
     clinic = request.POST['clinic']
     clinicObj = Clinic.objects.get(id=clinic)
@@ -705,13 +705,13 @@ Add a certain doctor chosen by the clinic owner to this clinic and return a succ
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def removeDoctor(request):
-""" Remove a Doctor from a Clinic.
+    """ Remove a Doctor from a Clinic.
 
-Remove a certian doctor from a clinic and remove a success message upon saving 
+    Remove a certian doctor from a clinic and remove a success message upon saving 
 
-:param incoming request
-:return: seApp:staffManager
-"""
+    :param incoming request
+    :return: seApp:staffManager
+    """
     doctor = request.POST['doctor']
     doctorObject = Doctor.objects.get(user=doctor)
     clinic = Clinic()
@@ -727,14 +727,14 @@ Remove a certian doctor from a clinic and remove a success message upon saving
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def browse(request):
-""" Browse Doctors.
+    """ Browse Doctors.
 
-Returns all registered doctors and offers filtering 
+    Returns all registered doctors and offers filtering 
 
-:param incoming request
-:return: browse.html
+    :param incoming request
+    :return: browse.html
 
-"""      
+    """      
     doctors = Doctor.objects.all()
     doctorFiltered = []
     for doctor in doctors:
@@ -748,13 +748,13 @@ Returns all registered doctors and offers filtering
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentUser(request):
-""" Patient Appointments Manager .
+    """ Patient Appointments Manager .
 
-Returns all patient`s appointments
+    Returns all patient`s appointments
 
-:param incoming request
-:return: seApp:appointmentUser
-"""
+    :param incoming request
+    :return: seApp:appointmentUser
+    """
     patient = Patient.objects.get(id=request.user.patient.id)
     app_all= patient.appointment_set.all()
     app_pending =patient.appointment_set.filter(status="Pending")
@@ -767,15 +767,15 @@ Returns all patient`s appointments
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentView(request, app_id):
-""" Patient Appointment Actions.
+    """ Patient Appointment Actions.
 
-Handles appointment status changing(Booking, Cancellation, Edit, Payment) and validation
+    Handles appointment status changing(Booking, Cancellation, Edit, Payment) and validation
 
-:param incoming request
-:return: seApp:appointmentDone
-:return: seApp:appointmentCancel
-:return: seApp:appointmentEdit
-"""
+    :param incoming request
+    :return: seApp:appointmentDone
+    :return: seApp:appointmentCancel
+    :return: seApp:appointmentEdit
+    """
     appointment = get_object_or_404(Appointment, pk=app_id)
 
     form = ReviewForm()
@@ -892,15 +892,15 @@ Handles appointment status changing(Booking, Cancellation, Edit, Payment) and va
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])    
 def viewprescription(request, app_id) :
-""" View Prescription.
+    """ View Prescription.
 
-Returns all medication in a certain appointment prescription list
+    Returns all medication in a certain appointment prescription list
 
-:param incoming request
-       app_id
-:return: viewprescription.html
+    :param incoming request
+        app_id
+    :return: viewprescription.html
 
-"""          
+    """          
     appointment = get_object_or_404(Appointment, pk=app_id)
     context = {'appointment': appointment}
     return render(request, 'seApp/viewprescription.html', context)      
@@ -910,15 +910,15 @@ Returns all medication in a certain appointment prescription list
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])   
 def viewDoctor(request, doctor_id):
-""" View Doctor.
+    """ View Doctor.
 
-Returns a selected doctor details upon GET request
+    Returns a selected doctor details upon GET request
 
-:param incoming request
-       doctor_id
-:return: viewDoctor.html
+    :param incoming request
+        doctor_id
+    :return: viewDoctor.html
 
-"""         
+    """         
     doctors = get_object_or_404(Doctor, pk=doctor_id)
     doctorEmail = doctors.user.email
     doctorAppointments = []
@@ -938,14 +938,14 @@ Returns a selected doctor details upon GET request
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient']) 
 def UserProfile(request):
-""" User Profile.
+    """ User Profile.
 
-Returns authenticated patient personal data
+    Returns authenticated patient personal data
 
-:param incoming request
-:return: userProfile.html
+    :param incoming request
+    :return: userProfile.html
 
-"""            
+    """            
     patient = Patient.objects.get(id = request.user.patient.id)
     context = {'patient':patient}
     return render(request, 'seApp/userProfile.html', context)
@@ -953,14 +953,14 @@ Returns authenticated patient personal data
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient']) 
 def paymentComplete(request, doctor_id):
-""" Payments.
+    """ Payments.
 
-Checks valid payments through Paypal gateway
+    Checks valid payments through Paypal gateway
 
-:param incoming request
-       doctor_id
+    :param incoming request
+        doctor_id
 
-"""      
+    """      
     body = json.loads(request.body)
     
     patient = Patient.objects.get(id=request.user.patient.id)
@@ -1007,15 +1007,15 @@ Checks valid payments through Paypal gateway
 
 @login_required(login_url='seApp:loginpage')
 def changePassword(request):
-""" Change Passowrd.
+    """ Change Passowrd.
 
-Takes a new password from the user and checks if the old password is valid 
-it changes the user request
+    Takes a new password from the user and checks if the old password is valid 
+    it changes the user request
 
-:param incoming request
-:return: changePassword.html
+    :param incoming request
+    :return: changePassword.html
 
-"""     
+    """     
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
@@ -1038,15 +1038,15 @@ it changes the user request
 
 @login_required(login_url='seApp:loginpage')
 def updateProfile(request):
-""" Update Profile Info.
+    """ Update Profile Info.
 
-Takes a new info upon a POST request from the authenticated user (doctor or patient) and update the
-personal info
+    Takes a new info upon a POST request from the authenticated user (doctor or patient) and update the
+    personal info
 
-:param incoming request
-:return: updateProfile.html
+    :param incoming request
+    :return: updateProfile.html
 
-"""        
+    """        
     if request.method == 'POST':
         form = updateProfileForm(request.POST, instance=request.user)
         if request.user.role == "patient":
@@ -1074,16 +1074,16 @@ personal info
         return render(request, 'seApp/updateProfile.html', context)
 
 def emergency(request,doctor_id):
-""" Emergancy.
+    """ Emergancy.
 
-Creates an appointment between the authenticated user and a selected doctor 
-and selects the closest time slot availble
+    Creates an appointment between the authenticated user and a selected doctor 
+    and selects the closest time slot availble
 
-:param incoming request
-       doctor_id
-:return: viewappointment.html
+    :param incoming request
+        doctor_id
+    :return: viewappointment.html
 
-"""         
+    """         
     if request.method == 'POST':
         doctor = get_object_or_404(Doctor, pk=doctor_id)
         timeslots = doctor.time_slots

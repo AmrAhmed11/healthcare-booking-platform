@@ -271,8 +271,8 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <select required name="appointment" id="panel" class="form-control custom-select"
-                        onchange="myFunction4()">
-                        <option selected disabled>Select an appointment</option>
+                        onchange="myFunction4()" required>
+                        <option selected disabled value="">Select an appointment</option>
                         {% for timeSlot in doctors.time_slots %}
                         <option value="{{forloop.counter}}">{{timeSlot}}</option>
                         {% endfor %}
