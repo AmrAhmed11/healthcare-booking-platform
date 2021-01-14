@@ -21,10 +21,19 @@ $ git clone https://github.com/AmrAhmed11/Software-Engineering-Project
 $ cd Software-Engineering-Project
 ```
 
+Make sure you have python and pip installed
+
+```sh
+$ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+$ sudo apt install python3.8
+$ python3 get-pip.py
+```
+
+
 Create a virtual environment to install dependencies in and activate it:
 
 ```sh
-$ pip install pipenv
+$ pip3 install pipenv
 $ pipenv shell
 ```
 
@@ -39,11 +48,20 @@ session operates in a virtual environment set up by `pipenv`.
 
 Once `pip` has finished downloading the dependencies:
 ```sh
+(env)$ python manage.py migrate
 (env)$ python manage.py runserver
 ```
 , navigate to `http://127.0.0.1:8000/` and enjoy our website.
 
-
+to create an admin account
+```sh
+(env)$ python manage.py createsuperuser
+```
+, navigate to `http://127.0.0.1:8000/admin`.
+	1- enter users table
+	2- choose your user in Groups section add admin group
+	3- complete your personal information 
+	4- click save
 ## Tests
 
 To run the tests, `cd` into the directory where `manage.py` is:
