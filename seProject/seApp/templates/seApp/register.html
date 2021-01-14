@@ -158,6 +158,10 @@
 		form_fields[6].required = true
 		form_fields[7].required = true
 
+		let date = document.getElementById('id_birth_date')
+		date.setAttribute('max','2002-12-31')
+		date.setAttribute('min','1900-12-31')
+
 		for (var field in form_fields) {
 			form_fields[field].className += ' form-control'
 		}
