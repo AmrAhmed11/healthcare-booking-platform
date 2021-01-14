@@ -120,16 +120,16 @@
                         
                       <input type="hidden" name="staff" value="{{staff.id}}">                
                       <button class="btn btn-outline-danger btn-md">Remove</button>
-  
-                      
-                        </form>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         {% endfor %}
       {% else %}
-        <p>No Staff available</p>
+      <div class="col-12 col-md-12 text-center mt-4">
+        <h5 class="text-info">No Staff available</h5>
+      </div>  
       {% endif %}
       </div>
     </div>

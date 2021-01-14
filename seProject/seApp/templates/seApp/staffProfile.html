@@ -1,58 +1,55 @@
 <head>    
+  
     <style>
-    body{
-        background: -webkit-linear-gradient(left, black, black);
+        .emp-profile{
+            padding: 3%;
+            margin-top: 3%;
+            margin-bottom: 3%;
+            border-radius: 0.5rem;
+            background: #fff;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        .profile-head h5{
+            color: #333;
+        }
+        .profile-head h6{
+            color: #0062cc;
+        }
+        .profile-head .nav-tabs{
+            margin-bottom:5%;
+        }
+        .profile-head .nav-tabs .nav-link{
+            font-weight:600;
+            border: none;
+        }
+        .profile-head .nav-tabs .nav-link.active{
+            border: none;
+            border-bottom:2px solid #0062cc;
+        }
+        .profile-tab label{
+            font-weight: 600;
+        }
+        .profile-tab p{
+            font-weight: 600;
+            color: #0062cc;
+        }
+        #panel {
+      display: none;
     }
-    .emp-profile{
-        padding: 3%;
-        margin-top: 3%;
-        margin-bottom: 3%;
-        border-radius: 0.5rem;
-        background: #fff;
-    }
-    .profile-head h5{
-        color: #333;
-    }
-    .profile-head h6{
-        color: #0062cc;
-    }
-    .profile-head .nav-tabs{
-        margin-bottom:5%;
-    }
-    .profile-head .nav-tabs .nav-link{
-        font-weight:600;
-        border: none;
-    }
-    .profile-head .nav-tabs .nav-link.active{
-        border: none;
-        border-bottom:2px solid #0062cc;
-    }
-    .profile-tab label{
-        font-weight: 600;
-    }
-    .profile-tab p{
-        font-weight: 600;
-        color: #0062cc;
-    }
-    #panel {
-  display: none;
-}
-</style>
-</head>
-
-
-{%  extends 'seApp/main.html' %}
-{%block content%}
-<br>
-<body>
+    </style>
     
-        <div class="justify-content-center">
-    <div class="container emp-profile" style="width:40%;">
+    
+    
+    {%  extends 'seApp/main.html' %}
+    {%block content%}
+    <br>
+    <body class="bg-light">
+        <div class="container emp-profile" style="width:50%;">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="profile-head">
-                                <h5>
-                                    {{staff.user}}
+                                <h5 class="ml-3">
+                                    {{staff.user}}'s Profile
                                 </h5>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
@@ -63,9 +60,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="tab-content profile-tab" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="col-lg-12">
+                    <div class="profile-tab" id="myTabContent">
+                        <div class="ml-3" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Name</label>
@@ -106,11 +103,13 @@
                                     <p>{{staff.specialization}}</p>
                                 </div>
                             </div>
+                            <div class="text-center mt-3">
+                                <a href="/accounts/change_password" class="btn btn-info">Change Password</a>
+                            </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</body>
-{% endblock %}
+    </body>
+    {% endblock %}
