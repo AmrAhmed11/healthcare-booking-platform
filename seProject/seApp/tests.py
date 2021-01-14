@@ -256,6 +256,16 @@ class test_Views(TestCase):
         self.user3.groups.add(self.group_staff)        
         self.user3.save()
 
+        self.user4=UserProfile.objects.create(
+            username='AdminUser',
+            email='Admin@gmail.com',
+            first_name='Admin',
+            last_name='User',
+        )
+        self.user4.set_password('12345')
+        self.user4.groups.add(self.group_admin)        
+        self.user4.save()
+
         self.patient=Patient.objects.create(user=self.user)
         self.doctor=Doctor.objects.create(user=self.user2)
         self.staff=Staff.objects.create(user=self.user3, specialization='nurse')
@@ -495,7 +505,7 @@ class test_Views(TestCase):
         self.assertRedirects(response, '/doctor/services', status_code=302, target_status_code=200, fetch_redirect_response=True)
 
     def test_collect_info (self):
-        self.client.login(username='AmrAhmed',password='12345')
+        self.client.login(username='AdminUser',password='12345')
         response=self.client.get(reverse('seApp:collectedInfoAdmin'))
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response, 'seApp/collectedInfoAdmin.html')
