@@ -779,7 +779,7 @@ def changePassword(request):
     else:
         form = PasswordChangeForm(user=request.user)
         args = {'form':form}
-        return render(request, 'seApp/changepassword.html', args)
+        return render(request, 'seApp/changePassword.html', args)
 
 @login_required(login_url='seApp:loginpage')
 def updateProfile(request):
