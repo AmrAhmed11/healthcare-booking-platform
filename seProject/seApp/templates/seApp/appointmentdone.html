@@ -31,11 +31,11 @@
                   <br><br>
                   <div class="text-center">
                     <!-- <th><a href="review/{{appointment.id}}" class="btn btn-outline-primary btn-md" style="margin-right: 20px;">Rate</a> -->
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Model"
+                    <button type="button" class="btn btn-success m-2" data-toggle="modal" data-target="#Model"
                       style="margin-right: 10px;">
                       Rate
                     </button>
-                    <th><a href="viewprescription/{{appointment.id}}" class="btn btn-primary btn-md" style="margin-left: 50px;">View Prescription</a></th> 
+                    <th><a href="viewprescription/{{appointment.id}}" class="btn btn-primary btn-md m-2" style="margin-left: 50px;">View Prescription</a></th> 
                     
                     <!-- Modal -->
                     <div class="modal fade" id="Model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -43,8 +43,8 @@
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h2 class="modal-title " id="exampleModalLabel" style="margin-left: 80px ;">Give Feedback
-                            </h2>
+                            <h4 class="modal-title " id="exampleModalLabel" style="margin-left: 80px ;">Give Feedback
+                            </h4>
                           </div>
                           <div class="modal-body">
                             {% if appointment.review == 'None' %}
@@ -71,7 +71,7 @@
                               <button type="submit" class="btn btn-outline-primary btn-md mt-2" name="submit">Submit</button>
                             </form>
                             {%else%}
-                            <h4>You have already rated this appointment</h4>
+                            <h5>You have already rated this appointment</h5>
                             {%endif%}
                           </div>
                           
