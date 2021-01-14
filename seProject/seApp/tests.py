@@ -12,9 +12,6 @@ class TestUrls(SimpleTestCase):
         url=reverse('seApp:home')
         self.assertEquals(resolve(url).func, index)
 
-    def test_testpage_url(self):
-        url=reverse('seApp:test')
-        self.assertEquals(resolve(url).func, test)
 
     def test_patients_url(self):
         url=reverse('seApp:patients')
@@ -220,10 +217,10 @@ class test_urls_pk (TestCase):
 class test_Views(TestCase):    
     def setUp(self):
         self.client=Client()
-        self.group_doctor = Group.objects.create(name='doctor')
-        self.group_staff = Group.objects.create(name='staff')
-        self.group_patient = Group.objects.create(name='patient')
-        self.group_admin = Group.objects.create(name='admin')
+        self.group_doctor = Group.objects.get(name='doctor')
+        self.group_staff = Group.objects.get(name='staff')
+        self.group_patient = Group.objects.get(name='patient')
+        self.group_admin = Group.objects.get(name='admin')
         self.user=UserProfile.objects.create(
             username='Ehab_111',
             email='ehab@gmail.com',
@@ -300,7 +297,6 @@ class test_Views(TestCase):
         self.doctor.clinic=self.clinic
         self.payment=Payment.objects.create(appointment=self.appointment,key='fhkbkjd6546',amount=209529)
         self.url_home=reverse('seApp:home')
-        self.url_test=reverse('seApp:test')
         self.doctor.save()
         self.staff.save()
 
@@ -308,7 +304,8 @@ class test_Views(TestCase):
     def test_staffGetDetails_Unauthorized(self):
         response=self.client.get(reverse('seApp:staffGetDetails'))
         self.assertEquals(response.status_code,302)
-        self.assertRedirects(response, '/login/?next=/staff/details/', status_code=302, target_status_code=200, fetch_redirect_response=True)         
+        self.assertRedirects(response, '/login/?next=/staff/details/', status_code=302, target_status_code=200, fetch_redirect_response=True)     
+
     def test_staffPostDetails_Unauthorized(self):
         response=self.client.post(reverse('seApp:staffPostDetails'), {'specialization':self.staff.specialization})
         self.assertEquals(response.status_code,302)
@@ -354,6 +351,11 @@ class test_Views(TestCase):
         self.assertEquals(response.status_code,302)
         self.assertRedirects(response, '/login/?next=/accounts/change_password', status_code=302, target_status_code=200, fetch_redirect_response=True)       
 
+    def test_DoctorProfile_Unauthorized(self):
+        response=self.client.get(reverse('seApp:DoctorProfile'))
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/doctor/profile', status_code=302, target_status_code=200, fetch_redirect_response=True)       
+       
 # 404 Not Found test cases
     def test_postAppointment_notFound(self):
         self.client.login(username='AmrAhmed',password='12345')
