@@ -304,6 +304,56 @@ class test_Views(TestCase):
         self.doctor.save()
         self.staff.save()
 
+# 401 Unauthorized test cases
+    def test_staffGetDetails_Unauthorized(self):
+        response=self.client.get(reverse('seApp:staffGetDetails'))
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/staff/details/', status_code=302, target_status_code=200, fetch_redirect_response=True)         
+    def test_staffPostDetails_Unauthorized(self):
+        response=self.client.post(reverse('seApp:staffPostDetails'), {'specialization':self.staff.specialization})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/staff/details/select', status_code=302, target_status_code=200, fetch_redirect_response=True)
+
+    def test_StaffProfile_Unauthorized(self):
+        response=self.client.get(reverse('seApp:StaffProfile'))
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/staff/profile', status_code=302, target_status_code=200, fetch_redirect_response=True)     
+
+    def test_collect_info_Unauthorized(self):
+        response=self.client.get(reverse('seApp:collectedInfoAdmin'))
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/admin/collectedInfo', status_code=302, target_status_code=200, fetch_redirect_response=True)
+    
+    def test_collect_info_doctor_Unauthorized(self):
+        response=self.client.get(reverse('seApp:collectedInfoDoctor'))
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/doctor/collectedInfo', status_code=302, target_status_code=200, fetch_redirect_response=True)
+
+    def test_servicesManager_Unauthorized(self):
+        response=self.client.get(reverse('seApp:servicesManager'))
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/doctor/services', status_code=302, target_status_code=200, fetch_redirect_response=True)
+        
+    def test_createNewClinic_Unauthorized(self):
+        response=self.client.post(reverse('seApp:createNewClinic'),{'clinicName':'Health','clinicAddress':'3 fisal street'})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/doctor/createNewClinic', status_code=302, target_status_code=200, fetch_redirect_response=True)
+    
+    def test_changeFeeDoctor_Unauthorized(self):
+        response=self.client.post(reverse('seApp:changeFeeDoctor'),{'fees':'1000'})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/doctor/changeFeeDoctor', status_code=302, target_status_code=200, fetch_redirect_response=True)
+
+    def test_changeMedicalDetailsDoctor_Unauthorized(self):
+        response=self.client.post(reverse('seApp:changeMedicalDetailsDoctor'),{'description':'graduatee of Cairo universities','specialization':'pediatrician','medicalId':'542598'})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/doctor/changeMedicalDetails', status_code=302, target_status_code=200, fetch_redirect_response=True)     
+
+    def test_changePassword_Unauthorized(self):
+        response=self.client.post(reverse('seApp:change_password'), {'old_password':'12345','new_password1':'123456789EhaB','new_password2':'123456789EhaB'})
+        self.assertEquals(response.status_code,302)
+        self.assertRedirects(response, '/login/?next=/accounts/change_password', status_code=302, target_status_code=200, fetch_redirect_response=True)       
+
 # 404 Not Found test cases
     def test_postAppointment_notFound(self):
         self.client.login(username='AmrAhmed',password='12345')
@@ -721,7 +771,6 @@ class test_models(TestCase):
     def test_Payment_model (self):
         self.assertEquals(self.payment.key, 'fhkbkjd6546')
         self.assertAlmostEquals(self.payment.appointment.id, self.appointment.id) 
- 
 
 
 
