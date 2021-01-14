@@ -71,9 +71,6 @@
                               <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel appointment
                                 {{appointment.doctor.specialization}} ? </h5>
                             </div>
-                            <div class="modal-body">
-                              An ammount of {{appointment.doctor.fees}} will be returned to you.
-                            </div>
                             <div class="modal-footer">
                               <form action="/user/appointmentview/{{appointment.id}}" method="POST" class="text-center">
                                 {% csrf_token %}

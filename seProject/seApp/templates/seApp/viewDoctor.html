@@ -239,6 +239,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        {% if reviews %}
                         {% for review in reviews %}
                         <div class="row">
                             <div class="col-md-6">
@@ -246,6 +247,13 @@
                             </div>
                         </div>
                         {% endfor %}
+                        {%else%}
+                        <div class="col-12 col-md-12 text-center">
+                            <br><br>
+                            <h5> No Reviews </h5>
+                            <br><br>
+                        </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
