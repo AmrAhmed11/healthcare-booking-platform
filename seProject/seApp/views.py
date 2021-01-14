@@ -697,7 +697,7 @@ Remove a certian doctor from a clinic and remove a success message upon saving
     messages.success(request, 'Doctor Removed Successfully.')
     return redirect('seApp:staffManager')
 
-    
+
 
 
 @login_required(login_url='seApp:loginpage')
@@ -716,6 +716,13 @@ def browse(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentUser(request):
+""" Patient Appointments Manager .
+
+Returns all patient`s appointments
+
+:param incoming request
+:return: seApp:appointmentUser
+"""
     patient = Patient.objects.get(id=request.user.patient.id)
     app_all= patient.appointment_set.all()
     app_pending =patient.appointment_set.filter(status="Pending")
@@ -728,6 +735,15 @@ def appointmentUser(request):
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentView(request, app_id):
+""" Patient Appointment Actions.
+
+Handles appointment status changing(Booking, Cancellation, Edit, Payment) and validation
+
+:param incoming request
+:return: seApp:appointmentDone
+:return: seApp:appointmentCancel
+:return: seApp:appointmentEdit
+"""
     appointment = get_object_or_404(Appointment, pk=app_id)
 
     form = ReviewForm()
