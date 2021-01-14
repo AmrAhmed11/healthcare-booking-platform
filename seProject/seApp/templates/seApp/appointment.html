@@ -235,8 +235,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel appointment
-            {{app.doctor.specialization}} ? </h5>
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to cancel appointment? </h5>
         </div>
         <div class="modal-footer">
           <form action="{% url 'seApp:deleteAppointment' app_id=app.id%}" method="POST" class="text-center">
