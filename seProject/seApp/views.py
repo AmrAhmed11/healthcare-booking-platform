@@ -581,6 +581,8 @@ def appointmentView(request, app_id):
             if 'submit' in request.POST:
                 form = ReviewForm(request.POST,instance=app)
                 tempRating = int(request.POST['rate'])
+                if app.doctor.rating is None:
+                    app.doctor.rating = 5
                 if tempRating == 5:
                     rating = app.doctor.rating + 0.2
                 elif tempRating == 4:
@@ -591,8 +593,6 @@ def appointmentView(request, app_id):
                     rating = app.doctor.rating - 0.2
                 else:
                     rating = app.doctor.rating
-                if app.doctor.rating is None:
-                    app.doctor.rating = 5
                 app.doctor.rating = 5 if rating > 5  else rating
                 app.doctor.save()
                 #clinic rating
