@@ -389,15 +389,16 @@ Returns authenticated authenticated personal data
     return render(request, 'seApp/staffProfile.html', context)
 
 
-
-# ///////////////////////////////////////////////////////////////////////////////////////////
-# FUNCTIONS WRITTEN BY LOAY 
-
-
-# COLLECT ADMIN INFO
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=[])
 def collectedInfoAdmin(request):
+""" Admin Information Collection.
+
+Collects statistical data about the system and renders admin information page
+
+:param incoming request
+:return: seApp:CollectedInfoAdmin
+"""
     doctors = Doctor.objects.all()
     patients = Patient.objects.all()
     clinics = Clinic.objects.all()
@@ -431,12 +432,16 @@ def collectedInfoAdmin(request):
     return render(request, 'seApp/collectedInfoAdmin.html', context)
     
 
-
-
-# COLLECT DOCTOR INFO
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def collectedInfoDoctor(request):
+""" Doctor Information Collection.
+
+Collects statistical data about the system and renders admin information page
+
+:param incoming request
+:return: seApp:collectedInfoDoctor
+"""
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     apps = doctor.appointment_set.all()
     patient_list = []
@@ -464,13 +469,17 @@ def collectedInfoDoctor(request):
     context = {'noPatients': noPatients, 'noAppPending': noAppPending, 'noAppCancelled': noAppCancel, 'noAppDone': noAppDone,'noAppPaid': noAppPaid,'rating':request.user.doctor.rating,'reviews':reviews,'totalApps':totalApps}
     return render(request, 'seApp/collectedInfoDoctor.html', context)
 
-    
 
-
-#  MANAGING DOCTOR SERVICES 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def servicesManager(request):
+""" Doctor Services Manager.
+
+Returns doctor services details
+
+:param incoming request
+:return: seApp:servicesManager
+"""
     if request.user.role == 'staff':
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
     else:
@@ -479,10 +488,17 @@ def servicesManager(request):
     context = {'services_list': services_list}
     return render(request, 'seApp/servicesManager.html', context)
 
-# CREATE NEW CLINIC ACTION
+
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def createNewClinic(request):
+""" Create New Clinic.
+
+Creates a new clinic and returns a success message after creation 
+
+:param incoming request
+:return: seApp:servicesManager
+"""
     clinicName = request.POST['clinicName']
     clinicAddress = request.POST['clinicAddress']
     clinic = Clinic()
@@ -498,10 +514,16 @@ def createNewClinic(request):
     return redirect('seApp:servicesManager')
 
 
-#  CHANGING DOCTOR FEES ACTION
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def changeFeeDoctor(request):
+""" Doctor Change Fee Action.
+
+Change doctor fee and return a success message upon saving
+
+:param incoming request
+:return: seApp:servicesManager
+"""
     fee = request.POST['fees']
     doctor = Doctor.objects.get(id=request.user.doctor.id)
     doctor.fees = fee
@@ -510,10 +532,16 @@ def changeFeeDoctor(request):
     return redirect('seApp:servicesManager')
 
 
-# CHANGING DOCTOR MEDICAL DETAILS
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def changeMedicalDetailsDoctor(request):
+""" Change Doctor`s Medical Details.
+
+Change doctor medical details and return a success message upon saving
+
+:param incoming request
+:return: seApp:servicesManager
+"""
     description = request.POST['description']
     specialization = request.POST['specialization']
     medicalId = request.POST['medicalId']
@@ -525,10 +553,17 @@ def changeMedicalDetailsDoctor(request):
     messages.success(request, 'Medical Details Changed Successfully.')
     return redirect('seApp:servicesManager')
 
-# DELETE TIMESLOTS FOR DOCTOR ACTION
+
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def deleteTimeslotDoctor(request):
+""" Doctor Timeslot Deletion.
+
+Deletes a timeslot chosen by doctor
+
+:param incoming request
+:return: seApp:servicesManager
+"""
     timeslot = request.POST['timeslot']
     if(request.user.role=='staff'):
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
@@ -541,10 +576,16 @@ def deleteTimeslotDoctor(request):
     return redirect('seApp:servicesManager')
 
 
-# ADD TIMESLOTS FOR DOCTOR ACTION
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['staff', 'doctor'])
 def addTimeslotDoctor(request):
+""" Doctor Timeslot adding.
+
+Adds a certain timeslot chosen by the doctor and returns a success message upon saving
+
+:param incoming request
+:return: seApp:servicesManager
+"""
     timeslot = request.POST['timeslot']
     #checking if time is in the past
     if((parse_datetime(timeslot) - datetime.now()).total_seconds() < 0):
@@ -562,10 +603,16 @@ def addTimeslotDoctor(request):
     return redirect('seApp:servicesManager')
 
 
-# RENDERDING DOCTOR STAFF MANAGER
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def staffManager(request):
+""" Doctor Staff Manager.
+
+Collects staff info and returns staff manager 
+
+:param incoming request
+:return: seApp:staffManager
+"""
     staff_list = Staff.objects.filter(doctor=request.user.doctor.id)
     user_list = Staff.objects.all()
     staffToBeAdded_list = []
@@ -599,10 +646,16 @@ def staffManager(request):
     return render(request, 'seApp/staffManager.html', context)
 
 
-# ADDING NEW STAFF FOR DOCTOR ACTION 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def addNewStaff(request):
+""" Doctor Add New Staff.
+
+Adds a staff to a certain doctor and return a success message upon success
+
+:param incoming request
+:return: seApp:staffManager
+"""
     staff = request.POST['staff']
     doctor = request.user.doctor
     staffObject = Staff.objects.get(id=staff)
@@ -612,10 +665,16 @@ def addNewStaff(request):
     return redirect('seApp:staffManager')
 
 
-#REMOVING NEW STAFF FOR DOCTOR ACTION
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def removeStaff(request):
+""" Doctor Remove Staff.
+
+Deletes staff from a certain doctor and return a success message upon success
+
+:param incoming request
+:return: seApp:staffManager
+"""
     staff = request.POST['staff']
     staffObject = Staff.objects.get(id=staff)
     staffObject.delete()
@@ -623,12 +682,16 @@ def removeStaff(request):
     return redirect('seApp:staffManager')
 
 
-
-
-# ADDING NEW DOCTOR FOR DOCTOR ACTION 
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def addNewDoctor(request):
+""" Add New Doctor to a Clinic.
+
+Add a certain doctor chosen by the clinic owner to this clinic and return a success message upon saving
+
+:param incoming request
+:return: seApp:staffManager
+"""
     doctor = request.POST['doctor']
     clinic = request.POST['clinic']
     clinicObj = Clinic.objects.get(id=clinic)
@@ -639,10 +702,16 @@ def addNewDoctor(request):
     return redirect('seApp:staffManager')
 
 
-#REMOVING DOCTOR FROM CLINIC ACTION
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['doctor'])
 def removeDoctor(request):
+""" Remove a Doctor from a Clinic.
+
+Remove a certian doctor from a clinic and remove a success message upon saving 
+
+:param incoming request
+:return: seApp:staffManager
+"""
     doctor = request.POST['doctor']
     doctorObject = Doctor.objects.get(user=doctor)
     clinic = Clinic()
@@ -652,7 +721,7 @@ def removeDoctor(request):
     messages.success(request, 'Doctor Removed Successfully.')
     return redirect('seApp:staffManager')
 
-# ///////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 @login_required(login_url='seApp:loginpage')
@@ -679,14 +748,13 @@ Returns all registered doctors and offers filtering
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentUser(request):
-""" Browse Doctors.
+""" Patient Appointments Manager .
 
-Returns all registered doctors and offers filtering 
+Returns all patient`s appointments
 
 :param incoming request
-:return: browse.html
-
-"""      
+:return: seApp:appointmentUser
+"""
     patient = Patient.objects.get(id=request.user.patient.id)
     app_all= patient.appointment_set.all()
     app_pending =patient.appointment_set.filter(status="Pending")
@@ -699,6 +767,15 @@ Returns all registered doctors and offers filtering
 @login_required(login_url='seApp:loginpage')
 @allowed_users(allowed_roles=['patient'])
 def appointmentView(request, app_id):
+""" Patient Appointment Actions.
+
+Handles appointment status changing(Booking, Cancellation, Edit, Payment) and validation
+
+:param incoming request
+:return: seApp:appointmentDone
+:return: seApp:appointmentCancel
+:return: seApp:appointmentEdit
+"""
     appointment = get_object_or_404(Appointment, pk=app_id)
 
     form = ReviewForm()
