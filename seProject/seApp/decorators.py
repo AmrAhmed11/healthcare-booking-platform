@@ -10,7 +10,10 @@ def unauthenticted_user(view_func):
             elif(role == 'doctor'):
                 return redirect('seApp:servicesManager')
             elif(role == 'staff'):
-                return redirect('seApp:staffGetDetails')
+                if request.user.staff.doctor is None:
+                    return redirect('seApp:staffGetDetails')
+                else:
+                    return redirect('seApp:servicesManager')
             else:
                 return redirect('seApp:collectedInfoAdmin')
         else:

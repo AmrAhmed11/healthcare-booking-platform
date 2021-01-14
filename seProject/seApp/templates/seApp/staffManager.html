@@ -134,9 +134,7 @@
     </div>
 
     <div class="bg-light py-5 ">
-
       <div class="container">
-
         <div class="col-12">
           <div class="card p-2 shadow-md">
             <div class="card-body">
@@ -148,25 +146,19 @@
                   <select class="form-control" name="staff" id="staff" required>
                     <option disabled selected value="">Choose...</option>
                     {% for staffNew in staffToBeAdded_list %}
-                    <option value="{{staffNew.user.id}}">{{staffNew.user.email}}</option>
+                    <option value="{{staffNew.user.staff.id}}">{{staffNew.user.email}}</option>
                     {% endfor %}
                   </select>
                 </div>
                 <div class="text-center mt-2 ">
-
-
                   <button class="btn btn-outline-primary btn-md">Add Staff</button>
-
                 </div>
               </form>
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
-
   </main>
 </div>
 {%endblock%}

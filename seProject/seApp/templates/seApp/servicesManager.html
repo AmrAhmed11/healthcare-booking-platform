@@ -3,7 +3,7 @@
 <div class="col-12">
 <main>
 
-  {% if services_list.clinic == None %}
+  {% if services_list.clinic.owner_id == None %}
   <div class="bg-light py-2 mb-5 ">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -50,7 +50,7 @@
                 <h5 class="text-center mb-5">Fees</h5>
                 <form action="{% url 'seApp:changeFeeDoctor' %}" method="post">
                   {% csrf_token %}
-                  <input type="number" value="{{services_list.fees}}" name="fees" required class="form-control" min="0">
+                  <input type="number" value="{{services_list.fees}}" name="fees" required class="form-control" min="0" max="1000">
                   <div class="text-center">
                   <button class="btn btn-outline-primary btn-md m-3">Change Fees</button>
                 </form>

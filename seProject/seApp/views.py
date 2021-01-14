@@ -47,7 +47,11 @@ def loginpage (request):
             elif user.role == "doctor":
                 return redirect('seApp:servicesManager')
             elif user.role == "staff":
-                return redirect('seApp:staffGetDetails')
+                if user.staff.doctor is None:
+                    return redirect('seApp:staffGetDetails')
+                else:
+                    return redirect('seApp:servicesManager')
+                        
             else:
                 return redirect('seApp:collectedInfoAdmin')
         else:
@@ -161,7 +165,7 @@ def postAppointment(request, app_id):
     app.save()
     app.doctor.save()
     patient = app.patient
-    sendEmail('test',patient,'doctorEdit')
+    sendEmail('Appointment Date Changed',patient,'doctorEdit')
     messages.success(request, 'Appointment Date Changed Successfully.')
     return redirect('seApp:appointment', app_id=app_id)
 
@@ -319,7 +323,7 @@ def doctorTransferPatient(request, patient_id):
         doctor.time_slots.pop(index)
         doctor.save()
         appointment.save()
-        sendEmail('test',patient.user.email,'transferPatient')
+        sendEmail('Doctor Transfer',patient.user.email,'transferPatient')
         messages.success(request, 'Patient Transferred Successfully.')
         return redirect('seApp:patients')
     context = {'patient': patient, 'doctors': doctorsWithTimeSlots,'specs':specs}
@@ -490,7 +494,7 @@ def servicesManager(request):
 
 
 @login_required(login_url='seApp:loginpage')
-@allowed_users(allowed_roles=['doctor'])
+@allowed_users(allowed_roles=['doctor', 'staff'])
 def createNewClinic(request):
     """ Create New Clinic.
 
@@ -506,7 +510,10 @@ def createNewClinic(request):
     clinic.address = clinicAddress
     clinic.owner_id = request.user.id
     clinic.rating = 0
-    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    if request.user.role == 'staff':
+        doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
+    else:
+        doctor = Doctor.objects.get(id=request.user.doctor.id)
     doctor.clinic = clinic
     clinic.save()
     doctor.save()
@@ -525,7 +532,10 @@ def changeFeeDoctor(request):
     :return: seApp:servicesManager
     """
     fee = request.POST['fees']
-    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    if request.user.role == 'staff':
+        doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
+    else:
+        doctor = Doctor.objects.get(id=request.user.doctor.id)
     doctor.fees = fee
     doctor.save()
     messages.success(request, 'Fees Changed Successfully.')
@@ -545,7 +555,10 @@ def changeMedicalDetailsDoctor(request):
     description = request.POST['description']
     specialization = request.POST['specialization']
     medicalId = request.POST['medicalId']
-    doctor = Doctor.objects.get(id=request.user.doctor.id)
+    if request.user.role == 'staff':
+        doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
+    else:
+        doctor = Doctor.objects.get(id=request.user.doctor.id)
     doctor.description = description
     doctor.specialization = specialization
     doctor.medical_id = medicalId
@@ -565,10 +578,10 @@ def deleteTimeslotDoctor(request):
     :return: seApp:servicesManager
     """
     timeslot = request.POST['timeslot']
-    if(request.user.role=='staff'):
+    if request.user.role == 'staff':
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
     else:
-        doctor = request.user.doctor
+        doctor = Doctor.objects.get(id=request.user.doctor.id)
     timeslotParsed = parse_datetime(timeslot) 
     doctor.time_slots.remove(timeslotParsed)
     doctor.save()
@@ -591,10 +604,10 @@ def addTimeslotDoctor(request):
     if((parse_datetime(timeslot) - datetime.now()).total_seconds() < 0):
         messages.error(request, 'Can\'t add time slot in a past date.')
         return redirect('seApp:servicesManager')
-    if(request.user.role=='staff'):
+    if request.user.role == 'staff':
         doctor = Doctor.objects.get(id=request.user.staff.doctor.id)
     else:
-        doctor = request.user.doctor
+        doctor = Doctor.objects.get(id=request.user.doctor.id)
     if(doctor.time_slots == None):
         doctor.time_slots = []
     doctor.time_slots.append(timeslot)
@@ -714,10 +727,18 @@ def removeDoctor(request):
     """
     doctor = request.POST['doctor']
     doctorObject = Doctor.objects.get(user=doctor)
-    clinic = Clinic()
-    clinic.save()
-    doctorObject.clinic = clinic
+    ownerID = doctorObject.clinic.owner_id
+    doctorObject.clinic = None
     doctorObject.save()
+    if doctorObject.user.id == ownerID:
+        clinicObject = Clinic.objects.get(owner_id=ownerID)
+        clinicMembers = Doctor.objects.filter(clinic=clinicObject)
+        if clinicMembers.count() >= 1:
+            clinicObject.owner_id = clinicMembers[0].user.id
+            clinicObject.save()
+        else:
+            Clinic.delete(owner_id=ownerID)
+    
     messages.success(request, 'Doctor Removed Successfully.')
     return redirect('seApp:staffManager')
 
@@ -792,7 +813,7 @@ def appointmentView(request, app_id):
                 timeslots = appointment.time_slot
                 appointment.doctor.time_slots.append(timeslots)
                 appointment.doctor.save()
-                sendEmail('test',doctor,'appointmentCancel')
+                sendEmail('Appointment Cancelled',doctor,'appointmentCancel')
                 return render(request, 'seApp/appointmentcancelled.html', context)  
 
             if 'edit' in request.POST:
@@ -819,7 +840,7 @@ def appointmentView(request, app_id):
                     prescription = []
                 )
                 appointmentnew.save()
-                sendEmail('test',doctor,'appointmentEdit')
+                sendEmail('Appointment Modified',doctor,'appointmentEdit')
                 return render(request, 'seApp/appointmentcancelled.html', context)  
     
         return render(request, 'seApp/appointmentpaid.html', context)
@@ -835,13 +856,13 @@ def appointmentView(request, app_id):
                 timeslots = appointment.time_slot
                 appointment.doctor.time_slots.append(timeslots)
                 appointment.doctor.save()
-                sendEmail('test',doctor,'appointmentCancel')
+                sendEmail('Appointment Cancelled',doctor,'appointmentCancel')
                 return render(request, 'seApp/appointmentcancelled.html', context)  
 
             if body['status'] == 'completed':
                 appointment.status = 'Paid'
                 appointment.save()
-                sendEmail('test',doctor,'appointmentEdit')
+                sendEmail('Appointment Modified',doctor,'appointmentEdit')
                 return render(request, 'seApp/appointmentcancelled.html', context)  
     
         return render(request, 'seApp/appointmentcancelled.html', context)
@@ -982,7 +1003,7 @@ def paymentComplete(request, doctor_id):
             )
             doctor.time_slots.remove(timeslot)
             doctor.save()
-            sendEmail('test',doctorEmail,'appointmentBook')
+            sendEmail('Appointment Booked',doctorEmail,'appointmentBook')
             appointment.save()
             messages.success(request, 'Payment Successful.')
             return redirect('/user/appointment')
@@ -1000,7 +1021,7 @@ def paymentComplete(request, doctor_id):
             ) 
             doctor.time_slots.remove(timeslot)
             doctor.save()
-            sendEmail('test',doctorEmail,'appointmentBook')
+            sendEmail('Appointment Booked',doctorEmail,'appointmentBook')
             appointment.save()
             messages.success(request, 'Payment Successful.')
             return redirect('/user/appointment')
