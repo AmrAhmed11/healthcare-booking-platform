@@ -197,7 +197,8 @@ def doctorTransferPatient(request, patient_id):
                 status = 'Pending',
                 time_slot =  doctor.time_slots[index],
                 review = 'None',
-                prescription = []
+                prescription = [],
+                patient_name = patient,
         ) 
         doctor.time_slots.pop(index)
         doctor.save()
