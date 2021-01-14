@@ -738,7 +738,10 @@ def changePassword(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            return redirect('/user/profile')
+            if request.user.role == 'patient':
+                return redirect('/user/profile')
+            else:
+                return redirect('/doctor/profile')
         else:
             messages.error(request, 'Incorrect password')
             return redirect('/accounts/change_password')
